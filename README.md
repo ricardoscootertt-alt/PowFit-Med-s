@@ -1,4 +1,4 @@
-<html lang="pt-BR" class="dark">
+<html lang="pt-PT" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -122,7 +122,7 @@
                         <input type="text" id="prof-cref" placeholder="Ex: 000000-G/UF" class="w-full bg-darkInput border border-primary rounded-lg p-3 text-white focus:outline-none focus:ring-1 focus:ring-primary transition">
                     </div>
                     <div class="mt-8 pt-4 border-t border-gray-700">
-                        <button type="submit" class="w-full bg-primary hover:bg-primaryDark text-white font-bold py-3 px-4 rounded-lg transition duration-300">Salvar Perfil</button>
+                        <button type="submit" class="w-full bg-primary hover:bg-primaryDark text-white font-bold py-3 px-4 rounded-lg transition duration-300">Guardar Perfil</button>
                     </div>
                 </form>
             </div>
@@ -229,7 +229,7 @@
         <section id="screen-results" class="screen">
             <div class="flex justify-between mb-6 no-print">
                 <button onclick="ui.navigateTo('screen-dashboard')" class="text-gray-400 hover:text-white"><i class="fa-solid fa-arrow-left"></i> Voltar</button>
-                <button onclick="actions.generatePDF()" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"><i class="fa-solid fa-file-pdf"></i> PDF</button>
+                <button onclick="actions.generatePDF()" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"><i class="fa-solid fa-file-pdf"></i> Exportar PDF</button>
             </div>
             <div id="pdf-content" class="bg-darkBg text-white p-6 rounded-xl">
                 <h1 class="text-3xl font-bold text-center mb-6">Resultados da Avaliação</h1>
@@ -242,13 +242,12 @@
         </section>
     </main>
 
-    <!-- SCRIPT FIREBASE OFICIAL (SEM CÓDIGO DE TESTE) -->
+    <!-- SCRIPT FIREBASE OFICIAL -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, doc, setDoc, getDoc, collection, onSnapshot, addDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // As suas chaves oficiais do Firebase
         const firebaseConfig = {
             apiKey: "AIzaSyA9icSOYHPq-5p-GJaFmKZ02DMMFpohk7g",
             authDomain: "powfit-med-s.firebaseapp.com",
@@ -280,14 +279,18 @@
                 document.getElementById('stat-total').innerText = state.assessments.length;
                 const list = document.getElementById('assessments-list');
                 if(state.assessments.length === 0) list.innerHTML = '<tr><td colspan="4" class="p-4 text-center">Sem avaliações.</td></tr>';
-                else list.innerHTML = state.assessments.map(a => `<tr class="border-b border-gray-700"><td class="p-3">${new Date(a.data).toLocaleDateString()}</td><td class="p-3">${a.cliente.nome}</td><td class="p-3">${a.anamnese.objetivo}</td><td class="p-3"><button onclick="actions.viewResult('${a.id}')" class="text-primary">Ver</button></td></tr>`).join('');
+                else list.innerHTML = state.assessments.map(a => `<tr class="border-b border-gray-700"><td class="p-3">${new Date(a.data).toLocaleDateString()}</td><td class="p-3">${a.cliente.nome}</td><td class="p-3">${a.anamnese.objetivo}</td><td class="p-3"><button onclick="actions.viewResult('${a.id}')" class="text-primary hover:underline">Ver</button></td></tr>`).join('');
             }
         };
 
         const dbActions = {
             checkProfile: async (uid) => {
                 try {
-                    const docSnap = await getDoc(doc(db, 'artifacts', 'powfit', 'users', uid, 'profile'));
+                    // CORREÇÃO: Path com 6 segmentos exatos (número par) para representar um documento: 
+                    // collection/doc/collection/doc/collection/doc
+                    const path = doc(db, 'artifacts', 'powfit', 'users', uid, 'profile', 'dados');
+                    const docSnap = await getDoc(path);
+                    
                     if (docSnap.exists()) {
                         state.profile = docSnap.data();
                         dbActions.listenAssessments(uid);
@@ -296,27 +299,42 @@
                         ui.showScreen('screen-profile');
                     }
                 } catch (e) {
-                    alert("Erro ao ler dados: " + e.message);
+                    alert("Erro ao ler dados do Perfil: " + e.message);
                 }
             },
             saveProfile: async (data) => {
-                await setDoc(doc(db, 'artifacts', 'powfit', 'users', state.user.uid, 'profile'), data);
-                state.profile = data;
-                dbActions.listenAssessments(state.user.uid);
-                ui.showScreen('screen-dashboard');
+                try {
+                    // CORREÇÃO: Path com 6 segmentos
+                    const path = doc(db, 'artifacts', 'powfit', 'users', state.user.uid, 'profile', 'dados');
+                    await setDoc(path, data);
+                    state.profile = data;
+                    dbActions.listenAssessments(state.user.uid);
+                    ui.showScreen('screen-dashboard');
+                } catch (e) {
+                    alert("Erro ao guardar o Perfil: " + e.message);
+                }
             },
             listenAssessments: (uid) => {
-                onSnapshot(collection(db, 'artifacts', 'powfit', 'users', uid, 'assessments'), (snap) => {
+                // Coleções exigem um número ímpar de segmentos (5 segmentos)
+                const path = collection(db, 'artifacts', 'powfit', 'users', uid, 'assessments');
+                onSnapshot(path, (snap) => {
                     state.assessments = [];
                     snap.forEach(d => state.assessments.push({ id: d.id, ...d.data() }));
                     ui.updateDashboard();
+                }, (error) => {
+                    console.error("Erro a ler avaliações:", error);
                 });
             },
             saveAssessment: async (data) => {
-                data.data = new Date().toISOString();
-                const docRef = await addDoc(collection(db, 'artifacts', 'powfit', 'users', state.user.uid, 'assessments'), data);
-                data.id = docRef.id;
-                actions.viewResult(data.id, data);
+                try {
+                    data.data = new Date().toISOString();
+                    const path = collection(db, 'artifacts', 'powfit', 'users', state.user.uid, 'assessments');
+                    const docRef = await addDoc(path, data);
+                    data.id = docRef.id;
+                    actions.viewResult(data.id, data);
+                } catch (e) {
+                    alert("Erro ao guardar avaliação: " + e.message);
+                }
             }
         };
 
@@ -338,7 +356,7 @@
                     await signInWithPopup(auth, provider);
                 } catch (error) {
                     console.error(error);
-                    btnStatus.innerText = "Erro do Firebase: " + error.message;
+                    btnStatus.innerText = "Erro: " + error.message;
                     btnStatus.classList.add('text-red-500');
                 }
             },
@@ -352,7 +370,7 @@
                 let bf = "--";
                 if(data.dobras.protocolo === 'pollock3') {
                      const soma = parseFloat(data.dobras['dc-1']||0) + parseFloat(data.dobras['dc-2']||0) + parseFloat(data.dobras['dc-3']||0);
-                     bf = (soma * 0.15).toFixed(1) + "% (Aprox)"; // Calculo simplificado para demonstração
+                     bf = (soma * 0.15).toFixed(1) + "%"; // Calculo simplificado
                 }
                 document.getElementById('res-bf-val').innerText = bf;
                 ui.showScreen('screen-results');
@@ -370,9 +388,9 @@
                 c.innerHTML = '';
                 if(p === 'pollock3') {
                     c.innerHTML = `
-                        <div><label class="block text-xs mb-1">Dobra 1 (mm)</label><input type="number" id="dc-1" class="w-full bg-darkInput rounded p-2" required></div>
-                        <div><label class="block text-xs mb-1">Dobra 2 (mm)</label><input type="number" id="dc-2" class="w-full bg-darkInput rounded p-2" required></div>
-                        <div><label class="block text-xs mb-1">Dobra 3 (mm)</label><input type="number" id="dc-3" class="w-full bg-darkInput rounded p-2" required></div>
+                        <div><label class="block text-xs mb-1 text-gray-300">Dobra Peitoral/Tríceps</label><input type="number" id="dc-1" class="w-full bg-darkInput border border-gray-600 rounded p-2 text-white" required></div>
+                        <div><label class="block text-xs mb-1 text-gray-300">Dobra Abdominal/Supra</label><input type="number" id="dc-2" class="w-full bg-darkInput border border-gray-600 rounded p-2 text-white" required></div>
+                        <div><label class="block text-xs mb-1 text-gray-300">Dobra Coxa</label><input type="number" id="dc-3" class="w-full bg-darkInput border border-gray-600 rounded p-2 text-white" required></div>
                     `;
                 }
             }
