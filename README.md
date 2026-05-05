@@ -47,7 +47,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
     <style>
-        /* Estilos adicionais e customizações do scrollbar */
         body {
             background-color: #111827;
             color: #f3f4f6;
@@ -55,51 +54,26 @@
             overflow-x: hidden;
         }
         
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #1f2937; 
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #4b5563; 
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #3b82f6; 
-        }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #1f2937; }
+        ::-webkit-scrollbar-thumb { background: #4b5563; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #3b82f6; }
 
-        /* Esconder setas de input number */
         input[type=number]::-webkit-inner-spin-button, 
-        input[type=number]::-webkit-outer-spin-button { 
-            -webkit-appearance: none; 
-            margin: 0; 
-        }
-        input[type=number] {
-            -moz-appearance: textfield;
-        }
+        input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+        input[type=number] { -moz-appearance: textfield; }
 
-        .glass-panel {
-            background: rgba(31, 41, 55, 0.7);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(75, 85, 99, 0.4);
-        }
+        .glass-panel { background: rgba(31, 41, 55, 0.7); backdrop-filter: blur(10px); border: 1px solid rgba(75, 85, 99, 0.4); }
 
-        .badge {
-            padding: 0.25rem 0.75rem;
-            border-radius: 9999px;
-            font-size: 0.75rem;
-            font-weight: 600;
-        }
+        .badge { padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 600; }
         .badge-green { background-color: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid #10b981; }
         .badge-yellow { background-color: rgba(245, 158, 11, 0.2); color: #fbbf24; border: 1px solid #f59e0b; }
         .badge-red { background-color: rgba(239, 68, 68, 0.2); color: #f87171; border: 1px solid #ef4444; }
+        .badge-blue { background-color: rgba(59, 130, 246, 0.2); color: #60a5fa; border: 1px solid #3b82f6; }
 
-        /* Esconder telas inativas */
         .screen { display: none; }
         .screen.active { display: block; animation: fadeIn 0.4s; }
 
-        /* Estilo para impressão (PDF) */
         @media print {
             body { background-color: white !important; color: black !important; }
             .no-print { display: none !important; }
@@ -129,7 +103,7 @@
     <!-- Main Content Area -->
     <main class="flex-grow w-full max-w-7xl mx-auto p-4 sm:p-6 lg:p-8">
         
-        <!-- ==================== TELA 1: LOGIN ==================== -->
+        <!-- TELA 1: LOGIN -->
         <section id="screen-login" class="screen active flex flex-col items-center justify-center min-h-[70vh]">
             <div class="glass-panel p-8 rounded-2xl w-full max-w-md text-center shadow-xl animate-slide-up">
                 <div class="w-20 h-20 bg-primary/20 rounded-full flex items-center justify-center mx-auto mb-6">
@@ -146,7 +120,7 @@
             </div>
         </section>
 
-        <!-- ==================== TELA 2: PERFIL DO PROFISSIONAL ==================== -->
+        <!-- TELA 2: PERFIL DO PROFISSIONAL -->
         <section id="screen-profile" class="screen max-w-2xl mx-auto">
             <div class="mb-6">
                 <h2 class="text-2xl font-bold border-l-4 border-primary pl-3">Configurar Perfil</h2>
@@ -200,7 +174,7 @@
             </div>
         </section>
 
-        <!-- ==================== TELA 3: DASHBOARD ==================== -->
+        <!-- TELA 3: DASHBOARD -->
         <section id="screen-dashboard" class="screen">
             <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
                 <div>
@@ -248,7 +222,7 @@
             </div>
         </section>
 
-        <!-- ==================== TELA 4: FORMULÁRIO DE AVALIAÇÃO ==================== -->
+        <!-- TELA 4: FORMULÁRIO DE AVALIAÇÃO -->
         <section id="screen-form" class="screen max-w-4xl mx-auto">
             <div class="flex items-center justify-between mb-6">
                 <div>
@@ -334,16 +308,15 @@
                 <!-- SEÇÃO: PERÍMETROS -->
                 <div class="glass-panel p-6 rounded-xl border-t-4 border-t-yellow-500">
                     <h3 class="font-bold text-lg mb-4 text-yellow-400"><i class="fa-solid fa-ruler mr-2"></i>Perímetros (cm)</h3>
-                    <p class="text-xs text-gray-400 mb-4">Medidas em centímetros. Preencha os campos com valores.</p>
+                    <p class="text-xs text-gray-400 mb-4">Medidas em centímetros.</p>
                     
-                    <!-- Foco em RCQ primeiro -->
                     <div class="grid grid-cols-2 gap-4 mb-4 pb-4 border-b border-gray-700">
                         <div>
-                            <label class="block text-sm font-bold text-yellow-200 mb-1">Cintura * <span class="text-xs font-normal text-gray-400">(menor diâmetro)</span></label>
+                            <label class="block text-sm font-bold text-yellow-200 mb-1">Cintura *</label>
                             <input type="number" step="0.1" id="per-cintura" required class="w-full bg-darkInput border border-yellow-700 rounded-lg p-2 text-white outline-none">
                         </div>
                         <div>
-                            <label class="block text-sm font-bold text-yellow-200 mb-1">Quadril * <span class="text-xs font-normal text-gray-400">(maior proeminência)</span></label>
+                            <label class="block text-sm font-bold text-yellow-200 mb-1">Quadril *</label>
                             <input type="number" step="0.1" id="per-quadril" required class="w-full bg-darkInput border border-yellow-700 rounded-lg p-2 text-white outline-none">
                         </div>
                     </div>
@@ -353,16 +326,14 @@
                         <div><label class="block text-xs mb-1 text-gray-300">Ombros</label><input type="number" step="0.1" id="per-ombros" class="w-full bg-darkInput border border-gray-600 rounded p-2 text-sm outline-none"></div>
                         <div><label class="block text-xs mb-1 text-gray-300">Tórax</label><input type="number" step="0.1" id="per-torax" class="w-full bg-darkInput border border-gray-600 rounded p-2 text-sm outline-none"></div>
                         <div><label class="block text-xs mb-1 text-gray-300">Abdominal</label><input type="number" step="0.1" id="per-abd" class="w-full bg-darkInput border border-gray-600 rounded p-2 text-sm outline-none"></div>
-                        
                         <div><label class="block text-xs mb-1 text-gray-300">Braço Relaxado (D)</label><input type="number" step="0.1" id="per-braco-rel-d" class="w-full bg-darkInput border border-gray-600 rounded p-2 text-sm outline-none"></div>
                         <div><label class="block text-xs mb-1 text-gray-300">Braço Contraído (D)</label><input type="number" step="0.1" id="per-braco-con-d" class="w-full bg-darkInput border border-gray-600 rounded p-2 text-sm outline-none"></div>
-                        
                         <div><label class="block text-xs mb-1 text-gray-300">Coxa Medial (D)</label><input type="number" step="0.1" id="per-coxa-d" class="w-full bg-darkInput border border-gray-600 rounded p-2 text-sm outline-none"></div>
                         <div><label class="block text-xs mb-1 text-gray-300">Panturrilha (D)</label><input type="number" step="0.1" id="per-pant-d" class="w-full bg-darkInput border border-gray-600 rounded p-2 text-sm outline-none"></div>
                     </div>
                 </div>
 
-                <!-- SEÇÃO: COMPOSIÇÃO CORPORAL (DOBRAS) -->
+                <!-- SEÇÃO: COMPOSIÇÃO CORPORAL -->
                 <div class="glass-panel p-6 rounded-xl border-t-4 border-t-green-500">
                     <div class="flex justify-between items-center mb-4">
                         <h3 class="font-bold text-lg text-green-400"><i class="fa-solid fa-layer-group mr-2"></i>Dobras Cutâneas (mm)</h3>
@@ -374,21 +345,20 @@
                     </div>
 
                     <div id="container-dobras" class="grid grid-cols-2 md:grid-cols-4 gap-4 transition-all">
-                        <!-- Campos gerados via JS dependendo do protocolo -->
+                        <!-- Gerado via JS -->
                     </div>
                 </div>
 
-                <!-- Botões -->
                 <div class="flex gap-4 pt-4">
                     <button type="button" onclick="ui.navigateTo('screen-dashboard')" class="w-1/3 bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 rounded-lg transition">Cancelar</button>
                     <button type="submit" class="w-2/3 bg-primary hover:bg-primaryDark text-white font-bold py-3 rounded-lg shadow-lg flex justify-center items-center transition">
-                        <i class="fa-solid fa-calculator mr-2"></i> Calcular e Salvar Resultados
+                        <i class="fa-solid fa-calculator mr-2"></i> Calcular e Salvar
                     </button>
                 </div>
             </form>
         </section>
 
-        <!-- ==================== TELA 5: RESULTADOS E RELATÓRIO ==================== -->
+        <!-- TELA 5: RESULTADOS E RELATÓRIO -->
         <section id="screen-results" class="screen">
             <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 no-print">
                 <button onclick="ui.navigateTo('screen-dashboard')" class="text-gray-400 hover:text-white transition mb-2 md:mb-0">
@@ -401,9 +371,8 @@
                 </div>
             </div>
 
-            <!-- ÁREA A SER IMPRESSA -->
+            <!-- ÁREA DE IMPRESSÃO -->
             <div id="pdf-content" class="bg-darkBg text-white p-2 md:p-6 rounded-xl relative">
-                <!-- Cabeçalho do Relatório -->
                 <div class="border-b-2 border-primary pb-4 mb-6 text-center flex flex-col items-center">
                     <h1 class="text-3xl font-bold tracking-wider uppercase mb-1">Avaliação Física</h1>
                     <p class="text-primary font-medium" id="res-prof-nome">Profissional Responsável</p>
@@ -411,7 +380,6 @@
                     <p class="text-sm mt-2 text-gray-300">Data: <span id="res-data">--/--/----</span></p>
                 </div>
 
-                <!-- Dados do Cliente -->
                 <div class="glass-panel p-4 rounded-lg mb-6 flex flex-wrap justify-between items-center">
                     <div>
                         <p class="text-xl font-bold" id="res-cli-nome">Nome do Cliente</p>
@@ -423,10 +391,7 @@
                     </div>
                 </div>
 
-                <!-- Painel Principal de Indicadores -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                    
-                    <!-- Box IMC -->
                     <div class="glass-panel p-5 rounded-xl border-l-4" id="box-imc">
                         <div class="flex justify-between items-start">
                             <div>
@@ -444,7 +409,6 @@
                         </div>
                     </div>
 
-                    <!-- Box Gordura -->
                     <div class="glass-panel p-5 rounded-xl border-l-4" id="box-bf">
                         <div class="flex justify-between items-start">
                             <div>
@@ -461,21 +425,17 @@
                             <span class="text-xs text-gray-400" id="res-protocolo-nome">Protocolo: -</span>
                         </div>
                     </div>
-
                 </div>
 
-                <!-- Detalhamento da Composição -->
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-                    <!-- Gráfico -->
-                    <div class="glass-panel p-4 rounded-xl col-span-1 md:col-span-1 flex flex-col items-center justify-center">
+                    <div class="glass-panel p-4 rounded-xl col-span-1 flex flex-col items-center justify-center">
                         <h3 class="text-sm font-bold text-gray-400 uppercase mb-2">Composição (Kg)</h3>
                         <div class="w-40 h-40 relative">
                             <canvas id="compChart"></canvas>
                         </div>
                     </div>
                     
-                    <!-- Massa Magra / Gorda -->
-                    <div class="glass-panel p-4 rounded-xl col-span-1 md:col-span-1 flex flex-col justify-center">
+                    <div class="glass-panel p-4 rounded-xl col-span-1 flex flex-col justify-center">
                         <div class="mb-4">
                             <div class="flex justify-between items-center mb-1">
                                 <span class="text-gray-300 text-sm"><i class="fa-solid fa-cube text-primary mr-2"></i>Massa Magra</span>
@@ -496,10 +456,9 @@
                         </div>
                     </div>
 
-                    <!-- Risco Cardiovascular -->
-                    <div class="glass-panel p-4 rounded-xl col-span-1 md:col-span-1 border-l-4" id="box-rcq">
-                        <h3 class="text-sm font-bold text-gray-400 uppercase mb-2"><i class="fa-solid fa-heart-pulse mr-2"></i>Risco Cardiovascular</h3>
-                        <p class="text-xs text-gray-400 mb-2">Relação Cintura-Quadril (RCQ)</p>
+                    <div class="glass-panel p-4 rounded-xl col-span-1 border-l-4" id="box-rcq">
+                        <h3 class="text-sm font-bold text-gray-400 uppercase mb-2"><i class="fa-solid fa-heart-pulse mr-2"></i>Risco Cardíaco</h3>
+                        <p class="text-xs text-gray-400 mb-2">Relação Cintura-Quadril</p>
                         <div class="text-3xl font-black mb-2" id="res-rcq-val">0.00</div>
                         <span class="badge w-full block text-center" id="res-rcq-class">Risco</span>
                         <div class="mt-4 text-xs text-gray-400 border-t border-gray-700 pt-2">
@@ -508,7 +467,6 @@
                     </div>
                 </div>
 
-                <!-- Inteligência Artificial / Recomendações -->
                 <div class="glass-panel p-5 rounded-xl border border-primary/50 bg-primary/5 mb-6 relative overflow-hidden">
                     <div class="absolute top-0 right-0 p-4 opacity-10">
                         <i class="fa-solid fa-robot text-6xl"></i>
@@ -517,11 +475,9 @@
                         <i class="fa-solid fa-lightbulb text-yellow-400 mr-2"></i> Análise e Recomendações
                     </h3>
                     <ul id="res-recomendacoes" class="list-disc pl-5 space-y-2 text-sm text-gray-200 relative z-10">
-                        <!-- Gerado via JS -->
                     </ul>
                 </div>
 
-                <!-- Rodapé Legal -->
                 <div class="mt-8 pt-4 border-t border-gray-700 text-center text-xs text-gray-500">
                     <p id="footer-legal">As recomendações clínicas e prescrições de treinamento são de exclusiva responsabilidade do Responsável Técnico.</p>
                     <p class="mt-1 font-bold text-gray-400" id="footer-rt">RT: -</p>
@@ -532,29 +488,39 @@
 
     </main>
 
-    <!-- Modal de Loading Overlay -->
     <div id="loading-overlay" class="fixed inset-0 bg-black/80 z-[100] hidden items-center justify-center backdrop-blur-sm transition-opacity">
         <div class="text-center">
             <i class="fa-solid fa-circle-notch fa-spin text-primary text-5xl mb-4"></i>
-            <p class="font-bold tracking-widest uppercase text-sm animate-pulse">Sincronizando Dados...</p>
+            <p class="font-bold tracking-widest uppercase text-sm animate-pulse">Carregando...</p>
         </div>
     </div>
 
-    <!-- SCRIPT PRINCIPAL (MÓDULOS INTEGRADOS) -->
+    <!-- SCRIPT PRINCIPAL -->
     <script type="module">
-        // Importando módulos do Firebase diretamente do CDN conforme regras do sistema Canvas
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInWithCustomToken, signInAnonymously, onAuthStateChanged, GoogleAuthProvider, signInWithPopup, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, doc, setDoc, getDoc, collection, query, onSnapshot, addDoc, serverTimestamp, orderBy } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc, getDoc, collection, onSnapshot, addDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // ==========================================
-        // 1. CONFIGURAÇÃO & ESTADO GLOBAL
-        // ==========================================
+        // SUA CONFIGURAÇÃO OFICIAL DO FIREBASE (INSERIDA AQUI)
+        const firebaseConfig = {
+            apiKey: "AIzaSyA9icSOYHPq-5p-GJaFmKZ02DMMFpohk7g",
+            authDomain: "powfit-med-s.firebaseapp.com",
+            projectId: "powfit-med-s",
+            storageBucket: "powfit-med-s.firebasestorage.app",
+            messagingSenderId: "878219813171",
+            appId: "1:878219813171:web:8fb80b8e1192aff1d55e46"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        const provider = new GoogleAuthProvider();
+
         const state = {
             user: null,
             profile: null,
             assessments: [],
-            currentAppId: typeof __app_id !== 'undefined' ? __app_id : 'powfit-meds-v1',
+            appId: 'powfit-meds', // Identificador da coleção principal
             chartInstance: null
         };
 
@@ -563,80 +529,21 @@
             loading: document.getElementById('loading-overlay'),
             btnLogin: document.getElementById('btn-login'),
             loginStatus: document.getElementById('login-status'),
-            navActions: document.getElementById('navActions'),
-            
-            // Formulários
             formProfile: document.getElementById('form-profile'),
             formAssessment: document.getElementById('form-assessment'),
-            
-            // Perfil
-            profTipo: document.getElementById('prof-tipo'),
-            crefContainer: document.getElementById('cref-container'),
-            profCref: document.getElementById('prof-cref'),
-            
-            // Form Avaliação
             protocoloDobras: document.getElementById('protocolo-dobras'),
             containerDobras: document.getElementById('container-dobras')
         };
 
-        // ==========================================
-        // 2. FIREBASE INICIALIZAÇÃO (Padrão Canvas Estrito)
-        // ==========================================
-        
-        // Tenta pegar a config injetada pelo ambiente, ou usa um mock para rodar offline puramente visual
-        let firebaseConfig = {};
-        try {
-            if (typeof __firebase_config !== 'undefined') {
-                firebaseConfig = JSON.parse(__firebase_config);
-            } else {
-                // Fallback para uso local/teste caso o usuário abra o HTML direto
-                console.warn("Executando sem __firebase_config real. Modos restritos podem falhar.");
-                firebaseConfig = {
-                    apiKey: "fake-key", projectId: "demo-project", appId: "1:123"
-                };
-            }
-        } catch(e) { console.error("Erro na config do Firebase", e); }
-
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
-
-        // Função de Inicialização de Auth (Obrigatória antes de queries)
-        const initAuth = async (forceGoogle = false) => {
-            ui.showLoading(true);
-            try {
-                if (forceGoogle) {
-                    const provider = new GoogleAuthProvider();
-                    await signInWithPopup(auth, provider);
-                } else {
-                    // Fluxo padrão do Canvas
-                    if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-                        await signInWithCustomToken(auth, __initial_auth_token);
-                    } else {
-                        await signInAnonymously(auth);
-                    }
-                }
-            } catch (error) {
-                console.error("Erro na Autenticação:", error);
-                DOM.loginStatus.innerText = "Erro ao conectar. Executando em modo local.";
-                DOM.loginStatus.classList.add('text-red-500');
-            } finally {
-                ui.showLoading(false);
-            }
-        };
-
-        // ==========================================
-        // 3. UI & NAVEGAÇÃO
-        // ==========================================
         const ui = {
-            showScreen: (screenId) => {
+            showScreen: (id) => {
                 DOM.screens.forEach(s => s.classList.remove('active'));
-                document.getElementById(screenId).classList.add('active');
+                document.getElementById(id).classList.add('active');
                 window.scrollTo(0,0);
             },
-            navigateTo: (screenId) => {
-                ui.showScreen(screenId);
-                if(screenId === 'screen-form') formHandlers.renderDobrasInputs();
+            navigateTo: (id) => {
+                ui.showScreen(id);
+                if(id === 'screen-form') formHandlers.renderDobrasInputs();
             },
             showLoading: (show) => {
                 if(show) {
@@ -660,40 +567,32 @@
                         </div>
                         <button onclick="actions.logout()" class="text-gray-400 hover:text-red-400 ml-2" title="Sair"><i class="fa-solid fa-right-from-bracket"></i></button>
                     `;
-                } else {
-                    nav.innerHTML = ``;
-                }
+                } else { nav.innerHTML = ''; }
             },
             updateDashboard: () => {
                 document.getElementById('dash-greeting').innerText = `Olá, ${state.profile?.nome?.split(' ')[0] || 'Profissional'}`;
-                
                 const list = document.getElementById('assessments-list');
+                
                 if (state.assessments.length === 0) {
-                    list.innerHTML = `<tr><td colspan="4" class="p-4 text-center text-gray-500"><i class="fa-regular fa-folder-open text-2xl block mb-2"></i>Nenhuma avaliação encontrada.</td></tr>`;
+                    list.innerHTML = `<tr><td colspan="4" class="p-4 text-center text-gray-500">Nenhuma avaliação encontrada.</td></tr>`;
                     document.getElementById('stat-total').innerText = '0';
                     document.getElementById('stat-month').innerText = '0';
                     return;
                 }
 
                 document.getElementById('stat-total').innerText = state.assessments.length;
-                
-                // Calculo do mês
                 const currentMonth = new Date().getMonth();
-                const monthCount = state.assessments.filter(a => new Date(a.data).getMonth() === currentMonth).length;
-                document.getElementById('stat-month').innerText = monthCount;
+                document.getElementById('stat-month').innerText = state.assessments.filter(a => new Date(a.data).getMonth() === currentMonth).length;
 
                 list.innerHTML = state.assessments.map(a => {
-                    const dateObj = new Date(a.data);
-                    const formattedDate = `${dateObj.getDate().toString().padStart(2,'0')}/${(dateObj.getMonth()+1).toString().padStart(2,'0')}/${dateObj.getFullYear()}`;
+                    const d = new Date(a.data);
                     return `
-                        <tr class="hover:bg-gray-700/50 transition">
-                            <td class="p-3 whitespace-nowrap text-gray-300">${formattedDate}</td>
-                            <td class="p-3 font-medium">${a.cliente.nome}</td>
-                            <td class="p-3"><span class="bg-gray-700 px-2 py-1 rounded text-xs">${a.anamnese.objetivo}</span></td>
+                        <tr class="hover:bg-gray-700/50 transition border-b border-gray-700">
+                            <td class="p-3 text-gray-300 text-xs sm:text-sm">${d.getDate().toString().padStart(2,'0')}/${(d.getMonth()+1).toString().padStart(2,'0')}/${d.getFullYear()}</td>
+                            <td class="p-3 font-medium text-xs sm:text-sm">${a.cliente.nome}</td>
+                            <td class="p-3 hidden sm:table-cell"><span class="bg-gray-700 px-2 py-1 rounded text-xs">${a.anamnese.objetivo}</span></td>
                             <td class="p-3 text-center">
-                                <button onclick="actions.viewResult('${a.id}')" class="text-primary hover:text-white bg-primary/10 hover:bg-primary/30 p-2 rounded transition">
-                                    <i class="fa-solid fa-eye"></i> Ver
-                                </button>
+                                <button onclick="actions.viewResult('${a.id}')" class="text-primary hover:text-white bg-primary/10 hover:bg-primary/30 px-3 py-1 rounded transition text-sm">Ver</button>
                             </td>
                         </tr>
                     `;
@@ -701,16 +600,11 @@
             }
         };
 
-        // ==========================================
-        // 4. LÓGICA DE DADOS & FIREBASE
-        // ==========================================
         const dbActions = {
             checkProfile: async (uid) => {
                 try {
-                    // REGRA 1 E 3: Path correto e usuário logado
-                    const docRef = doc(db, 'artifacts', state.currentAppId, 'users', uid, 'profile');
+                    const docRef = doc(db, 'artifacts', state.appId, 'users', uid, 'profile');
                     const docSnap = await getDoc(docRef);
-                    
                     if (docSnap.exists()) {
                         state.profile = docSnap.data();
                         ui.renderNavActions();
@@ -720,85 +614,46 @@
                         ui.showScreen('screen-profile');
                     }
                 } catch (error) {
-                    console.error("Erro ao checar perfil:", error);
-                    // Fallback para localStorage se Firebase falhar por permissões no ambiente
-                    const localProfile = localStorage.getItem('powfit_profile');
-                    if (localProfile) {
-                        state.profile = JSON.parse(localProfile);
-                        ui.renderNavActions();
-                        dbActions.listenAssessments(uid); // Tenta carregar do storage local
-                        ui.showScreen('screen-dashboard');
-                    } else {
-                        ui.showScreen('screen-profile');
-                    }
+                    console.error("Erro perfil:", error);
+                    alert("Erro ao ler dados do Firestore. Verifique as regras do banco de dados no Firebase.");
                 }
             },
             saveProfile: async (profileData) => {
                 ui.showLoading(true);
                 try {
-                    if (state.user) {
-                        const docRef = doc(db, 'artifacts', state.currentAppId, 'users', state.user.uid, 'profile');
-                        await setDoc(docRef, profileData);
-                    }
-                    localStorage.setItem('powfit_profile', JSON.stringify(profileData));
+                    const docRef = doc(db, 'artifacts', state.appId, 'users', state.user.uid, 'profile');
+                    await setDoc(docRef, profileData);
                     state.profile = profileData;
                     ui.renderNavActions();
-                    dbActions.listenAssessments(state.user?.uid || 'local');
+                    dbActions.listenAssessments(state.user.uid);
                     ui.showScreen('screen-dashboard');
                 } catch (error) {
-                    console.error("Erro ao salvar perfil:", error);
-                    alert("Aviso: Salvo apenas localmente devido a restrições do ambiente.");
+                    console.error("Erro salvar perfil:", error);
+                    alert("Falha ao salvar no banco. Verifique as permissões (Rules) do Firestore.");
                 } finally {
                     ui.showLoading(false);
                 }
             },
             listenAssessments: (uid) => {
-                if (uid && uid !== 'local') {
-                    // REGRA 2: Query simples
-                    const q = collection(db, 'artifacts', state.currentAppId, 'users', uid, 'assessments');
-                    onSnapshot(q, (snapshot) => {
-                        const assessments = [];
-                        snapshot.forEach((doc) => {
-                            assessments.push({ id: doc.id, ...doc.data() });
-                        });
-                        // Ordenar localmente (Regra 2)
-                        state.assessments = assessments.sort((a,b) => new Date(b.data) - new Date(a.data));
-                        ui.updateDashboard();
-                    }, (error) => {
-                        console.error("Erro listener avaliações:", error);
-                        dbActions.loadLocalAssessments();
-                    });
-                } else {
-                    dbActions.loadLocalAssessments();
-                }
-            },
-            loadLocalAssessments: () => {
-                const localData = localStorage.getItem('powfit_assessments');
-                state.assessments = localData ? JSON.parse(localData) : [];
-                ui.updateDashboard();
+                const q = collection(db, 'artifacts', state.appId, 'users', uid, 'assessments');
+                onSnapshot(q, (snapshot) => {
+                    const assessments = [];
+                    snapshot.forEach((doc) => assessments.push({ id: doc.id, ...doc.data() }));
+                    state.assessments = assessments.sort((a,b) => new Date(b.data) - new Date(a.data));
+                    ui.updateDashboard();
+                }, (error) => {
+                    console.error("Erro listener avaliações:", error);
+                });
             },
             saveAssessment: async (data) => {
                 ui.showLoading(true);
                 try {
-                    const assessmentData = {
-                        ...data,
-                        data: new Date().toISOString()
-                    };
-
-                    if (state.user) {
-                        const colRef = collection(db, 'artifacts', state.currentAppId, 'users', state.user.uid, 'assessments');
-                        const docRef = await addDoc(colRef, assessmentData);
-                        assessmentData.id = docRef.id;
-                    } else {
-                        assessmentData.id = 'loc_' + Date.now();
-                        const local = JSON.parse(localStorage.getItem('powfit_assessments') || '[]');
-                        local.unshift(assessmentData);
-                        localStorage.setItem('powfit_assessments', JSON.stringify(local));
-                        state.assessments = local;
-                    }
-                    
+                    data.data = new Date().toISOString();
+                    const colRef = collection(db, 'artifacts', state.appId, 'users', state.user.uid, 'assessments');
+                    const docRef = await addDoc(colRef, data);
+                    data.id = docRef.id;
                     ui.showLoading(false);
-                    actions.viewResult(assessmentData.id, assessmentData); // Mostra o resultado recém calculado
+                    actions.viewResult(data.id, data);
                     DOM.formAssessment.reset();
                 } catch (error) {
                     console.error("Erro ao salvar avaliação:", error);
@@ -807,7 +662,7 @@
             }
         };
 
-        // Monitor de Autenticação (Regra 3: sempre após Init)
+        // Escuta o Status da Autenticação do Firebase
         onAuthStateChanged(auth, (user) => {
             if (user) {
                 state.user = user;
@@ -819,212 +674,71 @@
             }
         });
 
-        // ==========================================
-        // 5. LÓGICA DE FORMULÁRIOS E CÁLCULOS
-        // ==========================================
-        const calcConfig = {
-            pollock3M: ['peito', 'abdomen', 'coxa'],
-            pollock3F: ['triceps', 'suprailiaca', 'coxa'],
-            pollock7: ['peito', 'axilar', 'triceps', 'subescapular', 'abdomen', 'suprailiaca', 'coxa']
-        };
-
-        const formHandlers = {
-            renderDobrasInputs: () => {
-                const protocolo = DOM.protocoloDobras.value;
-                const sexo = document.getElementById('av-sexo').value;
-                const container = DOM.containerDobras;
-                container.innerHTML = '';
-
-                if (protocolo === 'nenhum') {
-                    container.innerHTML = '<p class="col-span-4 text-sm text-gray-400 italic">Cálculo de percentual de gordura desativado.</p>';
-                    return;
-                }
-
-                let fields = [];
-                if (protocolo === 'pollock7') {
-                    fields = [
-                        {id: 'dc-peito', label: 'Peitoral'}, {id: 'dc-axilar', label: 'Axilar Média'},
-                        {id: 'dc-triceps', label: 'Tríceps'}, {id: 'dc-sub', label: 'Subescapular'},
-                        {id: 'dc-abdomen', label: 'Abdominal'}, {id: 'dc-supra', label: 'Suprailíaca'},
-                        {id: 'dc-coxa', label: 'Coxa'}
-                    ];
-                } else if (protocolo === 'pollock3') {
-                    if (sexo === 'M') {
-                        fields = [{id: 'dc-peito', label: 'Peitoral'}, {id: 'dc-abdomen', label: 'Abdominal'}, {id: 'dc-coxa', label: 'Coxa'}];
-                    } else {
-                        fields = [{id: 'dc-triceps', label: 'Tríceps'}, {id: 'dc-supra', label: 'Suprailíaca'}, {id: 'dc-coxa', label: 'Coxa'}];
-                    }
-                }
-
-                fields.forEach(f => {
-                    container.innerHTML += `
-                        <div>
-                            <label class="block text-xs mb-1 font-medium text-gray-300">${f.label}</label>
-                            <input type="number" step="0.1" id="${f.id}" required class="w-full bg-darkInput border border-green-700 rounded p-2 text-sm text-white outline-none focus:border-green-400">
-                        </div>
-                    `;
-                });
-            }
-        };
-
-        const calculators = {
-            getIMC: (peso, alturaCm) => {
-                const altM = alturaCm / 100;
-                const imc = peso / (altM * altM);
-                let classe = ''; let color = '';
-                if (imc < 18.5) { classe = 'Baixo Peso'; color = 'yellow'; }
-                else if (imc < 24.9) { classe = 'Normal'; color = 'green'; }
-                else if (imc < 29.9) { classe = 'Sobrepeso'; color = 'yellow'; }
-                else { classe = 'Obesidade'; color = 'red'; }
-                return { value: imc.toFixed(1), classe, color };
-            },
-            getRCQ: (cintura, quadril, sexo) => {
-                const rcq = cintura / quadril;
-                let classe = 'Baixo'; let color = 'green';
-                if (sexo === 'M') {
-                    if (rcq >= 0.90 && rcq < 0.95) { classe = 'Moderado'; color = 'yellow'; }
-                    else if (rcq >= 0.95) { classe = 'Alto'; color = 'red'; }
-                } else {
-                    if (rcq >= 0.80 && rcq < 0.85) { classe = 'Moderado'; color = 'yellow'; }
-                    else if (rcq >= 0.85) { classe = 'Alto'; color = 'red'; }
-                }
-                return { value: rcq.toFixed(2), classe, color };
-            },
-            getBodyFat: (protocolo, sexo, idade, dataObj) => {
-                if(protocolo === 'nenhum') return null;
-                
-                let soma = 0;
-                let d = 0;
-                
-                if (protocolo === 'pollock7') {
-                    soma = ['peito', 'axilar', 'triceps', 'sub', 'abdomen', 'supra', 'coxa']
-                           .reduce((acc, val) => acc + parseFloat(dataObj[`dc-${val}`] || 0), 0);
-                    
-                    if (sexo === 'M') d = 1.112 - (0.00043499 * soma) + (0.00000055 * Math.pow(soma, 2)) - (0.00028826 * idade);
-                    else d = 1.097 - (0.00046971 * soma) + (0.00000056 * Math.pow(soma, 2)) - (0.00012828 * idade);
-                } 
-                else if (protocolo === 'pollock3') {
-                    if (sexo === 'M') {
-                        soma = parseFloat(dataObj['dc-peito']||0) + parseFloat(dataObj['dc-abdomen']||0) + parseFloat(dataObj['dc-coxa']||0);
-                        d = 1.109380 - (0.0008267 * soma) + (0.0000016 * Math.pow(soma, 2)) - (0.0002574 * idade);
-                    } else {
-                        soma = parseFloat(dataObj['dc-triceps']||0) + parseFloat(dataObj['dc-supra']||0) + parseFloat(dataObj['dc-coxa']||0);
-                        d = 1.0994921 - (0.0009929 * soma) + (0.0000023 * Math.pow(soma, 2)) - (0.0001392 * idade);
-                    }
-                }
-
-                const fatPercent = ((4.95 / d) - 4.5) * 100;
-                
-                // Classificação simplificada de gordura
-                let classe = 'Normal'; let color = 'green';
-                if (sexo === 'M') {
-                    if (fatPercent < 8) { classe = 'Essencial/Atleta'; color = 'blue'; }
-                    else if (fatPercent > 20) { classe = 'Acima da Média'; color = 'yellow'; }
-                    if (fatPercent > 25) { classe = 'Obesidade'; color = 'red'; }
-                } else {
-                    if (fatPercent < 15) { classe = 'Essencial/Atleta'; color = 'blue'; }
-                    else if (fatPercent > 30) { classe = 'Acima da Média'; color = 'yellow'; }
-                    if (fatPercent > 35) { classe = 'Obesidade'; color = 'red'; }
-                }
-
-                return { value: fatPercent.toFixed(1), classe, color, protocoloName: protocolo === 'pollock7' ? 'Pollock 7 Dobras' : 'Pollock 3 Dobras' };
-            },
-            generateInsights: (imc, rcq, bf, obj) => {
-                const insights = [];
-                if (obj === 'Emagrecimento') {
-                    insights.push("O foco primário do treinamento deve ser o déficit calórico aliado ao treino de força para manutenção de massa magra.");
-                } else if (obj === 'Hipertrofia') {
-                    insights.push("Focar em superávit calórico e progressão de carga no treinamento resistido.");
-                }
-
-                if (rcq.color === 'red') {
-                    insights.push("<span class='text-red-400 font-bold'>Atenção:</span> O Risco Cardiovascular está elevado. Priorizar exercícios aeróbicos e controle dietético da gordura visceral.");
-                }
-
-                if (bf && bf.color === 'red') {
-                    insights.push("O percentual de gordura indica obesidade. Protocolos de emagrecimento estruturado e avaliação médica são recomendados.");
-                } else if (bf && bf.color === 'blue') {
-                    insights.push("Excelente condicionamento percentual. Foco em manutenção e performance esportiva.");
-                }
-
-                if(insights.length === 0) insights.push("Parâmetros dentro da normalidade. Manter rotina de exercícios regulares e alimentação balanceada.");
-
-                return insights;
-            }
-        };
-
-        // ==========================================
-        // 6. CONTROLADORES DE EVENTOS (Actions)
-        // ==========================================
+        // AÇÕES DA INTERFACE
         const actions = {
-            login: () => initAuth(true), // Tenta forçar Google Auth
+            login: async () => {
+                ui.showLoading(true);
+                try {
+                    // Abre o Popup de Login do Google Oficialmente
+                    await signInWithPopup(auth, provider);
+                } catch (error) {
+                    console.error("Erro Login:", error);
+                    DOM.loginStatus.innerText = "Erro: " + error.message;
+                    DOM.loginStatus.classList.add('text-red-500');
+                    ui.showLoading(false);
+                }
+            },
             logout: () => {
-                signOut(auth).then(() => {
-                    localStorage.removeItem('powfit_profile');
-                    localStorage.removeItem('powfit_assessments');
-                });
+                ui.showLoading(true);
+                signOut(auth).then(() => ui.showLoading(false));
             },
             viewResult: (id, rawData = null) => {
                 const data = rawData || state.assessments.find(a => a.id === id);
                 if(!data) return;
 
-                // Preencher Header Legal
+                // Preencher tela (Mesma lógica anterior, resumida para a exibição)
                 document.getElementById('res-prof-nome').innerText = state.profile.nome;
                 document.getElementById('footer-rt').innerText = `RT: ${state.profile.nome} ${state.profile.cref ? '- CREF: ' + state.profile.cref : ''}`;
                 document.getElementById('res-prof-cref').innerText = state.profile.cref ? `CREF: ${state.profile.cref}` : 'Treinador Esportivo';
                 
                 const d = new Date(data.data);
                 document.getElementById('res-data').innerText = `${d.getDate().toString().padStart(2,'0')}/${(d.getMonth()+1).toString().padStart(2,'0')}/${d.getFullYear()}`;
-
-                // Preencher Cliente
+                
                 document.getElementById('res-cli-nome').innerText = data.cliente.nome;
                 document.getElementById('res-cli-idade').innerText = data.cliente.idade;
                 document.getElementById('res-cli-sexo').innerText = data.cliente.sexo === 'M' ? 'Masculino' : 'Feminino';
                 document.getElementById('res-cli-objetivo').innerText = data.anamnese.objetivo;
 
-                // Variáveis Base
                 const peso = parseFloat(data.cliente.peso);
                 document.getElementById('res-peso').innerText = peso;
                 document.getElementById('res-altura').innerText = data.cliente.altura;
 
-                // Cálculos
+                // Call Calculators
                 const imc = calculators.getIMC(peso, data.cliente.altura);
                 const rcq = calculators.getRCQ(data.perimetros.cintura, data.perimetros.quadril, data.cliente.sexo);
                 const bf = calculators.getBodyFat(data.dobras.protocolo, data.cliente.sexo, data.cliente.idade, data.dobras);
 
-                // Renderizar IMC
+                // Render IMC
                 document.getElementById('res-imc-val').innerText = imc.value;
-                const elImcClass = document.getElementById('res-imc-class');
-                elImcClass.innerText = imc.classe;
-                elImcClass.className = `badge badge-${imc.color}`;
-                document.getElementById('box-imc').style.borderColor = getComputedStyle(document.documentElement).getPropertyValue(`--tw-colors-${imc.color}-500`) || (imc.color==='green'?'#10b981':imc.color==='yellow'?'#f59e0b':'#ef4444');
+                document.getElementById('res-imc-class').innerText = imc.classe;
+                document.getElementById('res-imc-class').className = `badge badge-${imc.color}`;
 
-                // Renderizar RCQ
+                // Render RCQ
                 document.getElementById('res-rcq-val').innerText = rcq.value;
                 document.getElementById('res-cintura').innerText = data.perimetros.cintura;
                 document.getElementById('res-quadril').innerText = data.perimetros.quadril;
-                const elRcqClass = document.getElementById('res-rcq-class');
-                elRcqClass.innerText = `Risco: ${rcq.classe}`;
-                elRcqClass.className = `badge badge-${rcq.color} mt-2 w-full block text-center`;
-                document.getElementById('box-rcq').style.borderColor = imc.color==='green'?'#10b981':imc.color==='yellow'?'#f59e0b':'#ef4444';
+                document.getElementById('res-rcq-class').innerText = `Risco: ${rcq.classe}`;
+                document.getElementById('res-rcq-class').className = `badge badge-${rcq.color} mt-2 w-full block text-center`;
 
-                // Renderizar Gordura e Gráfico
+                // Render BF & Chart
                 let valGorda = 0; let valMagra = peso;
-                
                 if (bf) {
                     document.getElementById('res-bf-val').innerText = bf.value;
-                    const elBfClass = document.getElementById('res-bf-class');
-                    elBfClass.innerText = bf.classe;
-                    elBfClass.className = `badge badge-${bf.color}`;
+                    document.getElementById('res-bf-class').innerText = bf.classe;
+                    document.getElementById('res-bf-class').className = `badge badge-${bf.color}`;
                     document.getElementById('res-protocolo-nome').innerText = bf.protocoloName;
-                    
                     valGorda = peso * (parseFloat(bf.value) / 100);
                     valMagra = peso - valGorda;
-                } else {
-                    document.getElementById('res-bf-val').innerText = '--';
-                    document.getElementById('res-bf-class').innerText = 'Não Avaliado';
-                    document.getElementById('res-bf-class').className = 'badge badge-gray';
-                    document.getElementById('res-protocolo-nome').innerText = '-';
                 }
 
                 document.getElementById('res-massamagra').innerText = valMagra.toFixed(1) + ' kg';
@@ -1032,156 +746,99 @@
                 document.getElementById('bar-magra').style.width = `${(valMagra/peso)*100}%`;
                 document.getElementById('bar-gorda').style.width = `${(valGorda/peso)*100}%`;
 
-                // Render Chart.js
                 if(state.chartInstance) state.chartInstance.destroy();
-                const ctx = document.getElementById('compChart').getContext('2d');
-                Chart.defaults.color = '#9ca3af';
-                state.chartInstance = new Chart(ctx, {
+                state.chartInstance = new Chart(document.getElementById('compChart').getContext('2d'), {
                     type: 'doughnut',
-                    data: {
-                        labels: ['Massa Magra', 'Massa Gorda'],
-                        datasets: [{
-                            data: [valMagra.toFixed(1), valGorda.toFixed(1)],
-                            backgroundColor: ['#3b82f6', '#f59e0b'],
-                            borderWidth: 0,
-                            hoverOffset: 4
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        cutout: '70%',
-                        plugins: {
-                            legend: { display: false }
-                        }
-                    }
+                    data: { labels: ['Massa Magra', 'Massa Gorda'], datasets: [{ data: [valMagra.toFixed(1), valGorda.toFixed(1)], backgroundColor: ['#3b82f6', '#f59e0b'], borderWidth: 0 }] },
+                    options: { responsive: true, maintainAspectRatio: false, cutout: '70%', plugins: { legend: { display: false } } }
                 });
 
-                // Insights
-                const insights = calculators.generateInsights(imc, rcq, bf, data.anamnese.objetivo);
-                document.getElementById('res-recomendacoes').innerHTML = insights.map(i => `<li>${i}</li>`).join('');
-
+                document.getElementById('res-recomendacoes').innerHTML = calculators.generateInsights(imc, rcq, bf, data.anamnese.objetivo).map(i => `<li>${i}</li>`).join('');
                 ui.showScreen('screen-results');
             },
             generatePDF: () => {
                 const element = document.getElementById('pdf-content');
-                // Adiciona classe para forçar cores light na impressão
                 document.body.classList.remove('dark');
-                
-                const opt = {
-                    margin:       0.5,
-                    filename:     `Avaliacao_${document.getElementById('res-cli-nome').innerText.replace(/\s+/g, '_')}.pdf`,
-                    image:        { type: 'jpeg', quality: 0.98 },
-                    html2canvas:  { scale: 2, useCORS: true, logging: false },
-                    jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
-                };
-
+                const opt = { margin: 0.5, filename: `Avaliacao_${document.getElementById('res-cli-nome').innerText.replace(/\s+/g, '_')}.pdf`, image: { type: 'jpeg', quality: 0.98 }, html2canvas: { scale: 2 }, jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' } };
                 ui.showLoading(true);
                 html2pdf().set(opt).from(element).save().then(() => {
-                    document.body.classList.add('dark'); // Volta ao tema dark
+                    document.body.classList.add('dark');
                     ui.showLoading(false);
                 });
             }
         };
 
-        // Tornar 'actions' e 'ui' globais para os botões do HTML
+        const formHandlers = {
+            renderDobrasInputs: () => {
+                const p = DOM.protocoloDobras.value;
+                const s = document.getElementById('av-sexo').value;
+                DOM.containerDobras.innerHTML = '';
+                if (p === 'nenhum') { DOM.containerDobras.innerHTML = '<p class="col-span-4 text-gray-400">Cálculo desativado.</p>'; return; }
+                let fields = p === 'pollock7' ? [{id: 'dc-peito', label: 'Peitoral'}, {id: 'dc-axilar', label: 'Axilar Média'}, {id: 'dc-triceps', label: 'Tríceps'}, {id: 'dc-sub', label: 'Subescapular'}, {id: 'dc-abdomen', label: 'Abdominal'}, {id: 'dc-supra', label: 'Suprailíaca'}, {id: 'dc-coxa', label: 'Coxa'}] : (s === 'M' ? [{id: 'dc-peito', label: 'Peitoral'}, {id: 'dc-abdomen', label: 'Abdominal'}, {id: 'dc-coxa', label: 'Coxa'}] : [{id: 'dc-triceps', label: 'Tríceps'}, {id: 'dc-supra', label: 'Suprailíaca'}, {id: 'dc-coxa', label: 'Coxa'}]);
+                fields.forEach(f => DOM.containerDobras.innerHTML += `<div><label class="block text-xs mb-1 text-gray-300">${f.label}</label><input type="number" step="0.1" id="${f.id}" required class="w-full bg-darkInput border border-green-700 rounded p-2 text-white outline-none"></div>`);
+            }
+        };
+
+        const calculators = {
+            getIMC: (p, a) => { const i = p/((a/100)*(a/100)); return { value: i.toFixed(1), classe: i<18.5?'Baixo Peso':i<24.9?'Normal':i<29.9?'Sobrepeso':'Obesidade', color: i<18.5?'yellow':i<24.9?'green':i<29.9?'yellow':'red' }; },
+            getRCQ: (c, q, s) => { const r = c/q; return { value: r.toFixed(2), classe: s==='M'?(r<0.90?'Baixo':r<0.95?'Moderado':'Alto'):(r<0.80?'Baixo':r<0.85?'Moderado':'Alto'), color: s==='M'?(r<0.90?'green':r<0.95?'yellow':'red'):(r<0.80?'green':r<0.85?'yellow':'red') }; },
+            getBodyFat: (p, s, i, d) => {
+                if(p==='nenhum') return null;
+                let sm=0, dt=0;
+                if(p==='pollock7') { sm = ['peito','axilar','triceps','sub','abdomen','supra','coxa'].reduce((a,v)=>a+parseFloat(d[`dc-${v}`]||0),0); dt = s==='M'?1.112-(0.00043499*sm)+(0.00000055*(sm**2))-(0.00028826*i):1.097-(0.00046971*sm)+(0.00000056*(sm**2))-(0.00012828*i); }
+                else { if(s==='M') { sm=parseFloat(d['dc-peito']||0)+parseFloat(d['dc-abdomen']||0)+parseFloat(d['dc-coxa']||0); dt=1.109380-(0.0008267*sm)+(0.0000016*(sm**2))-(0.0002574*i); } else { sm=parseFloat(d['dc-triceps']||0)+parseFloat(d['dc-supra']||0)+parseFloat(d['dc-coxa']||0); dt=1.0994921-(0.0009929*sm)+(0.0000023*(sm**2))-(0.0001392*i); } }
+                const f = ((4.95/dt)-4.5)*100;
+                let c = 'Normal', cl = 'green';
+                if(s==='M') { if(f<8){c='Atleta';cl='blue'}else if(f>20){c='Acima';cl='yellow'} if(f>25){c='Obesidade';cl='red'} } else { if(f<15){c='Atleta';cl='blue'}else if(f>30){c='Acima';cl='yellow'} if(f>35){c='Obesidade';cl='red'} }
+                return { value: f.toFixed(1), classe: c, color: cl, protocoloName: p==='pollock7'?'Pollock 7':'Pollock 3' };
+            },
+            generateInsights: (i, r, b, o) => {
+                const l = [];
+                if(o==='Emagrecimento') l.push("Foco primário: Déficit calórico com treino de força para manutenção de massa magra.");
+                else if(o==='Hipertrofia') l.push("Foco primário: Superávit calórico e progressão de carga no treinamento resistido.");
+                if(r.color==='red') l.push("<span class='text-red-400 font-bold'>Atenção:</span> Risco Cardiovascular elevado. Priorizar aeróbicos e controle da gordura visceral.");
+                if(b&&b.color==='red') l.push("O percentual de gordura indica obesidade. Protocolos de emagrecimento são recomendados.");
+                if(l.length===0) l.push("Parâmetros dentro da normalidade. Manter rotina de exercícios regulares.");
+                return l;
+            }
+        };
+
         window.actions = actions;
         window.ui = ui;
 
-        // ==========================================
-        // 7. EVENT LISTENERS
-        // ==========================================
         DOM.btnLogin.addEventListener('click', actions.login);
-
-        DOM.profTipo.addEventListener('change', (e) => {
-            if (e.target.value === 'educador') {
-                DOM.crefContainer.classList.remove('hidden');
-                DOM.profCref.setAttribute('required', 'true');
-            } else {
-                DOM.crefContainer.classList.add('hidden');
-                DOM.profCref.removeAttribute('required');
-            }
+        document.getElementById('prof-tipo').addEventListener('change', (e) => {
+            if (e.target.value === 'educador') { document.getElementById('cref-container').classList.remove('hidden'); document.getElementById('prof-cref').setAttribute('required', 'true'); }
+            else { document.getElementById('cref-container').classList.add('hidden'); document.getElementById('prof-cref').removeAttribute('required'); }
         });
-
         DOM.formProfile.addEventListener('submit', (e) => {
             e.preventDefault();
-            const profile = {
-                nome: document.getElementById('prof-nome').value,
-                tipo: document.getElementById('prof-tipo').value,
-                uf: document.getElementById('prof-uf').value,
-                cref: document.getElementById('prof-tipo').value === 'educador' ? document.getElementById('prof-cref').value : null,
-                updatedAt: new Date().toISOString()
-            };
-            dbActions.saveProfile(profile);
+            dbActions.saveProfile({
+                nome: document.getElementById('prof-nome').value, tipo: document.getElementById('prof-tipo').value, uf: document.getElementById('prof-uf').value,
+                cref: document.getElementById('prof-tipo').value === 'educador' ? document.getElementById('prof-cref').value : null
+            });
         });
-
         DOM.protocoloDobras.addEventListener('change', formHandlers.renderDobrasInputs);
-        DOM.avSexo = document.getElementById('av-sexo');
-        DOM.avSexo.addEventListener('change', formHandlers.renderDobrasInputs);
+        document.getElementById('av-sexo').addEventListener('change', formHandlers.renderDobrasInputs);
 
         DOM.formAssessment.addEventListener('submit', (e) => {
             e.preventDefault();
-            
-            // Coletar dados do form
-            const assessmentData = {
-                cliente: {
-                    nome: document.getElementById('av-nome').value,
-                    idade: document.getElementById('av-idade').value,
-                    sexo: document.getElementById('av-sexo').value,
-                    peso: document.getElementById('av-peso').value,
-                    altura: document.getElementById('av-altura').value,
-                },
-                anamnese: {
-                    objetivo: document.getElementById('av-objetivo').value,
-                    atividade: document.getElementById('av-atividade').value,
-                    lesoes: document.getElementById('av-lesoes').value,
-                    meds: document.getElementById('av-meds').value,
-                    sono: document.getElementById('av-sono').value,
-                },
-                perimetros: {
-                    cintura: document.getElementById('per-cintura').value,
-                    quadril: document.getElementById('per-quadril').value,
-                    pescoco: document.getElementById('per-pescoco').value || null,
-                    ombros: document.getElementById('per-ombros').value || null,
-                    torax: document.getElementById('per-torax').value || null,
-                    abd: document.getElementById('per-abd').value || null,
-                    bracoRelD: document.getElementById('per-braco-rel-d').value || null,
-                    bracoConD: document.getElementById('per-braco-con-d').value || null,
-                    coxaD: document.getElementById('per-coxa-d').value || null,
-                    pantD: document.getElementById('per-pant-d').value || null,
-                },
-                dobras: {
-                    protocolo: document.getElementById('protocolo-dobras').value,
-                }
+            const data = {
+                cliente: { nome: document.getElementById('av-nome').value, idade: document.getElementById('av-idade').value, sexo: document.getElementById('av-sexo').value, peso: document.getElementById('av-peso').value, altura: document.getElementById('av-altura').value },
+                anamnese: { objetivo: document.getElementById('av-objetivo').value, atividade: document.getElementById('av-atividade').value, lesoes: document.getElementById('av-lesoes').value, meds: document.getElementById('av-meds').value, sono: document.getElementById('av-sono').value },
+                perimetros: { cintura: document.getElementById('per-cintura').value, quadril: document.getElementById('per-quadril').value, pescoco: document.getElementById('per-pescoco').value||null, ombros: document.getElementById('per-ombros').value||null, torax: document.getElementById('per-torax').value||null, abd: document.getElementById('per-abd').value||null, bracoRelD: document.getElementById('per-braco-rel-d').value||null, bracoConD: document.getElementById('per-braco-con-d').value||null, coxaD: document.getElementById('per-coxa-d').value||null, pantD: document.getElementById('per-pant-d').value||null },
+                dobras: { protocolo: document.getElementById('protocolo-dobras').value }
             };
-
-            // Coletar dobras dinâmicas
-            if(assessmentData.dobras.protocolo !== 'nenhum') {
-                const inputs = DOM.containerDobras.querySelectorAll('input');
-                inputs.forEach(input => {
-                    assessmentData.dobras[input.id] = input.value;
-                });
+            if(data.dobras.protocolo !== 'nenhum') {
+                DOM.containerDobras.querySelectorAll('input').forEach(i => data.dobras[i.id] = i.value);
             }
-
-            dbActions.saveAssessment(assessmentData);
+            dbActions.saveAssessment(data);
         });
 
-        // Search simple filter
         document.getElementById('search-client').addEventListener('keyup', (e) => {
-            const term = e.target.value.toLowerCase();
-            const rows = document.getElementById('assessments-list').querySelectorAll('tr');
-            rows.forEach(row => {
-                if(row.innerText.toLowerCase().includes(term)) row.style.display = '';
-                else row.style.display = 'none';
-            });
+            const t = e.target.value.toLowerCase();
+            document.getElementById('assessments-list').querySelectorAll('tr').forEach(r => r.style.display = r.innerText.toLowerCase().includes(t) ? '' : 'none');
         });
-
-        // Init
-        // Dispara o login anônimo automático se estiver rodando no Canvas para habilitar persistência
-        if(typeof __initial_auth_token !== 'undefined') {
-             initAuth(false);
-        }
-
     </script>
 </body>
 </html>
