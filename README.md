@@ -255,7 +255,7 @@
             <button class="flex-1 py-3 px-2 text-sm font-bold rounded-lg text-gray-400 hover:text-white eval-tab-btn transition" data-target="tab-perimetros">Medidas</button>
         </div>
 
-        <!-- Form -->
+        <!-- Form: Tudo opcional -->
         <form id="form-evaluation" class="bg-dark-800 p-6 pb-36 rounded-2xl border border-gray-700 shadow-xl relative mb-24">
             
             <!-- ABA 1: PERFIL -->
@@ -304,6 +304,7 @@
                         <option value="Emagrecimento">Emagrecimento</option>
                         <option value="Hipertrofia">Hipertrofia</option>
                         <option value="Saúde/Qualidade de Vida">Saúde / Qualidade de Vida</option>
+                        <option value="">Não informado</option>
                     </select>
                 </div>
                 <div>
@@ -313,6 +314,7 @@
                         <option value="Levemente Ativo">Levemente Ativo (1-2x/sem)</option>
                         <option value="Moderadamente Ativo">Moderadamente Ativo (3-4x/sem)</option>
                         <option value="Muito Ativo">Muito Ativo (5+x/sem)</option>
+                        <option value="">Não informado</option>
                     </select>
                 </div>
                 <div>
@@ -329,6 +331,7 @@
                         <option value="Boa">Boa (7-8h reparadoras)</option>
                         <option value="Regular">Regular (Despertares)</option>
                         <option value="Ruim">Ruim (Insônia, <5h)</option>
+                        <option value="">Não informado</option>
                     </select>
                 </div>
             </div>
@@ -353,7 +356,7 @@
                     <div><label class="label-base">Abdómen</label><input type="number" step="0.1" id="per-abd" class="input-base"></div>
                     <div><label class="label-base">Quadril</label><input type="number" step="0.1" id="per-qua" class="input-base"></div>
                     <div><label class="label-base">Pescoço</label><input type="number" step="0.1" id="per-pes" class="input-base"></div>
-                    <div><label class="label-base text-gray-500">Tórax (Opcional)</label><input type="number" step="0.1" id="per-tor" class="input-base"></div>
+                    <div><label class="label-base text-gray-500">Tórax</label><input type="number" step="0.1" id="per-tor" class="input-base"></div>
                 </div>
 
                 <h3 class="text-sm font-bold text-gray-400 border-b border-gray-700 pb-2 mb-6 mt-10 uppercase tracking-wider">Membros Superiores (cm)</h3>
@@ -751,11 +754,11 @@
             document.getElementById('eval-protocolo').value = data.protocolo || 'pollock3';
 
             if(data.anamnese) {
-                document.getElementById('ana-objetivo').value = data.anamnese.objetivo || 'Emagrecimento';
-                document.getElementById('ana-atividade').value = data.anamnese.atividade || 'Sedentário';
+                document.getElementById('ana-objetivo').value = data.anamnese.objetivo || '';
+                document.getElementById('ana-atividade').value = data.anamnese.atividade || '';
                 document.getElementById('ana-lesoes').value = data.anamnese.lesoes || '';
                 document.getElementById('ana-meds').value = data.anamnese.meds || '';
-                document.getElementById('ana-sono').value = data.anamnese.sono || 'Boa';
+                document.getElementById('ana-sono').value = data.anamnese.sono || '';
             }
             
             dobrasList.forEach(d => {
