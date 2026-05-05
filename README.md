@@ -48,7 +48,7 @@
         }
         .neon-button:hover { background: #2563EB; }
         
-        /* Inputs Base - MAIS ESPAÇOSOS AGORA (py-4 e rounded-xl) */
+        /* Inputs Base - ESPAÇOSOS */
         .input-base {
             @apply w-full bg-dark-900 border border-gray-700 rounded-xl px-4 py-4 text-white focus:outline-none focus:border-neon-blue focus:ring-1 focus:ring-neon-blue transition-colors;
         }
@@ -101,7 +101,7 @@
         <p class="text-neon-blue font-semibold animate-pulse">Processando...</p>
     </div>
 
-    <!-- MODAL DE EXCLUSÃO (Custom UI sem alert/confirm) -->
+    <!-- MODAL DE EXCLUSÃO -->
     <div id="modal-delete" class="fixed inset-0 bg-black/80 z-[60] flex items-center justify-center hidden px-4 backdrop-blur-sm transition-opacity">
         <div class="bg-dark-800 border border-gray-700 p-6 rounded-2xl w-full max-w-sm shadow-2xl text-center">
             <div class="mx-auto w-12 h-12 bg-red-500/20 text-red-500 flex items-center justify-center rounded-full mb-4">
@@ -227,7 +227,7 @@
             <button class="flex-1 py-3 px-2 text-sm font-bold rounded-lg text-gray-400 hover:text-white eval-tab-btn transition" data-target="tab-perimetros">Medidas</button>
         </div>
 
-        <!-- Form: Mais espaçoso (gap-6/8), sem required -->
+        <!-- Form: Mais espaçoso, sem required -->
         <form id="form-evaluation" class="bg-dark-800 p-6 pb-36 rounded-2xl border border-gray-700 shadow-xl relative mb-24">
             
             <!-- ABA 1: PERFIL -->
@@ -249,7 +249,7 @@
                         </select>
                     </div>
                     <div>
-                        <label class="label-base">Peso (kg)</label>
+                        <label class="label-base">Massa Corporal (kg)</label>
                         <input type="number" step="0.1" id="eval-peso" class="input-base" placeholder="Ex: 80.5">
                     </div>
                     <div>
@@ -305,59 +305,57 @@
                 </div>
             </div>
 
-            <!-- ABA 3: DOBRAS CUTÂNEAS -->
+            <!-- ABA 3: DOBRAS CUTÂNEAS (Modelo Ficha 3 Medidas) -->
             <div id="tab-dobras" class="tab-content">
-                <div class="bg-blue-900/10 border border-blue-900/50 text-blue-300 text-sm p-4 rounded-xl mb-6">
-                    Preencha as dobras em milímetros (mm). Campos vazios serão ignorados.
+                <div class="bg-blue-900/10 border border-blue-900/50 text-blue-300 text-sm p-4 rounded-xl mb-6 flex items-start gap-3">
+                    <i data-lucide="info" class="w-5 h-5 flex-shrink-0 mt-0.5"></i>
+                    <p>Preencha até 3 medições em milímetros (mm). O sistema calculará a <strong>Média</strong> automaticamente no campo "Res".</p>
                 </div>
-                <div class="grid grid-cols-2 gap-6">
-                    <div><label class="label-base">Subescapular</label><input type="number" step="0.1" id="dob-sub" class="input-base"></div>
-                    <div><label class="label-base">Tríceps</label><input type="number" step="0.1" id="dob-tri" class="input-base"></div>
-                    <div><label class="label-base">Peitoral</label><input type="number" step="0.1" id="dob-pei" class="input-base"></div>
-                    <div><label class="label-base">Axilar Medial</label><input type="number" step="0.1" id="dob-axi" class="input-base"></div>
-                    <div><label class="label-base">Suprailíaca</label><input type="number" step="0.1" id="dob-sup" class="input-base"></div>
-                    <div><label class="label-base">Abdominal</label><input type="number" step="0.1" id="dob-abd" class="input-base"></div>
-                    <div><label class="label-base">Coxa Medial</label><input type="number" step="0.1" id="dob-cox" class="input-base"></div>
-                    <div><label class="label-base">Bíceps</label><input type="number" step="0.1" id="dob-bic" class="input-base"></div>
-                    <div><label class="label-base">Panturrilha</label><input type="number" step="0.1" id="dob-pan" class="input-base"></div>
+                
+                <div class="space-y-4" id="dobras-container">
+                    <!-- Gerado via JS para manter o HTML limpo -->
                 </div>
             </div>
 
-            <!-- ABA 4: PERÍMETROS -->
+            <!-- ABA 4: PERÍMETROS (Adaptado para Ficha Antropométrica) -->
             <div id="tab-perimetros" class="tab-content">
-                <h3 class="text-sm font-bold text-gray-400 border-b border-gray-700 pb-2 mb-6 uppercase tracking-wider">Tronco (cm)</h3>
+                <h3 class="text-sm font-bold text-gray-400 border-b border-gray-700 pb-2 mb-6 uppercase tracking-wider">Tronco & Geral (cm)</h3>
                 <div class="grid grid-cols-2 gap-6 mb-8">
-                    <div><label class="label-base">Pescoço</label><input type="number" step="0.1" id="per-pes" class="input-base"></div>
-                    <div><label class="label-base">Ombros</label><input type="number" step="0.1" id="per-omb" class="input-base"></div>
-                    <div><label class="label-base">Tórax</label><input type="number" step="0.1" id="per-tor" class="input-base"></div>
                     <div><label class="label-base">Cintura</label><input type="number" step="0.1" id="per-cin" class="input-base"></div>
-                    <div><label class="label-base">Abdominal</label><input type="number" step="0.1" id="per-abd" class="input-base"></div>
+                    <div><label class="label-base">Abdómen</label><input type="number" step="0.1" id="per-abd" class="input-base"></div>
                     <div><label class="label-base">Quadril</label><input type="number" step="0.1" id="per-qua" class="input-base"></div>
+                    <div><label class="label-base">Pescoço</label><input type="number" step="0.1" id="per-pes" class="input-base"></div>
+                    <div><label class="label-base text-gray-500">Tórax (Opcional)</label><input type="number" step="0.1" id="per-tor" class="input-base"></div>
                 </div>
 
                 <h3 class="text-sm font-bold text-gray-400 border-b border-gray-700 pb-2 mb-6 mt-10 uppercase tracking-wider">Membros Superiores (cm)</h3>
                 <div class="grid grid-cols-2 gap-6 mb-8">
-                    <div><label class="label-base">Braço Rel. (E)</label><input type="number" step="0.1" id="per-brre-e" class="input-base"></div>
-                    <div><label class="label-base">Braço Rel. (D)</label><input type="number" step="0.1" id="per-brre-d" class="input-base"></div>
-                    <div><label class="label-base">Braço Con. (E)</label><input type="number" step="0.1" id="per-brco-e" class="input-base"></div>
-                    <div><label class="label-base">Braço Con. (D)</label><input type="number" step="0.1" id="per-brco-d" class="input-base"></div>
-                    <div><label class="label-base">Antebraço (E)</label><input type="number" step="0.1" id="per-ante-e" class="input-base"></div>
-                    <div><label class="label-base">Antebraço (D)</label><input type="number" step="0.1" id="per-ante-d" class="input-base"></div>
+                    <div><label class="label-base">Bíceps Relax. (E)</label><input type="number" step="0.1" id="per-brre-e" class="input-base"></div>
+                    <div><label class="label-base">Bíceps Relax. (D)</label><input type="number" step="0.1" id="per-brre-d" class="input-base"></div>
+                    <div><label class="label-base">Bíceps Cont. (E)</label><input type="number" step="0.1" id="per-brco-e" class="input-base"></div>
+                    <div><label class="label-base">Bíceps Cont. (D)</label><input type="number" step="0.1" id="per-brco-d" class="input-base"></div>
+                    <div><label class="label-base text-gray-500">Antebraço (E)</label><input type="number" step="0.1" id="per-ante-e" class="input-base"></div>
+                    <div><label class="label-base text-gray-500">Antebraço (D)</label><input type="number" step="0.1" id="per-ante-d" class="input-base"></div>
                 </div>
 
                 <h3 class="text-sm font-bold text-gray-400 border-b border-gray-700 pb-2 mb-6 mt-10 uppercase tracking-wider">Membros Inferiores (cm)</h3>
-                <div class="grid grid-cols-2 gap-6 mb-6">
-                    <div><label class="label-base">Coxa Prox. (E)</label><input type="number" step="0.1" id="per-cxpr-e" class="input-base"></div>
-                    <div><label class="label-base">Coxa Prox. (D)</label><input type="number" step="0.1" id="per-cxpr-d" class="input-base"></div>
-                    <div><label class="label-base">Coxa Med. (E)</label><input type="number" step="0.1" id="per-cxme-e" class="input-base"></div>
-                    <div><label class="label-base">Coxa Med. (D)</label><input type="number" step="0.1" id="per-cxme-d" class="input-base"></div>
+                <div class="grid grid-cols-2 gap-6 mb-8">
+                    <div><label class="label-base">Coxa Superior (E)</label><input type="number" step="0.1" id="per-cxpr-e" class="input-base"></div>
+                    <div><label class="label-base">Coxa Superior (D)</label><input type="number" step="0.1" id="per-cxpr-d" class="input-base"></div>
                     <div><label class="label-base">Panturrilha (E)</label><input type="number" step="0.1" id="per-pan-e" class="input-base"></div>
                     <div><label class="label-base">Panturrilha (D)</label><input type="number" step="0.1" id="per-pan-d" class="input-base"></div>
+                    <div><label class="label-base text-gray-500">Coxa Medial (E)</label><input type="number" step="0.1" id="per-cxme-e" class="input-base"></div>
+                    <div><label class="label-base text-gray-500">Coxa Medial (D)</label><input type="number" step="0.1" id="per-cxme-d" class="input-base"></div>
+                </div>
+
+                <h3 class="text-sm font-bold text-gray-400 border-b border-gray-700 pb-2 mb-6 mt-10 uppercase tracking-wider">Outras Medidas / Observações</h3>
+                <div>
+                    <textarea id="per-outras" class="input-base h-28 resize-none" placeholder="Anote aqui outras circunferências ou observações corporais do avaliado..."></textarea>
                 </div>
             </div>
 
             <!-- Botão Fixo Bottom -->
-            <div class="fixed bottom-0 left-0 w-full bg-[#0B0F19]/90 backdrop-blur-md border-t border-gray-800 p-5 pb-8 z-20 flex gap-4">
+            <div class="fixed bottom-0 left-0 w-full bg-[#0B0F19]/90 backdrop-blur-md border-t border-gray-800 p-5 pb-8 z-20 flex gap-4 shadow-[0_-10px_30px_rgba(0,0,0,0.5)]">
                 <button type="button" onclick="navigate('dashboard')" class="flex-1 bg-dark-700 text-white font-bold py-4 rounded-xl hover:bg-dark-600 transition shadow-sm">Cancelar</button>
                 <button type="submit" class="flex-1 neon-button text-white font-bold py-4 rounded-xl flex items-center justify-center gap-2 shadow-lg">
                     <i data-lucide="save" class="w-5 h-5"></i> Salvar Avaliação
@@ -377,7 +375,7 @@
                     <i data-lucide="edit" class="w-4 h-4"></i> Editar
                 </button>
                 <button onclick="window.generatePDF()" class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg font-bold flex items-center gap-2 text-sm shadow-lg transition">
-                    <i data-lucide="printer" class="w-4 h-4"></i> Imprimir PDF
+                    <i data-lucide="printer" class="w-4 h-4"></i> Imprimir
                 </button>
             </div>
         </div>
@@ -402,7 +400,7 @@
                 <div class="col-span-2"><span class="text-gray-400 block text-[10px] uppercase font-bold tracking-wider">Avaliado</span><strong id="res-nome" class="text-xl text-dark-900">-</strong></div>
                 <div><span class="text-gray-400 block text-[10px] uppercase font-bold tracking-wider">Idade</span><strong id="res-idade" class="text-gray-800">-</strong></div>
                 <div><span class="text-gray-400 block text-[10px] uppercase font-bold tracking-wider">Sexo</span><strong id="res-sexo" class="text-gray-800">-</strong></div>
-                <div><span class="text-gray-400 block text-[10px] uppercase font-bold tracking-wider">Peso Total</span><strong id="res-peso" class="text-gray-800">- kg</strong></div>
+                <div><span class="text-gray-400 block text-[10px] uppercase font-bold tracking-wider">Massa Corporal</span><strong id="res-peso" class="text-gray-800">- kg</strong></div>
                 <div><span class="text-gray-400 block text-[10px] uppercase font-bold tracking-wider">Estatura</span><strong id="res-estatura" class="text-gray-800">- cm</strong></div>
             </div>
 
@@ -588,7 +586,7 @@
             } catch (err) { alert("Erro: " + err.message); hideLoader(); }
         });
 
-        // --- DASHBOARD E TABELA COM AÇÕES ---
+        // --- DASHBOARD E TABELA ---
         let unsubscribeEvals = null;
         
         function renderTable(evals) {
@@ -608,7 +606,6 @@
                 const tr = document.createElement('tr');
                 tr.className = "border-b border-gray-700/50 bg-dark-800 hover:bg-dark-700/80 transition duration-150";
                 
-                // Texto garantidamente branco para o nome (text-white) e fundo explícito
                 tr.innerHTML = `
                     <td class="py-5 px-4 text-gray-300 font-medium whitespace-nowrap bg-transparent">${dateStr}</td>
                     <td class="py-5 px-4 text-white font-bold text-base whitespace-nowrap bg-transparent">${nomeVisivel}</td>
@@ -654,6 +651,56 @@
             renderTable(filtered);
         });
 
+        // --- SISTEMA DE DOBRAS (GERAÇÃO HTML E CÁLCULO) ---
+        const dobrasList = [
+            { id: 'bic', nome: 'Bicipital (Bíceps)' },
+            { id: 'tri', nome: 'Tricipital (Tríceps)' },
+            { id: 'sub', nome: 'Subescapular' },
+            { id: 'pei', nome: 'Peitoral' },
+            { id: 'axi', nome: 'Axilar Média' },
+            { id: 'sup', nome: 'Suprailíaca' },
+            { id: 'abd', nome: 'Abdómen' },
+            { id: 'cox', nome: 'Coxa' },
+            { id: 'pan', nome: 'Panturrilha' }
+        ];
+
+        function initDobrasUI() {
+            const container = document.getElementById('dobras-container');
+            container.innerHTML = dobrasList.map(d => `
+                <div class="bg-dark-900/40 p-4 rounded-xl border border-gray-700/30">
+                    <label class="label-base text-gray-300 mb-3">${d.nome}</label>
+                    <div class="flex gap-2">
+                        <div class="flex-1"><input type="number" step="0.1" id="dob-${d.id}-1" oninput="window.calcDobraMedia('${d.id}')" class="input-base py-3 px-1 text-center text-sm" placeholder="1ª"></div>
+                        <div class="flex-1"><input type="number" step="0.1" id="dob-${d.id}-2" oninput="window.calcDobraMedia('${d.id}')" class="input-base py-3 px-1 text-center text-sm" placeholder="2ª"></div>
+                        <div class="flex-1"><input type="number" step="0.1" id="dob-${d.id}-3" oninput="window.calcDobraMedia('${d.id}')" class="input-base py-3 px-1 text-center text-sm" placeholder="3ª"></div>
+                        <div class="flex-1 relative">
+                            <input type="number" step="0.1" id="dob-${d.id}" class="input-base py-3 px-1 text-center text-sm border-neon-blue text-neon-blue bg-dark-800 font-bold" placeholder="Res." readonly>
+                            <span class="absolute -top-2 -right-1 bg-neon-blue text-white text-[8px] font-bold px-1 rounded">MÉDIA</span>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+        initDobrasUI();
+
+        window.calcDobraMedia = (id) => {
+            const v1 = parseFloat(document.getElementById(`dob-${id}-1`).value);
+            const v2 = parseFloat(document.getElementById(`dob-${id}-2`).value);
+            const v3 = parseFloat(document.getElementById(`dob-${id}-3`).value);
+
+            let vals = [];
+            if(!isNaN(v1)) vals.push(v1);
+            if(!isNaN(v2)) vals.push(v2);
+            if(!isNaN(v3)) vals.push(v3);
+
+            if(vals.length === 0) {
+                document.getElementById(`dob-${id}`).value = '';
+                return;
+            }
+            const avg = vals.reduce((a, b) => a + b, 0) / vals.length;
+            document.getElementById(`dob-${id}`).value = avg.toFixed(1);
+        };
+
         // --- SISTEMA DE AÇÕES (EDIT, EXCLUIR, NEW) ---
         window.newEvaluation = () => {
             AppState.editingId = null;
@@ -670,7 +717,6 @@
             AppState.editingId = id;
             document.getElementById('form-title').textContent = "Editar Avaliação";
             
-            // Popula os campos do formulário (lidando com possíveis vazios)
             document.getElementById('eval-nome').value = data.nomeAvaliado || '';
             document.getElementById('eval-idade').value = data.idade || '';
             document.getElementById('eval-sexo').value = data.sexo || 'Masculino';
@@ -685,13 +731,16 @@
                 document.getElementById('ana-meds').value = data.anamnese.meds || '';
                 document.getElementById('ana-sono').value = data.anamnese.sono || 'Boa';
             }
-            if(data.dobras) {
-                document.getElementById('dob-sub').value = data.dobras.sub || ''; document.getElementById('dob-tri').value = data.dobras.tri || '';
-                document.getElementById('dob-pei').value = data.dobras.pei || ''; document.getElementById('dob-axi').value = data.dobras.axi || '';
-                document.getElementById('dob-sup').value = data.dobras.sup || ''; document.getElementById('dob-abd').value = data.dobras.abd || '';
-                document.getElementById('dob-cox').value = data.dobras.cox || ''; document.getElementById('dob-bic').value = data.dobras.bic || '';
-                document.getElementById('dob-pan').value = data.dobras.pan || '';
-            }
+            
+            // Popular as 3 medidas das dobras (se existirem)
+            dobrasList.forEach(d => {
+                const arr = data.dobras && data.dobras[`${d.id}_m`] ? data.dobras[`${d.id}_m`] : [];
+                document.getElementById(`dob-${d.id}-1`).value = arr[0] || '';
+                document.getElementById(`dob-${d.id}-2`).value = arr[1] || '';
+                document.getElementById(`dob-${d.id}-3`).value = arr[2] || '';
+                window.calcDobraMedia(d.id); // Recalcula visualmente a média
+            });
+
             if(data.perimetros) {
                 document.getElementById('per-pes').value = data.perimetros.pes || ''; document.getElementById('per-omb').value = data.perimetros.omb || '';
                 document.getElementById('per-tor').value = data.perimetros.tor || ''; document.getElementById('per-cin').value = data.perimetros.cin || '';
@@ -702,6 +751,7 @@
                 document.getElementById('per-cxpr-e').value = data.perimetros['cxpr-e'] || ''; document.getElementById('per-cxpr-d').value = data.perimetros['cxpr-d'] || '';
                 document.getElementById('per-cxme-e').value = data.perimetros['cxme-e'] || ''; document.getElementById('per-cxme-d').value = data.perimetros['cxme-d'] || '';
                 document.getElementById('per-pan-e').value = data.perimetros['pan-e'] || ''; document.getElementById('per-pan-d').value = data.perimetros['pan-d'] || '';
+                document.getElementById('per-outras').value = data.perimetros.outras || '';
             }
             
             tabs[0].click();
@@ -786,8 +836,15 @@
             showLoader();
 
             try {
-                // Previne valores NaN extraindo strings ou 0
                 const getVal = (id) => parseFloat(document.getElementById(id).value) || '';
+                
+                // Helper para extrair as 3 medidas e o resultado final da dobra
+                const getDobraData = (id) => {
+                    return {
+                        res: getVal(`dob-${id}`),
+                        m: [getVal(`dob-${id}-1`), getVal(`dob-${id}-2`), getVal(`dob-${id}-3`)]
+                    };
+                };
 
                 const evalData = {
                     nomeAvaliado: document.getElementById('eval-nome').value || 'Cliente não identificado',
@@ -801,15 +858,23 @@
                         lesoes: document.getElementById('ana-lesoes').value, meds: document.getElementById('ana-meds').value, sono: document.getElementById('ana-sono').value
                     },
                     dobras: {
-                        sub: getVal('dob-sub'), tri: getVal('dob-tri'), pei: getVal('dob-pei'), axi: getVal('dob-axi'),
-                        sup: getVal('dob-sup'), abd: getVal('dob-abd'), cox: getVal('dob-cox'), bic: getVal('dob-bic'), pan: getVal('dob-pan')
+                        sub: getDobraData('sub').res, sub_m: getDobraData('sub').m,
+                        tri: getDobraData('tri').res, tri_m: getDobraData('tri').m,
+                        pei: getDobraData('pei').res, pei_m: getDobraData('pei').m,
+                        axi: getDobraData('axi').res, axi_m: getDobraData('axi').m,
+                        sup: getDobraData('sup').res, sup_m: getDobraData('sup').m,
+                        abd: getDobraData('abd').res, abd_m: getDobraData('abd').m,
+                        cox: getDobraData('cox').res, cox_m: getDobraData('cox').m,
+                        bic: getDobraData('bic').res, bic_m: getDobraData('bic').m,
+                        pan: getDobraData('pan').res, pan_m: getDobraData('pan').m
                     },
                     perimetros: {
                         pes: getVal('per-pes'), omb: getVal('per-omb'), tor: getVal('per-tor'), cin: getVal('per-cin'),
                         abd: getVal('per-abd'), qua: getVal('per-qua'), 'brre-e': getVal('per-brre-e'), 'brre-d': getVal('per-brre-d'),
                         'brco-e': getVal('per-brco-e'), 'brco-d': getVal('per-brco-d'), 'ante-e': getVal('per-ante-e'), 'ante-d': getVal('per-ante-d'),
                         'cxpr-e': getVal('per-cxpr-e'), 'cxpr-d': getVal('per-cxpr-d'), 'cxme-e': getVal('per-cxme-e'), 'cxme-d': getVal('per-cxme-d'),
-                        'pan-e': getVal('per-pan-e'), 'pan-d': getVal('per-pan-d')
+                        'pan-e': getVal('per-pan-e'), 'pan-d': getVal('per-pan-d'),
+                        outras: document.getElementById('per-outras').value
                     }
                 };
 
@@ -831,9 +896,7 @@
 
                 evalData.resultados = { imc: imcVal, bf: bfVal, rcq: rcqVal, massaGorda, massaMagra };
 
-                // Verifica se é Edição ou Criação Nova
                 if(AppState.editingId) {
-                    // Mantém a data original se existir
                     const originalData = AppState.evaluations.find(e => e.id === AppState.editingId);
                     evalData.data = originalData.data || serverTimestamp();
                     await updateDoc(doc(db, 'artifacts', appId, 'users', AppState.user.uid, 'evaluations', AppState.editingId), evalData);
