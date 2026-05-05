@@ -70,6 +70,34 @@
         }
         select option { background-color: #151A2D; color: #F3F4F6; }
 
+        /* --- BLINDAGEM DO HISTÓRICO CONTRA FUNDO BRANCO --- */
+        #dash-table-container table,
+        #dash-table-container tbody,
+        #dash-table-container tr,
+        #dash-table-container td {
+            background-color: #151A2D !important; /* Cor dark-800 */
+            color: #E5E7EB !important; /* Texto claro */
+            border-bottom: 1px solid #374151 !important; /* border-gray-700 */
+        }
+        #dash-table-container thead,
+        #dash-table-container th {
+            background-color: #0B0F19 !important; /* Cor dark-900 */
+            color: #9CA3AF !important; /* Texto cinza */
+            border-bottom: 1px solid #374151 !important;
+        }
+        #dash-table-container tr:hover td {
+            background-color: #1F2937 !important; /* Hover dark-700 */
+        }
+        /* Cores específicas dos botões na tabela blidada */
+        #dash-table-container td button.btn-print { background-color: rgba(59, 130, 246, 0.1) !important; color: #3B82F6 !important; }
+        #dash-table-container td button.btn-edit { background-color: rgba(234, 179, 8, 0.1) !important; color: #EAB308 !important; }
+        #dash-table-container td button.btn-delete { background-color: rgba(239, 68, 68, 0.1) !important; color: #EF4444 !important; }
+        
+        #dash-table-container td button.btn-print:hover { background-color: rgba(59, 130, 246, 0.2) !important; }
+        #dash-table-container td button.btn-edit:hover { background-color: rgba(234, 179, 8, 0.2) !important; }
+        #dash-table-container td button.btn-delete:hover { background-color: rgba(239, 68, 68, 0.2) !important; }
+        /* --------------------------------------------------- */
+
         /* Scrollbar customizada */
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: #0B0F19; }
@@ -193,19 +221,19 @@
                 <input type="text" id="dash-search" placeholder="Procurar cliente..." class="bg-dark-900 border border-gray-700 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-neon-blue w-full sm:w-64">
             </div>
             
-            <div class="overflow-x-auto rounded-xl border border-gray-700/50">
-                <table class="w-full text-left border-collapse min-w-[650px] bg-dark-800 text-gray-200">
-                    <thead class="bg-dark-900 text-gray-400">
-                        <tr class="border-b border-gray-700 text-sm">
-                            <th class="py-4 px-4 font-semibold">Data</th>
-                            <th class="py-4 px-4 font-semibold">Cliente</th>
-                            <th class="py-4 px-4 font-semibold">Objetivo</th>
-                            <th class="py-4 px-4 font-semibold text-center">Ações</th>
+            <!-- CONTÊINER BLINDADO DA TABELA -->
+            <div id="dash-table-container" class="overflow-x-auto rounded-xl border border-gray-700/50">
+                <table class="w-full text-left border-collapse min-w-[650px]">
+                    <thead>
+                        <tr>
+                            <th class="py-4 px-4 font-semibold text-sm">Data</th>
+                            <th class="py-4 px-4 font-semibold text-sm">Cliente</th>
+                            <th class="py-4 px-4 font-semibold text-sm">Objetivo</th>
+                            <th class="py-4 px-4 font-semibold text-sm text-center">Ações</th>
                         </tr>
                     </thead>
-                    <tbody id="evaluations-list" class="text-sm bg-dark-800">
-                        <!-- Conteúdo da tabela inserido pelo JS -->
-                        <tr><td colspan="4" class="text-center text-gray-500 py-10 bg-dark-800">Carregando...</td></tr>
+                    <tbody id="evaluations-list" class="text-sm">
+                        <tr><td colspan="4" class="text-center py-10">Carregando...</td></tr>
                     </tbody>
                 </table>
             </div>
@@ -227,7 +255,7 @@
             <button class="flex-1 py-3 px-2 text-sm font-bold rounded-lg text-gray-400 hover:text-white eval-tab-btn transition" data-target="tab-perimetros">Medidas</button>
         </div>
 
-        <!-- Form: Mais espaçoso, sem required -->
+        <!-- Form -->
         <form id="form-evaluation" class="bg-dark-800 p-6 pb-36 rounded-2xl border border-gray-700 shadow-xl relative mb-24">
             
             <!-- ABA 1: PERFIL -->
@@ -594,7 +622,7 @@
             ui.dashTotal.textContent = evals.length;
 
             if (evals.length === 0) {
-                ui.evalList.innerHTML = '<tr><td colspan="4" class="text-center text-gray-500 py-12 font-medium bg-dark-800">Nenhuma ficha salva no histórico.</td></tr>';
+                ui.evalList.innerHTML = '<tr><td colspan="4" class="text-center py-12 font-medium">Nenhuma ficha salva no histórico.</td></tr>';
                 return;
             }
 
@@ -604,17 +632,15 @@
                 const nomeVisivel = data.nomeAvaliado && data.nomeAvaliado.trim() !== '' ? data.nomeAvaliado : 'Cliente Sem Nome';
                 
                 const tr = document.createElement('tr');
-                tr.className = "border-b border-gray-700/50 bg-dark-800 hover:bg-dark-700/80 transition duration-150";
-                
                 tr.innerHTML = `
-                    <td class="py-5 px-4 text-gray-300 font-medium whitespace-nowrap bg-transparent">${dateStr}</td>
-                    <td class="py-5 px-4 text-white font-bold text-base whitespace-nowrap bg-transparent">${nomeVisivel}</td>
-                    <td class="py-5 px-4 text-gray-300 bg-transparent">${obj}</td>
-                    <td class="py-5 px-4 text-center bg-transparent">
+                    <td class="py-5 px-4 font-medium whitespace-nowrap">${dateStr}</td>
+                    <td class="py-5 px-4 font-bold text-base whitespace-nowrap">${nomeVisivel}</td>
+                    <td class="py-5 px-4">${obj}</td>
+                    <td class="py-5 px-4 text-center">
                         <div class="flex items-center justify-center gap-2">
-                            <button onclick="window.renderResultsById('${data.id}')" class="p-2.5 bg-blue-500/10 text-neon-blue rounded-lg hover:bg-blue-500/20 transition" title="Ver / Imprimir PDF"><i data-lucide="printer" class="w-4 h-4"></i></button>
-                            <button onclick="window.editEvaluation('${data.id}')" class="p-2.5 bg-yellow-500/10 text-yellow-500 rounded-lg hover:bg-yellow-500/20 transition" title="Editar"><i data-lucide="edit-3" class="w-4 h-4"></i></button>
-                            <button onclick="window.confirmDelete('${data.id}')" class="p-2.5 bg-red-500/10 text-red-500 rounded-lg hover:bg-red-500/20 transition" title="Excluir"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+                            <button onclick="window.renderResultsById('${data.id}')" class="btn-print p-2.5 rounded-lg transition" title="Ver / Imprimir PDF"><i data-lucide="printer" class="w-4 h-4"></i></button>
+                            <button onclick="window.editEvaluation('${data.id}')" class="btn-edit p-2.5 rounded-lg transition" title="Editar"><i data-lucide="edit-3" class="w-4 h-4"></i></button>
+                            <button onclick="window.confirmDelete('${data.id}')" class="btn-delete p-2.5 rounded-lg transition" title="Excluir"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
                         </div>
                     </td>
                 `;
@@ -651,7 +677,7 @@
             renderTable(filtered);
         });
 
-        // --- SISTEMA DE DOBRAS (GERAÇÃO HTML E CÁLCULO) ---
+        // --- SISTEMA DE DOBRAS ---
         const dobrasList = [
             { id: 'bic', nome: 'Bicipital (Bíceps)' },
             { id: 'tri', nome: 'Tricipital (Tríceps)' },
@@ -701,7 +727,7 @@
             document.getElementById(`dob-${id}`).value = avg.toFixed(1);
         };
 
-        // --- SISTEMA DE AÇÕES (EDIT, EXCLUIR, NEW) ---
+        // --- SISTEMA DE AÇÕES ---
         window.newEvaluation = () => {
             AppState.editingId = null;
             document.getElementById('form-title').textContent = "Nova Avaliação";
@@ -732,13 +758,12 @@
                 document.getElementById('ana-sono').value = data.anamnese.sono || 'Boa';
             }
             
-            // Popular as 3 medidas das dobras (se existirem)
             dobrasList.forEach(d => {
                 const arr = data.dobras && data.dobras[`${d.id}_m`] ? data.dobras[`${d.id}_m`] : [];
                 document.getElementById(`dob-${d.id}-1`).value = arr[0] || '';
                 document.getElementById(`dob-${d.id}-2`).value = arr[1] || '';
                 document.getElementById(`dob-${d.id}-3`).value = arr[2] || '';
-                window.calcDobraMedia(d.id); // Recalcula visualmente a média
+                window.calcDobraMedia(d.id); 
             });
 
             if(data.perimetros) {
@@ -762,7 +787,6 @@
             if(AppState.currentEvalId) window.editEvaluation(AppState.currentEvalId);
         };
 
-        // Modal de Exclusão Segura
         let itemToDelete = null;
         window.confirmDelete = (id) => {
             itemToDelete = id;
@@ -778,12 +802,10 @@
                 showLoader();
                 await deleteDoc(doc(db, 'artifacts', appId, 'users', AppState.user.uid, 'evaluations', itemToDelete));
                 window.closeDeleteModal();
-            } catch (e) {
-                console.error("Erro ao excluir", e);
-            } finally { hideLoader(); }
+            } catch (e) { console.error("Erro ao excluir", e); } finally { hideLoader(); }
         });
 
-        // --- LÓGICA DO FORMULÁRIO (SEM REQUIRED) ---
+        // --- NAVEGAÇÃO DE ABAS ---
         const tabs = document.querySelectorAll('.eval-tab-btn');
         const tabContents = document.querySelectorAll('.tab-content');
         tabs.forEach(tab => {
@@ -838,7 +860,6 @@
             try {
                 const getVal = (id) => parseFloat(document.getElementById(id).value) || '';
                 
-                // Helper para extrair as 3 medidas e o resultado final da dobra
                 const getDobraData = (id) => {
                     return {
                         res: getVal(`dob-${id}`),
