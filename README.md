@@ -60,8 +60,7 @@
             @apply block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1;
         }
 
-        /* --- CORREÇÃO DO AUTOFILL E DROPDOWNS (MOBILE) --- */
-        /* Impede que o navegador force o fundo branco no preenchimento automático */
+        /* Correção do Autofill e Dropdowns (Mobile) */
         input:-webkit-autofill,
         input:-webkit-autofill:hover, 
         input:-webkit-autofill:focus, 
@@ -74,12 +73,10 @@
             transition: background-color 5000s ease-in-out 0s;
         }
         
-        /* Garante fundo escuro nas opções de Select (Dropdown) */
         select option {
             background-color: #151A2D;
             color: #F3F4F6;
         }
-        /* ------------------------------------------------ */
 
         /* Scrollbar customizada */
         ::-webkit-scrollbar { width: 6px; }
@@ -211,7 +208,7 @@
     </div>
 
     <!-- TELA FORMULÁRIO DE AVALIAÇÃO -->
-    <div id="screen-evaluation-form" class="hidden flex-1 max-w-2xl w-full mx-auto p-4 flex flex-col pb-24">
+    <div id="screen-evaluation-form" class="hidden flex-1 max-w-2xl w-full mx-auto p-4 flex flex-col">
         <div class="flex items-center gap-3 mb-6">
             <button onclick="navigate('dashboard')" class="text-gray-400 hover:text-white"><i data-lucide="arrow-left"></i></button>
             <h2 class="text-2xl font-bold">Nova Avaliação</h2>
@@ -225,7 +222,8 @@
             <button class="flex-1 py-2 text-sm font-semibold rounded-md text-gray-400 hover:text-white eval-tab-btn" data-target="tab-perimetros">Medidas</button>
         </div>
 
-        <form id="form-evaluation" class="bg-dark-800 p-5 rounded-xl border border-gray-700 shadow-xl relative">
+        <!-- Adicionado mb-24 e pb-32 para resolver o problema de sobreposição do botão inferior -->
+        <form id="form-evaluation" class="bg-dark-800 p-5 pb-32 rounded-xl border border-gray-700 shadow-xl relative mb-24">
             
             <!-- ABA 1: PERFIL -->
             <div id="tab-perfil" class="tab-content active space-y-4">
@@ -353,10 +351,10 @@
                 </div>
             </div>
 
-            <!-- Botão Fixo Bottom Mobile -->
-            <div class="fixed bottom-0 left-0 w-full bg-dark-900 border-t border-gray-800 p-4 z-10 flex gap-4">
+            <!-- Botão Fixo Bottom com efeito Blur para não esconder o form -->
+            <div class="fixed bottom-0 left-0 w-full bg-[#0B0F19]/85 backdrop-blur-md border-t border-gray-800 p-4 pb-6 z-20 flex gap-4">
                 <button type="button" onclick="navigate('dashboard')" class="flex-1 bg-dark-700 text-white font-semibold py-3 rounded-xl hover:bg-dark-800 transition">Cancelar</button>
-                <button type="submit" class="flex-1 neon-button text-white font-bold py-3 rounded-xl flex items-center justify-center gap-2">
+                <button type="submit" class="flex-1 neon-button text-white font-bold py-3 rounded-xl flex items-center justify-center gap-2 shadow-lg">
                     <i data-lucide="calculator" class="w-5 h-5"></i> Salvar
                 </button>
             </div>
