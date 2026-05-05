@@ -769,17 +769,31 @@
                 window.calcDobraMedia(d.id); 
             });
 
+            const setIfExist = (id, val) => {
+                const el = document.getElementById(id);
+                if (el) el.value = val !== undefined && val !== null ? val : '';
+            };
+
             if(data.perimetros) {
-                document.getElementById('per-pes').value = data.perimetros.pes || ''; document.getElementById('per-omb').value = data.perimetros.omb || '';
-                document.getElementById('per-tor').value = data.perimetros.tor || ''; document.getElementById('per-cin').value = data.perimetros.cin || '';
-                document.getElementById('per-abd').value = data.perimetros.abd || ''; document.getElementById('per-qua').value = data.perimetros.qua || '';
-                document.getElementById('per-brre-e').value = data.perimetros['brre-e'] || ''; document.getElementById('per-brre-d').value = data.perimetros['brre-d'] || '';
-                document.getElementById('per-brco-e').value = data.perimetros['brco-e'] || ''; document.getElementById('per-brco-d').value = data.perimetros['brco-d'] || '';
-                document.getElementById('per-ante-e').value = data.perimetros['ante-e'] || ''; document.getElementById('per-ante-d').value = data.perimetros['ante-d'] || '';
-                document.getElementById('per-cxpr-e').value = data.perimetros['cxpr-e'] || ''; document.getElementById('per-cxpr-d').value = data.perimetros['cxpr-d'] || '';
-                document.getElementById('per-cxme-e').value = data.perimetros['cxme-e'] || ''; document.getElementById('per-cxme-d').value = data.perimetros['cxme-d'] || '';
-                document.getElementById('per-pan-e').value = data.perimetros['pan-e'] || ''; document.getElementById('per-pan-d').value = data.perimetros['pan-d'] || '';
-                document.getElementById('per-outras').value = data.perimetros.outras || '';
+                setIfExist('per-pes', data.perimetros.pes);
+                setIfExist('per-omb', data.perimetros.omb);
+                setIfExist('per-tor', data.perimetros.tor);
+                setIfExist('per-cin', data.perimetros.cin);
+                setIfExist('per-abd', data.perimetros.abd);
+                setIfExist('per-qua', data.perimetros.qua);
+                setIfExist('per-brre-e', data.perimetros['brre-e']);
+                setIfExist('per-brre-d', data.perimetros['brre-d']);
+                setIfExist('per-brco-e', data.perimetros['brco-e']);
+                setIfExist('per-brco-d', data.perimetros['brco-d']);
+                setIfExist('per-ante-e', data.perimetros['ante-e']);
+                setIfExist('per-ante-d', data.perimetros['ante-d']);
+                setIfExist('per-cxpr-e', data.perimetros['cxpr-e']);
+                setIfExist('per-cxpr-d', data.perimetros['cxpr-d']);
+                setIfExist('per-cxme-e', data.perimetros['cxme-e']);
+                setIfExist('per-cxme-d', data.perimetros['cxme-d']);
+                setIfExist('per-pan-e', data.perimetros['pan-e']);
+                setIfExist('per-pan-d', data.perimetros['pan-d']);
+                setIfExist('per-outras', data.perimetros.outras);
             }
             
             tabs[0].click();
@@ -861,7 +875,12 @@
             showLoader();
 
             try {
-                const getVal = (id) => parseFloat(document.getElementById(id).value) || '';
+                const getVal = (id) => {
+                    const el = document.getElementById(id);
+                    if (!el) return '';
+                    const val = parseFloat(el.value);
+                    return isNaN(val) ? '' : val;
+                };
                 
                 const getDobraData = (id) => {
                     return {
@@ -1057,4 +1076,4 @@
         };
     </script>
 </body>
-</html>
+</html><!DOCTYPE html>
