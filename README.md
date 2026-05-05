@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="pt-BR" class="dark">
 <head>
     <meta charset="UTF-8">
@@ -193,19 +194,19 @@
                 <input type="text" id="dash-search" placeholder="Procurar cliente..." class="bg-dark-900 border border-gray-700 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-neon-blue w-full sm:w-64">
             </div>
             
-            <div class="overflow-x-auto">
-                <table class="w-full text-left border-collapse min-w-[650px]">
-                    <thead>
-                        <tr class="border-b border-gray-700 text-gray-400 text-sm">
-                            <th class="pb-4 px-3 font-semibold">Data</th>
-                            <th class="pb-4 px-3 font-semibold">Cliente</th>
-                            <th class="pb-4 px-3 font-semibold">Objetivo</th>
-                            <th class="pb-4 px-3 font-semibold text-center">Ações</th>
+            <div class="overflow-x-auto rounded-xl border border-gray-700/50">
+                <table class="w-full text-left border-collapse min-w-[650px] bg-dark-800 text-gray-200">
+                    <thead class="bg-dark-900 text-gray-400">
+                        <tr class="border-b border-gray-700 text-sm">
+                            <th class="py-4 px-4 font-semibold">Data</th>
+                            <th class="py-4 px-4 font-semibold">Cliente</th>
+                            <th class="py-4 px-4 font-semibold">Objetivo</th>
+                            <th class="py-4 px-4 font-semibold text-center">Ações</th>
                         </tr>
                     </thead>
-                    <tbody id="evaluations-list" class="text-sm">
+                    <tbody id="evaluations-list" class="text-sm bg-dark-800">
                         <!-- Conteúdo da tabela inserido pelo JS -->
-                        <tr><td colspan="4" class="text-center text-gray-500 py-10">Carregando...</td></tr>
+                        <tr><td colspan="4" class="text-center text-gray-500 py-10 bg-dark-800">Carregando...</td></tr>
                     </tbody>
                 </table>
             </div>
@@ -596,7 +597,7 @@
             ui.dashTotal.textContent = evals.length;
 
             if (evals.length === 0) {
-                ui.evalList.innerHTML = '<tr><td colspan="4" class="text-center text-gray-500 py-12 font-medium">Nenhuma ficha salva no histórico.</td></tr>';
+                ui.evalList.innerHTML = '<tr><td colspan="4" class="text-center text-gray-500 py-12 font-medium bg-dark-800">Nenhuma ficha salva no histórico.</td></tr>';
                 return;
             }
 
@@ -606,14 +607,14 @@
                 const nomeVisivel = data.nomeAvaliado && data.nomeAvaliado.trim() !== '' ? data.nomeAvaliado : 'Cliente Sem Nome';
                 
                 const tr = document.createElement('tr');
-                tr.className = "border-b border-gray-700/50 hover:bg-dark-700/80 transition duration-150";
+                tr.className = "border-b border-gray-700/50 bg-dark-800 hover:bg-dark-700/80 transition duration-150";
                 
-                // Texto garantidamente branco para o nome (text-white)
+                // Texto garantidamente branco para o nome (text-white) e fundo explícito
                 tr.innerHTML = `
-                    <td class="py-5 px-3 text-gray-400 font-medium whitespace-nowrap">${dateStr}</td>
-                    <td class="py-5 px-3 text-white font-bold text-base whitespace-nowrap">${nomeVisivel}</td>
-                    <td class="py-5 px-3 text-gray-400">${obj}</td>
-                    <td class="py-5 px-3 text-center">
+                    <td class="py-5 px-4 text-gray-300 font-medium whitespace-nowrap bg-transparent">${dateStr}</td>
+                    <td class="py-5 px-4 text-white font-bold text-base whitespace-nowrap bg-transparent">${nomeVisivel}</td>
+                    <td class="py-5 px-4 text-gray-300 bg-transparent">${obj}</td>
+                    <td class="py-5 px-4 text-center bg-transparent">
                         <div class="flex items-center justify-center gap-2">
                             <button onclick="window.renderResultsById('${data.id}')" class="p-2.5 bg-blue-500/10 text-neon-blue rounded-lg hover:bg-blue-500/20 transition" title="Ver / Imprimir PDF"><i data-lucide="printer" class="w-4 h-4"></i></button>
                             <button onclick="window.editEvaluation('${data.id}')" class="p-2.5 bg-yellow-500/10 text-yellow-500 rounded-lg hover:bg-yellow-500/20 transition" title="Editar"><i data-lucide="edit-3" class="w-4 h-4"></i></button>
