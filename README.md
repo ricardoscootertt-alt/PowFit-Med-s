@@ -2,6 +2,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <!-- Força o navegador e teclado do telemóvel a usarem o tema escuro nativo -->
+    <meta name="color-scheme" content="dark">
     <title>PowFit Med's - Avaliação Física</title>
     
     <!-- Tailwind CSS -->
@@ -32,6 +34,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
     <style>
+        :root {
+            color-scheme: dark;
+        }
+        
         body {
             background-color: #0B0F19; /* Fundo escuro real do app */
             color: #F3F4F6;
@@ -53,6 +59,27 @@
         .label-base {
             @apply block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1;
         }
+
+        /* --- CORREÇÃO DO AUTOFILL E DROPDOWNS (MOBILE) --- */
+        /* Impede que o navegador force o fundo branco no preenchimento automático */
+        input:-webkit-autofill,
+        input:-webkit-autofill:hover, 
+        input:-webkit-autofill:focus, 
+        input:-webkit-autofill:active,
+        select:-webkit-autofill,
+        select:-webkit-autofill:hover,
+        select:-webkit-autofill:focus {
+            -webkit-box-shadow: 0 0 0 30px #0B0F19 inset !important;
+            -webkit-text-fill-color: #F3F4F6 !important;
+            transition: background-color 5000s ease-in-out 0s;
+        }
+        
+        /* Garante fundo escuro nas opções de Select (Dropdown) */
+        select option {
+            background-color: #151A2D;
+            color: #F3F4F6;
+        }
+        /* ------------------------------------------------ */
 
         /* Scrollbar customizada */
         ::-webkit-scrollbar { width: 6px; }
@@ -127,7 +154,7 @@
         </div>
     </div>
 
-    <!-- NAVBAR SECUNDÁRIA (Apenas p/ Logout/Voltar nas telas internas) -->
+    <!-- NAVBAR SECUNDÁRIA -->
     <nav id="navbar" class="hidden bg-dark-800 border-b border-gray-800 sticky top-0 z-40">
         <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
             <div class="font-bold text-xl cursor-pointer" onclick="navigate('dashboard')">
@@ -137,7 +164,7 @@
         </div>
     </nav>
 
-    <!-- TELA DASHBOARD (Design Novo baseado na sua Screenshot) -->
+    <!-- TELA DASHBOARD -->
     <div id="screen-dashboard" class="hidden flex-1 max-w-4xl w-full mx-auto p-6 flex flex-col">
         
         <!-- Header Principal -->
@@ -176,7 +203,6 @@
                         </tr>
                     </thead>
                     <tbody id="evaluations-list" class="text-sm">
-                        <!-- Linhas da tabela populadas pelo JS. Cores corrigidas para Dark Mode! -->
                         <tr><td colspan="4" class="text-center text-gray-500 py-10">Carregando...</td></tr>
                     </tbody>
                 </table>
@@ -329,7 +355,7 @@
 
             <!-- Botão Fixo Bottom Mobile -->
             <div class="fixed bottom-0 left-0 w-full bg-dark-900 border-t border-gray-800 p-4 z-10 flex gap-4">
-                <button type="button" onclick="navigate('dashboard')" class="flex-1 bg-dark-700 text-white font-semibold py-3 rounded-xl hover:bg-dark-800">Cancelar</button>
+                <button type="button" onclick="navigate('dashboard')" class="flex-1 bg-dark-700 text-white font-semibold py-3 rounded-xl hover:bg-dark-800 transition">Cancelar</button>
                 <button type="submit" class="flex-1 neon-button text-white font-bold py-3 rounded-xl flex items-center justify-center gap-2">
                     <i data-lucide="calculator" class="w-5 h-5"></i> Salvar
                 </button>
@@ -441,7 +467,6 @@
         import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut, signInWithCustomToken, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
         import { getFirestore, enableIndexedDbPersistence, doc, setDoc, getDoc, collection, addDoc, query, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
-        // Usando as configurações fornecidas ou as do ambiente Canvas
         const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {
             apiKey: "AIzaSyA9icSOYHPq-5p-GJaFmKZ02DMMFpohk7g",
             authDomain: "powfit-med-s.firebaseapp.com",
@@ -456,12 +481,11 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
 
-        // Habilitar Persistência Offline (PWA)
+        // Habilitar Persistência Offline
         enableIndexedDbPersistence(db).catch((err) => console.warn("Offline desabilitado:", err.code));
 
         const AppState = { user: null, profile: null, evaluations: [], chartInstance: null, currentEvalClientName: null };
 
-        // DOM Elements
         const ui = {
             loader: document.getElementById('global-loader'),
             screens: {
@@ -487,9 +511,8 @@
             if(ui.screens[screenName]) {
                 ui.screens[screenName].classList.remove('hidden');
                 
-                // Mostrar navbar apenas no app logado nas telas internas
                 if(['login', 'profile-setup', 'dashboard'].includes(screenName)) {
-                    ui.navbar.classList.add('hidden'); // O dashboard agora tem header próprio
+                    ui.navbar.classList.add('hidden');
                 } else {
                     ui.navbar.classList.remove('hidden');
                 }
@@ -514,7 +537,6 @@
 
         document.getElementById('btn-logout').addEventListener('click', () => signOut(auth));
 
-        // Inicialização de Auth especial para Canvas/Web
         const initAuth = async () => {
             if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
                 await signInWithCustomToken(auth, __initial_auth_token);
@@ -536,7 +558,6 @@
 
         async function checkProfileAndRoute(uid) {
             try {
-                // Caminho seguro Canvas & Web
                 const docRef = doc(db, 'artifacts', appId, 'users', uid, 'profile', 'data');
                 const docSnap = await getDoc(docRef);
 
@@ -582,7 +603,7 @@
             } catch (err) { alert("Erro: " + err.message); hideLoader(); }
         });
 
-        // --- DASHBOARD E LISTAGEM DA TABELA (CORRIGIDO) ---
+        // --- DASHBOARD E TABELA ---
         let unsubscribeEvals = null;
         
         function renderTable(evals) {
@@ -599,7 +620,6 @@
                 const obj = data.anamnese?.objetivo || '-';
                 
                 const tr = document.createElement('tr');
-                // IMPORTANTE: Classes de Dark Mode adicionadas aqui! Texto claro (gray-300/white) sobre hover dark.
                 tr.className = "border-b border-gray-700/50 hover:bg-dark-700 transition duration-150 group cursor-pointer";
                 tr.innerHTML = `
                     <td class="py-4 px-2 text-gray-400 font-medium">${dateStr}</td>
@@ -617,7 +637,6 @@
         function loadEvaluations(uid) {
             if (unsubscribeEvals) unsubscribeEvals();
             
-            // Query simples (sem orderBy para evitar erro de Index do Firebase, ordenação em JS)
             const q = query(collection(db, 'artifacts', appId, 'users', uid, 'evaluations'));
             
             unsubscribeEvals = onSnapshot(q, (snapshot) => {
@@ -628,7 +647,6 @@
                     AppState.evaluations.push(data);
                 });
                 
-                // Ordenação cronológica invertida no Client-Side
                 AppState.evaluations.sort((a, b) => {
                     const timeA = a.data?.toMillis ? a.data.toMillis() : Date.now();
                     const timeB = b.data?.toMillis ? b.data.toMillis() : Date.now();
@@ -642,7 +660,6 @@
             });
         }
 
-        // Sistema de Busca em tempo real
         ui.searchInput.addEventListener('input', (e) => {
             const term = e.target.value.toLowerCase();
             const filtered = AppState.evaluations.filter(ev => ev.nomeAvaliado.toLowerCase().includes(term));
@@ -749,7 +766,7 @@
 
                 await addDoc(collection(db, 'artifacts', appId, 'users', AppState.user.uid, 'evaluations'), evalData);
                 ui.formEval.reset();
-                tabs[0].click(); // Volta para a primeira aba
+                tabs[0].click(); 
                 navigate('dashboard');
                 
             } catch (err) {
@@ -822,7 +839,6 @@
                 document.getElementById('card-rcq').className = 'border rounded-xl p-4 text-center shadow-sm bg-gray-50';
             }
 
-            // IA Recomendação
             let rec = `Objetivo principal: ${data.anamnese?.objetivo || 'Não informado'}. `;
             if(data.resultados.imc >= 30) rec += "Alerta para Obesidade (IMC). Acompanhamento estruturado é recomendado. ";
             if(data.resultados.rcq && classificarRCQ(data.resultados.rcq, data.sexo).t === 'Alto') rec += "Atenção: Risco Cardiovascular ALTO associado à relação cintura/quadril. Foco em redução de gordura abdominal. ";
