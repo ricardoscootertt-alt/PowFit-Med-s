@@ -2,12 +2,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>PowFit Med's - Avaliação Inteligente na Nuvem</title>
-    <!-- Chart.js para gráficos -->
+    <title>PowFit Med's - Avaliação Integrada</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         :root {
-            /* Tema Dark & Azul */
+            /* Tema Dark Profissional */
             --bg-body: #020617;
             --bg-card: #0f172a;
             --bg-input: #1e293b;
@@ -20,205 +19,198 @@
             --success: #10b981;
             --warning: #f59e0b;
             --danger: #ef4444;
-            --radius: 12px;
+            --radius: 14px;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; scroll-behavior: smooth; -webkit-tap-highlight-color: transparent;}
-        body { background-color: var(--bg-body); color: var(--text-main); -webkit-font-smoothing: antialiased; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', 'Segoe UI', Roboto, sans-serif; scroll-behavior: smooth; -webkit-tap-highlight-color: transparent;}
+        body { background-color: var(--bg-body); color: var(--text-main); -webkit-font-smoothing: antialiased; padding-bottom: 30px; overflow-x: hidden; }
 
-        /* SCROLLBAR OCULTA NO MOBILE, VISÍVEL NO PC */
-        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        /* SCROLLBAR */
+        ::-webkit-scrollbar { width: 4px; height: 4px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
-        @media (max-width: 768px) { ::-webkit-scrollbar { display: none; } }
 
-        /* MODAIS DE LOGIN E PERFIL */
+        /* AVISOS TOAST (Substitui os alerts do navegador) */
+        #toast-container { position: fixed; top: 20px; right: 20px; z-index: 9999; display: flex; flex-direction: column; gap: 10px; }
+        .toast { background: var(--bg-card); border-left: 4px solid var(--primary); color: white; padding: 15px 20px; border-radius: 8px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); font-size: 14px; font-weight: 600; animation: slideIn 0.3s ease-out forwards; display: flex; align-items: center; gap: 10px; }
+        @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+
+        /* MODAIS E TELAS DE CARREGAMENTO */
         .overlay-screen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(135deg, rgba(2,6,23,0.95), rgba(15,23,42,0.98));
-            backdrop-filter: blur(8px); display: flex; flex-direction: column; align-items: center; justify-content: center;
+            background: rgba(2, 6, 23, 0.98); backdrop-filter: blur(8px);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
             z-index: 1000; padding: 20px;
         }
         .modal-box {
-            background-color: var(--bg-card); padding: 30px 20px; border-radius: var(--radius);
+            background-color: var(--bg-card); padding: 35px 25px; border-radius: var(--radius);
             border: 1px solid var(--border); box-shadow: 0 15px 40px rgba(0,0,0,0.8);
-            text-align: center; max-width: 450px; width: 100%; max-height: 90vh; overflow-y: auto;
+            text-align: center; max-width: 420px; width: 100%; max-height: 90vh; overflow-y: auto;
         }
-        .modal-box h1 { color: white; margin-bottom: 10px; font-size: 26px; letter-spacing: 1px; }
+        .modal-box h1 { color: white; margin-bottom: 10px; font-size: 26px; letter-spacing: 0.5px; }
         .modal-box h1 span { color: var(--accent); }
         .modal-box p { color: var(--text-muted); margin-bottom: 25px; font-size: 14px; line-height: 1.5; }
         
         .btn-google {
-            background-color: white; color: #1e293b; border: none; padding: 14px 20px;
-            border-radius: 8px; font-weight: 800; font-size: 16px; cursor: pointer;
+            background-color: white; color: #0f172a; border: none; padding: 16px 20px;
+            border-radius: 10px; font-weight: 800; font-size: 15px; cursor: pointer;
             display: flex; align-items: center; justify-content: center; gap: 12px; width: 100%;
-            transition: all 0.2s; box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.1s; box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
-        .btn-google:active { transform: scale(0.98); }
+        .btn-google:active { transform: scale(0.97); }
         .btn-google img { width: 22px; }
-
-        .error-banner { background: rgba(239, 68, 68, 0.1); border: 1px solid var(--danger); color: #fca5a5; padding: 15px; margin-top: 20px; font-size: 13px; border-radius: 8px; display: none; text-align: left; line-height: 1.5; }
-        .error-banner code { background: rgba(0,0,0,0.3); padding: 5px; display: block; margin-top: 10px; border-radius: 4px; font-family: monospace; white-space: pre-wrap; }
 
         /* LISTA DE PROFISSIONAIS */
         .prof-list-item {
-            background: var(--bg-input); border: 1px solid var(--border); border-radius: 8px;
-            padding: 15px; margin-bottom: 10px; cursor: pointer; transition: all 0.2s;
+            background: var(--bg-input); border: 2px solid var(--border); border-radius: 10px;
+            padding: 16px; margin-bottom: 12px; cursor: pointer; transition: all 0.2s;
             display: flex; flex-direction: column; align-items: flex-start; text-align: left;
         }
-        .prof-list-item:active, .prof-list-item:hover { border-color: var(--primary); background: rgba(59,130,246,0.1); }
-        .prof-list-item strong { color: var(--accent); font-size: 16px; margin-bottom: 4px;}
-        .prof-list-item span { color: var(--text-muted); font-size: 12px; }
+        .prof-list-item:active { border-color: var(--primary); background: rgba(59,130,246,0.15); transform: scale(0.98); }
+        .prof-list-item strong { color: var(--text-main); font-size: 16px; margin-bottom: 4px; font-weight: 700;}
+        .prof-list-item span { color: var(--accent); font-size: 13px; font-weight: 600;}
 
-        /* NAVBAR SUPERIOR - OTIMIZADA PARA MOBILE */
+        /* NAVBAR MOBILE FIRST */
         #app-content { display: none; }
         .navbar {
-            background: linear-gradient(to bottom, #0f172a, #020617); padding: 15px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.6); position: sticky; top: 0; z-index: 100;
-            display: flex; flex-direction: column; gap: 15px; border-bottom: 1px solid var(--border);
+            background: var(--bg-card); padding: 15px 20px;
+            box-shadow: 0 4px 25px rgba(0,0,0,0.8); position: sticky; top: 0; z-index: 100;
+            border-bottom: 1px solid var(--border);
         }
-        .nav-header { display: flex; justify-content: space-between; align-items: center; width: 100%; }
-        .logo { font-size: 22px; font-weight: 900; letter-spacing: 1px; color: white; text-transform: uppercase; }
-        .logo span { color: var(--accent); }
+        .nav-header { display: flex; justify-content: space-between; align-items: center; width: 100%; margin-bottom: 15px;}
+        .logo { font-size: 22px; font-weight: 900; color: white; text-transform: uppercase; }
+        .logo span { color: var(--primary); }
         
-        .user-info { display: flex; align-items: center; gap: 10px; }
-        .user-info img { width: 36px; height: 36px; border-radius: 50%; border: 2px solid var(--primary); object-fit: cover; }
+        .user-info { display: flex; align-items: center; gap: 12px; }
+        .user-info img { width: 38px; height: 38px; border-radius: 50%; border: 2px solid var(--primary); object-fit: cover; }
         .user-details { display: flex; flex-direction: column; align-items: flex-end;}
-        .user-details span { font-size: 12px; font-weight: bold; color: var(--accent); }
-        .btn-logout { background: transparent; border: none; color: var(--danger); font-size: 11px; text-decoration: underline; cursor: pointer; padding: 2px 0;}
+        .user-details span { font-size: 13px; font-weight: 700; color: var(--text-main); }
+        .btn-logout { background: transparent; border: none; color: var(--danger); font-size: 12px; text-decoration: underline; cursor: pointer; padding: 2px 0;}
         
-        /* Menu Rolável Horizontal para Celular */
         .nav-links {
-            display: flex; gap: 10px; width: 100%; overflow-x: auto; padding-bottom: 5px;
-            -webkit-overflow-scrolling: touch; /* Rolar suave no iPhone */
-            scrollbar-width: none; /* Firefox */
+            display: flex; gap: 10px; overflow-x: auto; padding-bottom: 5px;
+            -webkit-overflow-scrolling: touch; scrollbar-width: none;
         }
+        .nav-links::-webkit-scrollbar { display: none; }
         .nav-links button {
-            background: rgba(255,255,255,0.05); border: 1px solid var(--border);
-            color: var(--text-muted); padding: 10px 18px; border-radius: 20px; cursor: pointer;
-            transition: all 0.3s; font-weight: 700; font-size: 13px; white-space: nowrap; flex-shrink: 0;
+            background: var(--bg-input); border: 1px solid var(--border);
+            color: var(--text-muted); padding: 12px 20px; border-radius: 25px; cursor: pointer;
+            transition: all 0.2s; font-weight: 700; font-size: 13px; white-space: nowrap; flex-shrink: 0;
         }
-        .nav-links button.active { background: var(--primary); border-color: var(--primary); color: white; box-shadow: 0 4px 10px rgba(59,130,246,0.3); }
+        .nav-links button.active { background: var(--primary); border-color: var(--primary); color: white; }
 
-        /* CONTAINER E CARDS */
-        .container { max-width: 900px; margin: 20px auto; padding: 0 12px; }
+        /* CONTAINERS E GRIDS */
+        .container { max-width: 900px; margin: 20px auto; padding: 0 15px; }
         .view-section { display: none; animation: fadeIn 0.3s ease-in-out; }
         .view-section.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
 
         .card {
             background-color: var(--bg-card); border-radius: var(--radius); padding: 20px;
-            margin-bottom: 20px; border: 1px solid var(--border); box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            margin-bottom: 20px; border: 1px solid var(--border); box-shadow: 0 8px 20px rgba(0,0,0,0.4);
         }
         .section-title {
-            color: var(--accent); font-size: 16px; font-weight: 800; margin-bottom: 18px;
-            padding-bottom: 12px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 10px; justify-content: space-between; flex-wrap: wrap; text-transform: uppercase; letter-spacing: 0.5px;
+            color: var(--primary); font-size: 16px; font-weight: 800; margin-bottom: 20px;
+            padding-bottom: 12px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; text-transform: uppercase; letter-spacing: 0.5px;
         }
 
-        /* GRIDS (Mobile First - Empilhados por Padrão) */
         .grid { display: grid; grid-template-columns: 1fr; gap: 15px; margin-bottom: 15px; }
-        
-        /* ADAPTAÇÃO PARA DESKTOP E TABLETS HORIZONTAIS */
         @media (min-width: 768px) {
             .grid-2 { grid-template-columns: repeat(2, 1fr); }
             .grid-3 { grid-template-columns: repeat(3, 1fr); }
             .grid-4 { grid-template-columns: repeat(4, 1fr); }
-            .navbar { flex-direction: row; padding: 15px 30px; }
-            .nav-links { width: auto; overflow: visible; padding-bottom: 0; }
-            .container { margin: 30px auto; }
-            .card { padding: 30px; }
+            .navbar { padding: 15px 30px; flex-direction: row; display: flex; justify-content: space-between; align-items: center; }
+            .nav-header { margin-bottom: 0; width: auto; }
+            .nav-links { padding-bottom: 0; margin-left: 20px; flex: 1; }
         }
 
+        /* INPUTS MODERNOS */
         .input-group { display: flex; flex-direction: column; gap: 6px; text-align: left; }
         .input-group label { font-size: 11px; color: var(--text-muted); font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px;}
         input, select, textarea {
-            background-color: var(--bg-body); border: 1px solid var(--border); color: var(--text-main);
-            padding: 14px; border-radius: 8px; font-size: 16px; transition: all 0.3s; outline: none; width: 100%;
-            -webkit-appearance: none; /* Corrige estilo padrão iOS/Android */
+            background-color: var(--bg-body); border: 2px solid var(--border); color: var(--text-main);
+            padding: 15px; border-radius: 10px; font-size: 16px; transition: all 0.2s; outline: none; width: 100%;
+            -webkit-appearance: none;
         }
-        input:focus, select:focus { border-color: var(--primary); box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3); }
-        select { background-image: url('data:image/svg+xml;utf8,<svg fill="%2394a3b8" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/><path d="M0 0h24v24H0z" fill="none"/></svg>'); background-repeat: no-repeat; background-position-x: 98%; background-position-y: center; }
-        .highlight-input { border-left: 3px solid var(--accent); }
+        input:focus, select:focus { border-color: var(--primary); background-color: var(--bg-input); }
+        select { background-image: url('data:image/svg+xml;utf8,<svg fill="%233b82f6" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/><path d="M0 0h24v24H0z" fill="none"/></svg>'); background-repeat: no-repeat; background-position-x: 96%; background-position-y: center; }
+        .highlight-input { border-color: var(--accent); background-color: rgba(14, 165, 233, 0.05); }
 
-        /* FOTOS UPLOAD */
-        .photo-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 10px; }
+        /* FOTOS */
+        .photo-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 12px; }
         .photo-upload {
-            border: 2px dashed var(--border); border-radius: var(--radius); padding: 15px; text-align: center;
+            border: 2px dashed var(--border); border-radius: var(--radius); padding: 20px 10px; text-align: center;
             cursor: pointer; position: relative; overflow: hidden; min-height: 140px;
-            display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--text-muted);
-            background: var(--bg-body);
+            display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--text-muted); background: var(--bg-body);
         }
         .photo-upload img { width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0; }
         .photo-upload input { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; z-index: 10; }
-        .photo-upload .icon { font-size: 24px; margin-bottom: 5px; }
+        .photo-upload .icon { font-size: 28px; margin-bottom: 8px; color: var(--primary); }
 
-        /* BOTÕES */
-        .btn { padding: 16px 20px; border: none; border-radius: 8px; font-size: 15px; font-weight: 800; cursor: pointer; transition: all 0.2s; text-transform: uppercase; width: 100%; letter-spacing: 1px; display: flex; align-items: center; justify-content: center; gap: 8px;}
-        .btn:active { transform: scale(0.98); }
+        /* BOTÕES DE AÇÃO */
+        .btn { padding: 18px 20px; border: none; border-radius: 10px; font-size: 15px; font-weight: 800; cursor: pointer; transition: all 0.2s; text-transform: uppercase; width: 100%; letter-spacing: 1px; display: flex; align-items: center; justify-content: center; gap: 8px;}
+        .btn:active { transform: scale(0.97); }
         .btn-primary { background-color: var(--primary); color: white; box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4); }
         .btn-success { background-color: var(--success); color: white; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);}
         .btn-outline { background-color: transparent; border: 2px solid var(--border); color: var(--text-main); }
-        .btn-sm { padding: 8px 14px; font-size: 12px; border-radius: 6px; width: auto;}
+        .btn-sm { padding: 10px 16px; font-size: 12px; border-radius: 8px; width: auto; border-color: var(--border);}
 
         /* DASHBOARD RESULTADOS E RECOMENDAÇÕES */
-        .dashboard-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; margin-bottom: 15px; }
-        .dash-card { background-color: var(--bg-body); padding: 15px; border-radius: var(--radius); text-align: center; border-left: 4px solid var(--primary); }
-        .dash-card h4 { color: var(--text-muted); font-size: 11px; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;}
-        .dash-card .value { font-size: 26px; font-weight: 900; color: var(--text-main); margin-bottom: 8px; }
-        .badge { display: inline-block; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: bold; text-transform: uppercase; }
+        .dashboard-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 12px; margin-bottom: 20px; }
+        .dash-card { background-color: var(--bg-body); padding: 18px 15px; border-radius: var(--radius); text-align: center; border: 2px solid var(--border); }
+        .dash-card h4 { color: var(--text-muted); font-size: 11px; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 800;}
+        .dash-card .value { font-size: 28px; font-weight: 900; color: var(--text-main); margin-bottom: 10px; }
+        .badge { display: inline-block; padding: 6px 12px; border-radius: 20px; font-size: 11px; font-weight: 800; text-transform: uppercase; }
         
-        .badge.success { background: rgba(16, 185, 129, 0.15); color: var(--success); border: 1px solid rgba(16, 185, 129, 0.3);}
-        .badge.warning { background: rgba(245, 158, 11, 0.15); color: var(--warning); border: 1px solid rgba(245, 158, 11, 0.3);}
-        .badge.danger { background: rgba(239, 68, 68, 0.15); color: var(--danger); border: 1px solid rgba(239, 68, 68, 0.3);}
-        .badge.info { background: rgba(59, 130, 246, 0.15); color: var(--primary); border: 1px solid rgba(59, 130, 246, 0.3);}
+        .badge.success { background: rgba(16, 185, 129, 0.15); color: var(--success); }
+        .badge.warning { background: rgba(245, 158, 11, 0.15); color: var(--warning); }
+        .badge.danger { background: rgba(239, 68, 68, 0.15); color: var(--danger); }
+        .badge.info { background: rgba(59, 130, 246, 0.15); color: var(--primary); }
 
-        .ai-suggestions { background: rgba(15, 23, 42, 0.5); border-left: 4px solid var(--accent); padding: 15px; border-radius: var(--radius); margin-top: 15px; border: 1px solid var(--border); }
-        .ai-suggestions h4 { color: var(--accent); margin-bottom: 12px; font-size: 16px;}
-        .rec-item { margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.05); text-align: left;}
+        .ai-suggestions { background: var(--bg-body); border-left: 4px solid var(--accent); padding: 20px; border-radius: var(--radius); margin-top: 20px; border: 1px solid var(--border); }
+        .ai-suggestions h4 { color: var(--accent); margin-bottom: 15px; font-size: 16px; font-weight: 800;}
+        .rec-item { margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px dashed var(--border); text-align: left;}
         .rec-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
-        .rec-item strong { color: var(--primary); display: block; margin-bottom: 4px; font-size: 14px;}
-        .rec-item p { color: var(--text-main); font-size: 13px; line-height: 1.5; margin: 0; }
+        .rec-item strong { color: var(--primary); display: block; margin-bottom: 6px; font-size: 14px;}
+        .rec-item p { color: var(--text-muted); font-size: 13px; line-height: 1.6; margin: 0; }
 
-        /* LEGAL & RT TEXT */
         .legal-text { font-size: 11px; color: var(--text-muted); margin-top: 15px; padding-top: 15px; border-top: 1px dashed var(--border); line-height: 1.5; text-align: justify;}
         .rt-footer { background: var(--bg-body); border: 1px solid var(--border); padding: 15px; text-align: center; font-size: 11px; color: var(--text-muted); border-radius: 8px; margin-top: 20px; line-height: 1.5;}
         .rt-footer strong { color: var(--accent); font-size: 13px; display: block; margin-bottom: 5px;}
 
-        /* HISTÓRICO E RELATÓRIOS */
-        .report-filters { display: flex; gap: 8px; margin-bottom: 15px; overflow-x: auto; padding-bottom: 5px; scrollbar-width: none; }
+        /* HISTÓRICO E FILTROS */
+        .report-filters { display: flex; gap: 8px; margin-bottom: 20px; overflow-x: auto; padding-bottom: 5px; scrollbar-width: none; }
         .report-filters::-webkit-scrollbar { display: none; }
         .report-filters button {
-            background: var(--bg-card); border: 1px solid var(--border); color: var(--text-muted);
-            padding: 10px 16px; border-radius: 20px; cursor: pointer; font-size: 13px; font-weight: bold; white-space: nowrap; flex: 1; text-align: center;
+            background: var(--bg-body); border: 2px solid var(--border); color: var(--text-muted);
+            padding: 12px 18px; border-radius: 25px; cursor: pointer; font-size: 13px; font-weight: 800; white-space: nowrap; flex: 1; text-align: center;
         }
         .report-filters button.active { background: var(--primary); border-color: var(--primary); color: white; }
 
         .history-list { display: flex; flex-direction: column; gap: 15px; }
-        .history-item { background: var(--bg-body); padding: 15px; border-radius: var(--radius); border: 1px solid var(--border); display: flex; flex-direction: column; gap: 12px; }
-        .hist-info strong { color: var(--accent); font-size: 17px; margin-bottom: 4px; display: block;}
+        .history-item { background: var(--bg-body); padding: 20px; border-radius: var(--radius); border: 2px solid var(--border); display: flex; flex-direction: column; gap: 15px; }
+        .hist-info strong { color: var(--text-main); font-size: 18px; margin-bottom: 8px; display: block; font-weight: 800;}
         .hist-info small { color: var(--text-muted); font-size: 12px; display: flex; flex-wrap: wrap; gap: 8px;}
-        .hist-info small span { background: var(--bg-card); padding: 4px 8px; border-radius: 4px; border: 1px solid var(--border); }
-        .hist-actions { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+        .hist-info small span { background: var(--bg-input); padding: 6px 10px; border-radius: 6px; font-weight: 600;}
+        .hist-actions { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
         
-        .btn-action-sm { padding: 10px 5px; font-size: 11px; border-radius: 6px; font-weight: bold; border: 1px solid; text-align: center; text-transform: uppercase;}
-        .btn-edit { background: rgba(59,130,246,0.1); border-color: var(--primary); color: var(--primary); }
-        .btn-print { background: rgba(16,185,129,0.1); border-color: var(--success); color: var(--success); }
-        .btn-delete { background: rgba(239,68,68,0.1); border-color: var(--danger); color: var(--danger); }
+        .btn-action-sm { padding: 12px 5px; font-size: 11px; border-radius: 8px; font-weight: 800; border: none; text-align: center; text-transform: uppercase;}
+        .btn-edit { background: rgba(59,130,246,0.15); color: var(--primary); }
+        .btn-print { background: rgba(16,185,129,0.15); color: var(--success); }
+        .btn-delete { background: rgba(239,68,68,0.15); color: var(--danger); }
 
-        .edit-mode-banner { background-color: rgba(245, 158, 11, 0.1); color: var(--warning); padding: 12px; text-align: center; font-size: 13px; font-weight: bold; border-radius: var(--radius); margin-bottom: 20px; border: 1px solid var(--warning); }
+        .edit-mode-banner { background-color: rgba(245, 158, 11, 0.15); color: var(--warning); padding: 15px; text-align: center; font-size: 14px; font-weight: 800; border-radius: var(--radius); margin-bottom: 20px; border: 2px solid var(--warning); }
 
         /* IMPRESSÃO (PDF) OTIMIZADA PARA A4 */
         @media print {
             body { background: #fff !important; color: #000 !important; font-size: 11px; padding: 0;}
-            .navbar, #login-screen, #modal-profissionais, .btn, .hist-actions, #view-history, .photo-upload input, .edit-mode-banner { display: none !important; }
+            .navbar, #login-screen, #modal-profissionais, .btn, .hist-actions, #view-history, .photo-upload input, .edit-mode-banner, #toast-container { display: none !important; }
             .container { margin: 0; padding: 0; width: 100%; max-width: 100%; }
             .card { box-shadow: none; border: none; padding: 0; margin-bottom: 15px; border-bottom: 1px solid #ccc; border-radius: 0; background: transparent;}
             .section-title { color: #000 !important; border-bottom: 2px solid #000; padding-bottom: 5px; margin-bottom: 10px; flex-direction: row;}
             .section-title button, .section-title select { display: none !important; }
-            
             .grid, .grid-2, .grid-3, .grid-4 { display: flex !important; flex-wrap: wrap !important; flex-direction: row !important; gap: 10px; margin-bottom: 10px;}
             .input-group { flex: 1 1 22%; min-width: 120px; }
-            
             input, select, textarea { background: transparent !important; border: none !important; border-bottom: 1px solid #000 !important; color: #000 !important; padding: 2px 0 !important; border-radius: 0 !important;}
             .dash-card { border: 1px solid #000 !important; background: transparent !important; padding: 10px;}
             .dash-card h4, .dash-card .value { color: #000 !important; }
@@ -231,29 +223,32 @@
 </head>
 <body>
 
+    <!-- Container para Notificações Elegantes (Toasts) -->
+    <div id="toast-container"></div>
+
     <!-- ================= 1. TELA DE LOGIN ================= -->
     <div id="login-screen" class="overlay-screen">
         <div class="modal-box">
             <h1>PowFit <span>Med's</span></h1>
-            <p>Plataforma Clínica & Esportiva</p>
+            <p>Plataforma Profissional de Avaliação</p>
             <button class="btn-google" onclick="window.Auth.login()">
                 <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google Logo">
                 Entrar com Conta Google
             </button>
-            <div id="login-error" class="error-banner"></div>
         </div>
     </div>
 
-    <!-- ================= 2. MODAL DE PROFISSIONAIS ================= -->
+    <!-- ================= 2. MODAL DE PROFISSIONAIS E ERRO FIREBASE ================= -->
     <div id="modal-profissionais" class="overlay-screen" style="display: none;">
         <div class="modal-box">
-            <h1>Selecione o <span>Perfil</span></h1>
-            <p>Escolha qual profissional vai assinar as avaliações.</p>
+            <h1 id="prof-modal-title">Selecione o <span>Perfil</span></h1>
+            <p id="prof-modal-desc">Escolha qual profissional vai assinar as avaliações.</p>
             
             <div id="prof-list-container" style="max-height: 250px; overflow-y: auto; margin-bottom: 20px;"></div>
 
             <button class="btn btn-outline" onclick="window.ProfUI.showForm()" id="btn-show-add-prof">+ Novo Profissional</button>
 
+            <!-- Formulário de Novo Profissional -->
             <form id="form-add-prof" style="display: none; margin-top: 20px;" onsubmit="event.preventDefault(); window.ProfUI.saveProfissional();">
                 <div class="grid">
                     <div class="input-group">
@@ -301,8 +296,8 @@
                 </div>
             </div>
             <div class="nav-links">
-                <button id="tab-form" class="active" onclick="window.UI.switchTab('form')">📄 Avaliação</button>
-                <button id="tab-hist" onclick="window.UI.switchTab('history')">📂 Pacientes</button>
+                <button id="tab-form" class="active" onclick="window.UI.switchTab('form')">📄 Ficha de Avaliação</button>
+                <button id="tab-hist" onclick="window.UI.switchTab('history')">📂 Meus Pacientes</button>
                 <button onclick="window.UI.toggleTotem()">⛶ Tela Cheia</button>
             </div>
         </nav>
@@ -313,7 +308,7 @@
             <div id="view-form" class="view-section active">
                 
                 <div id="edit-banner" class="edit-mode-banner">
-                    ⚠️ MODO DE EDIÇÃO: Alterando Ficha Salva.
+                    ⚠️ MODO DE EDIÇÃO: Você está alterando uma Ficha Salva.
                 </div>
 
                 <form id="formAvaliacao" onsubmit="event.preventDefault(); window.App.processAvaliacao();">
@@ -321,11 +316,11 @@
                     <!-- Avaliador -->
                     <div class="card">
                         <div class="section-title">
-                            👨‍⚕️ Profissional
+                            👨‍⚕️ Responsável Técnico
                             <button type="button" class="btn-outline btn-sm" onclick="window.ProfUI.showSelectionModal()">Trocar</button>
                         </div>
                         <div class="grid grid-3">
-                            <div class="input-group"><label>Nome</label><input type="text" id="av_nome" readonly style="color:var(--accent);"></div>
+                            <div class="input-group"><label>Nome</label><input type="text" id="av_nome" readonly style="color:var(--primary); font-weight: bold;"></div>
                             <div class="input-group"><label>Atuação</label><input type="text" id="av_tipo" readonly></div>
                             <div class="input-group"><label>Reg./UF</label><input type="text" id="av_reg" readonly></div>
                         </div>
@@ -334,10 +329,10 @@
 
                     <!-- Cliente -->
                     <div class="card">
-                        <div class="section-title">👤 Cliente e Anamnese</div>
+                        <div class="section-title">👤 Paciente e Anamnese</div>
                         <div class="grid grid-2">
                             <div class="input-group"><label>Nome do Paciente *</label><input type="text" id="in_nome" required></div>
-                            <div class="input-group"><label>Data *</label><input type="date" id="in_data" required></div>
+                            <div class="input-group"><label>Data da Avaliação *</label><input type="date" id="in_data" required></div>
                         </div>
                         <div class="grid grid-4">
                             <div class="input-group"><label>Idade *</label><input type="number" id="in_idade" required></div>
@@ -346,13 +341,13 @@
                             <div class="input-group"><label>Sexo *</label><select id="in_sexo"><option value="Masculino">Homem</option><option value="Feminino">Mulher</option></select></div>
                         </div>
                         <div class="grid grid-3">
-                            <div class="input-group"><label>Objetivo</label><select id="in_objetivo"><option value="Emagrecimento">Emagrecimento</option><option value="Hipertrofia">Hipertrofia</option><option value="Saúde">Saúde</option><option value="Performance">Performance</option></select></div>
+                            <div class="input-group"><label>Objetivo</label><select id="in_objetivo"><option value="Emagrecimento">Emagrecimento</option><option value="Hipertrofia">Hipertrofia</option><option value="Saúde">Saúde/Condicionamento</option><option value="Performance">Performance Esportiva</option></select></div>
                             <div class="input-group"><label>Atividade Física</label><select id="in_atividade"><option value="Sedentário">Sedentário</option><option value="Leve">Leve</option><option value="Moderado">Moderado</option><option value="Intenso">Intenso</option></select></div>
-                            <div class="input-group"><label>Sono</label><select id="in_sono"><option value="Boa">Boa (7-8h)</option><option value="Regular">Regular</option><option value="Ruim">Ruim (Insônia)</option></select></div>
+                            <div class="input-group"><label>Qualidade do Sono</label><select id="in_sono"><option value="Boa">Boa (7-8h)</option><option value="Regular">Regular</option><option value="Ruim">Ruim (Insônia)</option></select></div>
                         </div>
                         <div class="grid grid-2">
-                            <div class="input-group"><label>Lesões/Dores</label><input type="text" id="in_lesoes" placeholder="Ex: Joelho dir."></div>
-                            <div class="input-group"><label>Medicamentos</label><input type="text" id="in_medicamentos" placeholder="Ex: Losartana"></div>
+                            <div class="input-group"><label>Lesões/Dores Físicas</label><input type="text" id="in_lesoes" placeholder="Opcional. Ex: Dor lombar"></div>
+                            <div class="input-group"><label>Medicamentos/Suplementos</label><input type="text" id="in_medicamentos" placeholder="Opcional."></div>
                         </div>
                     </div>
 
@@ -381,7 +376,7 @@
                     <div class="card">
                         <div class="section-title">
                             🤏 Dobras (mm)
-                            <select id="in_protocolo" style="width:auto; padding: 6px; font-size: 13px; max-width: 150px;">
+                            <select id="in_protocolo" style="width:auto; padding: 6px; font-size: 13px; font-weight: bold; border-color: var(--primary);">
                                 <option value="pollock3">Pollock 3</option>
                                 <option value="pollock7">Pollock 7</option>
                                 <option value="imc">Só IMC/RCQ</option>
@@ -401,7 +396,7 @@
 
                     <!-- Fotos -->
                     <div class="card">
-                        <div class="section-title">📷 Registro Fotográfico</div>
+                        <div class="section-title">📷 Fotos (Opcional)</div>
                         <div class="photo-grid">
                             <div class="photo-upload">
                                 <div class="icon">🧍‍♂️</div><span id="txt-foto-frente">Frente</span>
@@ -419,8 +414,8 @@
                     </div>
 
                     <div class="grid grid-2">
-                        <button type="button" class="btn btn-outline" onclick="window.App.cancelarEdicaoOuLimpar()">Limpar</button>
-                        <button type="submit" class="btn btn-primary" id="btn-gerar">Calcular</button>
+                        <button type="button" class="btn btn-outline" onclick="window.App.cancelarEdicaoOuLimpar()">Limpar Tudo</button>
+                        <button type="submit" class="btn btn-primary" id="btn-gerar">Processar Avaliação</button>
                     </div>
                 </form>
 
@@ -453,8 +448,8 @@
                     </div>
 
                     <div style="margin-top: 20px;">
-                        <button class="btn btn-success" id="btn-salvar-imprimir" style="font-size: 16px; padding: 18px;" onclick="window.App.salvarEImprimir()">
-                            💾 Salvar na Nuvem & 🖨️ PDF
+                        <button class="btn btn-success" id="btn-salvar-imprimir" style="padding: 20px;" onclick="window.App.salvarEImprimir()">
+                            💾 Salvar Paciente & 🖨️ PDF
                         </button>
                     </div>
                 </div>
@@ -463,16 +458,14 @@
             <!-- ====== TELA: HISTÓRICO ====== -->
             <div id="view-history" class="view-section">
                 
-                <div id="history-error-banner" class="error-banner"></div>
-
                 <div class="report-filters">
-                    <button class="active" id="btn-filtro-todos" onclick="window.UI.setReportFilter('todos')">Todos</button>
+                    <button class="active" id="btn-filtro-todos" onclick="window.UI.setReportFilter('todos')">Todos os Meses</button>
                     <button id="btn-filtro-mes" onclick="window.UI.setReportFilter('mes')">Este Mês</button>
                     <button id="btn-filtro-ano" onclick="window.UI.setReportFilter('ano')">Este Ano</button>
                 </div>
 
                 <div class="card">
-                    <div class="section-title"><div id="chart-title">📈 Evolução da Base</div></div>
+                    <div class="section-title"><div id="chart-title">📈 Evolução de Peso x Gordura</div></div>
                     <div style="height: 250px; width: 100%; position: relative;">
                         <canvas id="evolutionChart"></canvas>
                     </div>
@@ -480,9 +473,9 @@
 
                 <div class="card">
                     <div class="section-title">📂 Pacientes Salvos</div>
-                    <input type="text" id="search-history" placeholder="Buscar paciente por nome..." style="margin-bottom: 15px; width: 100%; padding: 14px; border-radius:8px; border: 1px solid var(--border); background: var(--bg-body); color: white;" onkeyup="window.UI.renderHistoryList()">
+                    <input type="text" id="search-history" placeholder="Buscar paciente por nome..." style="margin-bottom: 15px; width: 100%; padding: 16px; border-radius:10px; border: 2px solid var(--border); background: var(--bg-body); color: white; outline: none; font-size: 15px;" onkeyup="window.UI.renderHistoryList()">
                     <div class="history-list" id="lista-historico">
-                        <p style="color: var(--text-muted)">Carregando dados da nuvem...</p>
+                        <p style="color: var(--text-muted); text-align: center; padding: 20px;">Carregando histórico do servidor...</p>
                     </div>
                 </div>
             </div>
@@ -519,15 +512,27 @@
     let currentCalculatedData = null;
     let currentPhotos = { foto_frente: null, foto_lado: null, foto_costas: null };
 
+    // SISTEMA DE NOTIFICAÇÕES (Substitui Alertas)
+    window.showToast = (message, type = 'info') => {
+        const container = document.getElementById('toast-container');
+        const toast = document.createElement('div');
+        toast.className = 'toast';
+        let icon = 'ℹ️';
+        if (type === 'error') { icon = '❌'; toast.style.borderLeftColor = 'var(--danger)'; }
+        if (type === 'success') { icon = '✅'; toast.style.borderLeftColor = 'var(--success)'; }
+        toast.innerHTML = `<span>${icon}</span> <div>${message}</div>`;
+        container.appendChild(toast);
+        setTimeout(() => { toast.style.opacity = '0'; setTimeout(() => toast.remove(), 300); }, 4000);
+    };
+
     window.Auth = {
         login: async () => {
-            document.querySelector('.btn-google').innerHTML = 'Conectando...';
+            const btn = document.querySelector('.btn-google');
+            btn.innerHTML = 'Conectando ao Google...';
             try { await signInWithPopup(auth, provider); } 
             catch (e) {
-                const errDiv = document.getElementById('login-error');
-                errDiv.innerHTML = "<strong>Falha ao logar:</strong> " + e.message;
-                errDiv.style.display = 'block';
-                document.querySelector('.btn-google').innerHTML = `Tentar Novamente`;
+                window.showToast("Falha ao logar. Tente novamente.", 'error');
+                btn.innerHTML = `<img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google">Entrar com Conta Google`;
             }
         },
         logout: () => signOut(auth).then(() => window.location.reload())
@@ -541,6 +546,7 @@
                 document.getElementById('user-photo').src = user.photoURL;
                 document.getElementById('user-photo').style.display = 'block';
             }
+            window.showToast("Login realizado com sucesso!", 'success');
             await window.ProfUI.loadProfissionais();
         } else {
             currentUser = null;
@@ -551,7 +557,10 @@
     });
 
     window.ProfUI = {
-        getProfCollection() { return collection(db, "users", currentUser.uid, "profissionais"); },
+        getProfCollection() { 
+            // Usando estrutura padrão e segura para qualquer Firebase
+            return collection(db, "powfit_users", currentUser.uid, "profissionais"); 
+        },
         
         async loadProfissionais() {
             try {
@@ -566,12 +575,17 @@
                 }
             } catch(e) { 
                 console.error(e);
-                const errDiv = document.getElementById('login-error');
-                errDiv.innerHTML = `<strong>Acesso Negado no Banco de Dados (Firebase Rules)</strong><br><br>Parece que seu banco Firebase está bloqueado para leitura. Siga este passo a passo para corrigir:<br><br>1. Vá no <a href="https://console.firebase.google.com" target="_blank" style="color:#60a5fa;">Console do Firebase</a><br>2. Vá em Firestore Database > Regras (Rules)<br>3. Cole exatamente isso:<br><code>rules_version = '2';<br>service cloud.firestore {<br> match /databases/{database}/documents {<br>  match /{document=**} {<br>   allow read, write: if request.auth != null;<br>  }<br> }<br>}</code><br>4. Clique em Publicar.`;
-                errDiv.style.display = 'block';
-                document.getElementById('modal-profissionais').style.display = 'none';
-                document.getElementById('login-screen').style.display = 'flex';
-                document.querySelector('.btn-google').style.display = 'none';
+                // Tratamento elegante do erro do Firebase sem alert()
+                const container = document.getElementById('prof-list-container');
+                document.getElementById('prof-modal-title').innerHTML = "Banco <span>Bloqueado</span>";
+                document.getElementById('prof-modal-desc').innerHTML = "Acesse o Console do Firebase e libere as <b>Regras (Rules)</b> do Firestore Database para continuar.";
+                container.innerHTML = `
+                    <div style="background: rgba(239, 68, 68, 0.1); border: 1px solid var(--danger); padding: 15px; border-radius: 8px; text-align: left; font-size: 13px; color: #fca5a5;">
+                        <b>Cole isto nas Regras do seu Firebase:</b><br><br>
+                        <code style="background: rgba(0,0,0,0.3); padding: 8px; display: block; border-radius: 4px;">rules_version = '2';<br>service cloud.firestore {<br> match /databases/{database}/documents {<br>  match /{document=**} {<br>   allow read, write: if request.auth != null;<br>  }<br> }<br>}</code>
+                    </div>`;
+                document.getElementById('btn-show-add-prof').style.display = 'none';
+                document.getElementById('modal-profissionais').style.display = 'flex';
             }
         },
         showSelectionModal() {
@@ -616,7 +630,7 @@
         },
         async saveProfissional() {
             const btn = document.getElementById('btn-save-prof');
-            btn.innerText = 'Salvando...'; btn.disabled = true;
+            btn.innerText = 'Aguarde...'; btn.disabled = true;
             try {
                 const payload = {
                     nome: document.getElementById('p_nome').value, tipo: document.getElementById('p_tipo').value,
@@ -624,8 +638,12 @@
                 };
                 const docRef = await addDoc(this.getProfCollection(), payload);
                 profissionais.push({id: docRef.id, ...payload});
+                window.showToast("Profissional cadastrado!", 'success');
                 this.selectProfissional(docRef.id);
-            } catch(e) { alert("Erro: " + e.message); btn.innerText = 'Salvar Perfil'; btn.disabled = false; }
+            } catch(e) { 
+                window.showToast("Erro ao salvar. Verifique as Regras do Firebase.", 'error');
+                btn.innerText = 'Salvar Perfil'; btn.disabled = false; 
+            }
         },
         async selectProfissional(id) {
             activeProfId = id;
@@ -635,14 +653,14 @@
             document.getElementById('app-content').style.display = 'block';
             
             const nA = prof.nome.split(' ')[0];
-            document.getElementById('active-prof-name').innerText = nA.length > 10 ? nA.substring(0,10)+'...' : nA;
+            document.getElementById('active-prof-name').innerText = nA.length > 12 ? nA.substring(0,12)+'...' : nA;
             document.getElementById('av_nome').value = prof.nome;
             document.getElementById('av_tipo').value = prof.tipo;
             document.getElementById('av_reg').value = prof.tipo === 'Treinador Esportivo' ? prof.estado : `CREF: ${prof.cref} / ${prof.estado}`;
             
             const legalDiv = document.getElementById('av_legal_text');
-            if(prof.tipo === 'Treinador Esportivo') legalDiv.innerHTML = "⚖️ <strong>Base Legal Esportiva:</strong> Amparado pela Lei Federal nº 9.615/1998 (Lei Pelé), focado no treinamento técnico/esportivo.";
-            else legalDiv.innerHTML = "⚖️ <strong>Base Legal Clínica:</strong> Atuação regulamentada pela Lei Federal nº 9.696/1998 para prescrição de exercícios e saúde.";
+            if(prof.tipo === 'Treinador Esportivo') legalDiv.innerHTML = "⚖️ <strong>Base Legal Esportiva:</strong> Amparado pela Lei Federal nº 9.615/1998 (Lei Pelé), focado no treinamento técnico e tático desportivo.";
+            else legalDiv.innerHTML = "⚖️ <strong>Base Legal Clínica:</strong> Atuação regulamentada pela Lei Federal nº 9.696/1998 para avaliação e prescrição voltada à saúde.";
 
             document.getElementById('in_data').valueAsDate = new Date();
             await window.DB.loadAvaliacoes();
@@ -650,13 +668,11 @@
     };
 
     window.DB = {
-        getAvaliacaoCollection() { return collection(db, "users", currentUser.uid, "avaliacoes"); },
+        getAvaliacaoCollection() { return collection(db, "powfit_users", currentUser.uid, "avaliacoes"); },
 
         async loadAvaliacoes() {
             if (!currentUser || !activeProfId) return;
-            const historyError = document.getElementById('history-error-banner');
-            historyError.style.display = 'none';
-            
+            const list = document.getElementById('lista-historico');
             try {
                 const snapshot = await getDocs(this.getAvaliacaoCollection());
                 let todas = [];
@@ -666,16 +682,14 @@
                 window.UI.processReports(); 
             } catch (e) { 
                 console.error(e);
-                historyError.innerHTML = `<strong>Erro ao baixar fichas!</strong> Seu banco de dados Firebase está bloqueado para leitura.<br>Vá no Console do Firebase > Firestore Database > Regras, apague tudo e cole:<br><code>rules_version = '2';<br>service cloud.firestore {<br> match /databases/{database}/documents {<br>  match /{document=**} {<br>   allow read, write: if request.auth != null;<br>  }<br> }<br>}</code>`;
-                historyError.style.display = 'block';
-                document.getElementById('lista-historico').innerHTML = `<p style="color:var(--danger)">Erro de permissão no servidor.</p>`; 
+                list.innerHTML = `<div style="padding:20px; text-align:center; color:var(--danger); border:1px solid var(--danger); border-radius:8px; background:rgba(239, 68, 68, 0.1);">Erro de permissão.<br>Libere as Regras no Firebase.</div>`; 
             }
         },
         async saveOrUpdate(dataObj) {
             if (!currentUser || !activeProfId) return;
             const payload = { ...dataObj, profId: activeProfId, timestamp: new Date().toISOString() };
             if (currentEditingId) {
-                const docRef = doc(db, "users", currentUser.uid, "avaliacoes", currentEditingId);
+                const docRef = doc(db, "powfit_users", currentUser.uid, "avaliacoes", currentEditingId);
                 await updateDoc(docRef, payload);
             } else {
                 await addDoc(this.getAvaliacaoCollection(), payload);
@@ -683,11 +697,12 @@
             await this.loadAvaliacoes();
         },
         async deleteAvaliacao(id) {
-            if(!confirm("⚠️ Excluir ficha definitivamente?")) return;
+            if(!confirm("⚠️ Remover esta ficha permanentemente?")) return;
             try {
-                await deleteDoc(doc(db, "users", currentUser.uid, "avaliacoes", id));
+                await deleteDoc(doc(db, "powfit_users", currentUser.uid, "avaliacoes", id));
+                window.showToast("Ficha removida.", 'success');
                 await this.loadAvaliacoes();
-            } catch (e) { alert("Erro ao excluir: " + e.message); }
+            } catch (e) { window.showToast("Erro ao excluir.", 'error'); }
         }
     };
 
@@ -741,19 +756,19 @@
         },
         getRecomendacoes(imcObj, rcqObj, bfObj) {
             let r_imc = "", r_rcq = "", r_bf = "";
-            if(imcObj.type === 'danger') r_imc = "Quadro indica sobrecarga articular e sistêmica. Recomendada rotina com baixo impacto inicial e foco em déficit calórico.";
-            else if(imcObj.type === 'warning') r_imc = "Estatura/Peso indica leve descompasso. Avaliar se o peso extra é músculo ou gordura.";
-            else if(imcObj.type === 'success') r_imc = "Peso absoluto dentro dos parâmetros seguros. Priorizar manutenção de flexibilidade e força.";
-            else r_imc = "Perfil de baixo peso. Requer prescrição para ganho de massa magra e superávit calórico nutricional.";
+            if(imcObj.type === 'danger') r_imc = "Quadro indica sobrecarga articular sistêmica. Priorize baixo impacto e déficit calórico.";
+            else if(imcObj.type === 'warning') r_imc = "Proporção Estatura/Peso aponta leve descompasso. Avaliar se o excesso provém de massa muscular.";
+            else if(imcObj.type === 'success') r_imc = "Peso estável nos parâmetros de segurança clínica. Foco em manutenção de força.";
+            else r_imc = "Baixo peso estrutural. Prescrição focada em hipertrofia e superávit nutricional.";
 
-            if(rcqObj.type === 'danger') r_rcq = "ALERTA CLÍNICO: Acúmulo de gordura visceral. Probabilidade alta para síndrome metabólica. Treino aeróbio urgente.";
-            else if(rcqObj.type === 'warning') r_rcq = "Atenção à distribuição da gordura central. Indicado aumentar volume semanal de treinamento cardiovascular.";
-            else r_rcq = "Distribuição adiposa segura. Baixa incidência de centralização de gordura visceral.";
+            if(rcqObj.type === 'danger') r_rcq = "ALERTA: Acúmulo de gordura visceral identificado. Alta propensão à síndrome metabólica. Treino aeróbio mandatório.";
+            else if(rcqObj.type === 'warning') r_rcq = "Distribuição adiposa central requer atenção. Elevar frequência do estímulo cardiovascular.";
+            else r_rcq = "Índices seguros de distribuição de gordura. Baixa tendência a doenças metabólicas primárias.";
 
-            if(!bfObj.c || bfObj.t === 'info') r_bf = "Percentual de gordura extremamente baixo. Foco na manutenção da integridade hormonal e óssea.";
-            else if(bfObj.t === 'success') r_bf = "Níveis corporais no padrão de saúde ideal. Estrutura favorável à otimização de performance e longevidade.";
-            else if(bfObj.t === 'warning') r_bf = "Depósitos de gordura ligeiramente acima do recomendado. Sugere-se protocolo de emagrecimento leve.";
-            else r_bf = "Excesso de tecido adiposo corporal. O plano deve priorizar oxidação de lipídios através de treinamento concorrente (Aeróbico + Força).";
+            if(!bfObj.c || bfObj.t === 'info') r_bf = "Tecido adiposo muito baixo. Monitorar integridade hormonal, articular e imunológica.";
+            else if(bfObj.t === 'success') r_bf = "Reservas lipídicas saudáveis. Quadro perfeito para extrair o máximo de performance e evolução.";
+            else if(bfObj.t === 'warning') r_bf = "Gordura corporal discretamente acima da meta de saúde plena. Protocolo leve de oxidação recomendado.";
+            else r_bf = "Excesso de tecido adiposo constatado. A prescrição deve focar prioritariamente na regulação metabólica (Aeróbico + Resistido).";
 
             return { r_imc: `<p>${r_imc}</p>`, r_rcq: `<p>${r_rcq}</p>`, r_bf: `<p>${r_bf}</p>` };
         }
@@ -793,7 +808,7 @@
             currentReportFilter = type;
             document.querySelectorAll('.report-filters button').forEach(b => b.classList.remove('active'));
             document.getElementById(`btn-filtro-${type}`).classList.add('active');
-            const titles = { 'todos': '📈 Evolução (Base Completa)', 'mes': '📅 Relatório deste Mês', 'ano': '📊 Relatório Anual' };
+            const titles = { 'todos': '📈 Evolução Geral', 'mes': '📅 Pacientes deste Mês', 'ano': '📊 Pacientes do Ano' };
             document.getElementById('chart-title').innerText = titles[type];
             this.processReports();
         },
@@ -816,7 +831,7 @@
             list.innerHTML = '';
             
             const finalArr = dataToRender.filter(h => h.inputs.nome.toLowerCase().includes(termo));
-            if(finalArr.length === 0) { list.innerHTML = '<p style="color:var(--text-muted)">Nenhuma avaliação encontrada.</p>'; return; }
+            if(finalArr.length === 0) { list.innerHTML = '<p style="color:var(--text-muted); text-align:center; padding: 20px;">Nenhum paciente cadastrado neste filtro.</p>'; return; }
 
             finalArr.forEach(item => {
                 const d = new Date(item.timestamp).toLocaleDateString();
@@ -830,8 +845,8 @@
                         </div>
                         <div class="hist-actions">
                             <button class="btn-action-sm btn-edit" onclick="window.App.editar('${item.id}')">✏️ Editar</button>
-                            <button class="btn-action-sm btn-print" onclick="window.App.imprimirAntigo('${item.id}')">🖨️ Relatório</button>
-                            <button class="btn-action-sm btn-delete" onclick="window.DB.deleteAvaliacao('${item.id}')">🗑️ Excluir</button>
+                            <button class="btn-action-sm btn-print" onclick="window.App.imprimirAntigo('${item.id}')">🖨️ Imprimir</button>
+                            <button class="btn-action-sm btn-delete" onclick="window.DB.deleteAvaliacao('${item.id}')">🗑️ Apagar</button>
                         </div>
                     </div>`;
             });
@@ -846,7 +861,7 @@
                 data: {
                     labels: recent.map(h => h.inputs.nome.split(' ')[0] + ' ('+ new Date(h.timestamp).getDate() +'/'+ (new Date(h.timestamp).getMonth()+1) +')'),
                     datasets: [
-                        { label: 'Peso Corporal (kg)', data: recent.map(h => h.inputs.peso), borderColor: '#3b82f6', backgroundColor: 'rgba(59,130,246,0.1)', fill:true, tension: 0.3},
+                        { label: 'Peso (kg)', data: recent.map(h => h.inputs.peso), borderColor: '#3b82f6', backgroundColor: 'rgba(59,130,246,0.1)', fill:true, tension: 0.3},
                         { label: 'Gordura (%)', data: recent.map(h => h.resultados.bf || 0), borderColor: '#0ea5e9', borderDash:[5,5], tension: 0.3}
                     ]
                 },
@@ -942,14 +957,15 @@
 
             currentCalculatedData = { inputs: i, resultados: { imc: resImc.value, rcq: resRcq.value, bf: resBf, mg: mg, mm: mm } };
             document.getElementById('painel-resultados').scrollIntoView();
+            window.showToast("Cálculos gerados com sucesso!", 'success');
         },
 
         async salvarEImprimir() {
             const btn = document.getElementById('btn-salvar-imprimir');
-            btn.innerText = 'Salvando Dados...'; btn.disabled = true;
+            btn.innerText = 'Sincronizando Nuvem...'; btn.disabled = true;
             try {
                 await window.DB.saveOrUpdate(currentCalculatedData);
-                btn.innerText = 'Preparando Relatório...';
+                btn.innerText = 'Gerando PDF...';
                 const n = document.getElementById('in_nome').value; const t = document.title;
                 document.title = `PowFit_Meds_${n ? n.replace(/\s+/g,'_') : 'Relatorio'}`;
                 
@@ -959,8 +975,8 @@
                     window.App.cancelarEdicaoOuLimpar();
                     window.UI.switchTab('history');
                 }, 500);
-            } catch(e) { alert("Falha: " + e.message); } 
-            finally { btn.innerText = '💾 Salvar na Nuvem & 🖨️ Imprimir'; btn.disabled = false; }
+            } catch(e) { window.showToast("Erro ao salvar: " + e.message, 'error'); } 
+            finally { btn.innerText = '💾 Salvar Paciente & 🖨️ PDF'; btn.disabled = false; }
         },
 
         editar: (id) => {
@@ -977,12 +993,13 @@
 
         imprimirAntigo: (id) => {
             window.App.editar(id);
+            window.showToast("Preparando PDF...", 'info');
             setTimeout(() => {
                 const n = document.getElementById('in_nome').value; const t = document.title;
                 document.title = `PowFit_Meds_${n ? n.replace(/\s+/g,'_') : 'Relatorio'}`;
                 window.print();
                 document.title = t;
-            }, 600);
+            }, 800);
         },
 
         cancelarEdicaoOuLimpar: () => {
@@ -1006,6 +1023,7 @@
             document.getElementById('edit-banner').style.display = 'none';
             document.getElementById('painel-resultados').style.display = 'none';
             window.scrollTo(0,0);
+            window.showToast("Ficha limpa e pronta para nova avaliação.", 'info');
         }
     };
 </script>
