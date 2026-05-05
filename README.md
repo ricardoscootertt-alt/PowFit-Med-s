@@ -3,10 +3,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>PowFit Med's - Avaliação Integrada</title>
+    <!-- Bibliotecas e Fontes -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
+    
     <style>
         :root {
-            /* Tema Dark Profissional */
+            /* Tema Dark & Azul Profissional */
             --bg-body: #020617;
             --bg-card: #0f172a;
             --bg-input: #1e293b;
@@ -19,164 +22,175 @@
             --success: #10b981;
             --warning: #f59e0b;
             --danger: #ef4444;
-            --radius: 14px;
+            --radius: 12px;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', 'Segoe UI', Roboto, sans-serif; scroll-behavior: smooth; -webkit-tap-highlight-color: transparent;}
-        body { background-color: var(--bg-body); color: var(--text-main); -webkit-font-smoothing: antialiased; padding-bottom: 30px; overflow-x: hidden; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; scroll-behavior: smooth; -webkit-tap-highlight-color: transparent;}
+        body { background-color: var(--bg-body); color: var(--text-main); -webkit-font-smoothing: antialiased; padding-bottom: 20px;}
 
-        /* SCROLLBAR */
-        ::-webkit-scrollbar { width: 4px; height: 4px; }
+        /* Scrollbar Personalizada (Visível apenas em Desktop) */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
         ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
+        @media (max-width: 768px) { ::-webkit-scrollbar { display: none; } }
 
-        /* AVISOS TOAST (Substitui os alerts do navegador) */
-        #toast-container { position: fixed; top: 20px; right: 20px; z-index: 9999; display: flex; flex-direction: column; gap: 10px; }
-        .toast { background: var(--bg-card); border-left: 4px solid var(--primary); color: white; padding: 15px 20px; border-radius: 8px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); font-size: 14px; font-weight: 600; animation: slideIn 0.3s ease-out forwards; display: flex; align-items: center; gap: 10px; }
-        @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        /* SISTEMA DE NOTIFICAÇÕES (Toasts) */
+        #toast-container { position: fixed; top: 20px; right: 20px; left: 20px; z-index: 9999; display: flex; flex-direction: column; gap: 10px; pointer-events: none; }
+        @media (min-width: 768px) { #toast-container { left: auto; width: 350px; } }
+        .toast { background: var(--bg-card); border-left: 5px solid var(--primary); color: white; padding: 16px; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.8); font-size: 14px; font-weight: 600; animation: slideDown 0.4s ease-out forwards; display: flex; align-items: center; gap: 12px; }
+        @keyframes slideDown { from { transform: translateY(-100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
 
-        /* MODAIS E TELAS DE CARREGAMENTO */
+        /* TELAS DE SOBREPOSIÇÃO (Login, Erros e Perfis) */
         .overlay-screen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(2, 6, 23, 0.98); backdrop-filter: blur(8px);
+            background: rgba(2, 6, 23, 0.95); backdrop-filter: blur(10px);
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            z-index: 1000; padding: 20px;
+            z-index: 1000; padding: 20px; overflow-y: auto;
         }
         .modal-box {
-            background-color: var(--bg-card); padding: 35px 25px; border-radius: var(--radius);
-            border: 1px solid var(--border); box-shadow: 0 15px 40px rgba(0,0,0,0.8);
-            text-align: center; max-width: 420px; width: 100%; max-height: 90vh; overflow-y: auto;
+            background-color: var(--bg-card); padding: 30px 20px; border-radius: var(--radius);
+            border: 1px solid var(--border); box-shadow: 0 20px 50px rgba(0,0,0,0.9);
+            text-align: center; max-width: 480px; width: 100%; margin: auto;
         }
-        .modal-box h1 { color: white; margin-bottom: 10px; font-size: 26px; letter-spacing: 0.5px; }
+        .modal-box h1 { color: white; margin-bottom: 10px; font-size: 28px; letter-spacing: -0.5px; }
         .modal-box h1 span { color: var(--accent); }
         .modal-box p { color: var(--text-muted); margin-bottom: 25px; font-size: 14px; line-height: 1.5; }
         
         .btn-google {
-            background-color: white; color: #0f172a; border: none; padding: 16px 20px;
-            border-radius: 10px; font-weight: 800; font-size: 15px; cursor: pointer;
+            background-color: white; color: #0f172a; border: none; padding: 15px;
+            border-radius: 10px; font-weight: 800; font-size: 16px; cursor: pointer;
             display: flex; align-items: center; justify-content: center; gap: 12px; width: 100%;
-            transition: transform 0.1s; box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2); transition: transform 0.1s;
         }
         .btn-google:active { transform: scale(0.97); }
-        .btn-google img { width: 22px; }
+        .btn-google img { width: 24px; }
+
+        /* AVISO DE ERRO DE REGRAS FIREBASE */
+        .firebase-error-box { background: rgba(239, 68, 68, 0.1); border: 1px solid var(--danger); border-radius: 10px; padding: 20px; text-align: left; display: none; margin-top: 20px;}
+        .firebase-error-box h3 { color: #fca5a5; font-size: 16px; margin-bottom: 10px; display: flex; align-items: center; gap: 8px;}
+        .firebase-error-box p { color: #f8fafc; font-size: 13px; margin-bottom: 15px; }
+        .firebase-error-box code { background: #000; color: #a78bfa; padding: 15px; border-radius: 6px; display: block; font-family: monospace; font-size: 12px; white-space: pre-wrap; overflow-x: auto;}
 
         /* LISTA DE PROFISSIONAIS */
         .prof-list-item {
             background: var(--bg-input); border: 2px solid var(--border); border-radius: 10px;
-            padding: 16px; margin-bottom: 12px; cursor: pointer; transition: all 0.2s;
+            padding: 18px; margin-bottom: 12px; cursor: pointer; transition: all 0.2s;
             display: flex; flex-direction: column; align-items: flex-start; text-align: left;
         }
         .prof-list-item:active { border-color: var(--primary); background: rgba(59,130,246,0.15); transform: scale(0.98); }
-        .prof-list-item strong { color: var(--text-main); font-size: 16px; margin-bottom: 4px; font-weight: 700;}
+        .prof-list-item strong { color: var(--text-main); font-size: 16px; margin-bottom: 5px; font-weight: 800;}
         .prof-list-item span { color: var(--accent); font-size: 13px; font-weight: 600;}
 
         /* NAVBAR MOBILE FIRST */
         #app-content { display: none; }
         .navbar {
             background: var(--bg-card); padding: 15px 20px;
-            box-shadow: 0 4px 25px rgba(0,0,0,0.8); position: sticky; top: 0; z-index: 100;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.8); position: sticky; top: 0; z-index: 100;
             border-bottom: 1px solid var(--border);
         }
         .nav-header { display: flex; justify-content: space-between; align-items: center; width: 100%; margin-bottom: 15px;}
-        .logo { font-size: 22px; font-weight: 900; color: white; text-transform: uppercase; }
+        .logo { font-size: 24px; font-weight: 900; color: white; text-transform: uppercase; letter-spacing: -1px;}
         .logo span { color: var(--primary); }
         
         .user-info { display: flex; align-items: center; gap: 12px; }
-        .user-info img { width: 38px; height: 38px; border-radius: 50%; border: 2px solid var(--primary); object-fit: cover; }
+        .user-info img { width: 40px; height: 40px; border-radius: 50%; border: 2px solid var(--primary); object-fit: cover; }
         .user-details { display: flex; flex-direction: column; align-items: flex-end;}
-        .user-details span { font-size: 13px; font-weight: 700; color: var(--text-main); }
-        .btn-logout { background: transparent; border: none; color: var(--danger); font-size: 12px; text-decoration: underline; cursor: pointer; padding: 2px 0;}
+        .user-details span { font-size: 14px; font-weight: 800; color: var(--text-main); }
+        .btn-logout { background: transparent; border: none; color: var(--danger); font-size: 12px; font-weight: 600; text-decoration: underline; cursor: pointer; padding: 2px 0;}
         
         .nav-links {
             display: flex; gap: 10px; overflow-x: auto; padding-bottom: 5px;
             -webkit-overflow-scrolling: touch; scrollbar-width: none;
         }
-        .nav-links::-webkit-scrollbar { display: none; }
         .nav-links button {
             background: var(--bg-input); border: 1px solid var(--border);
             color: var(--text-muted); padding: 12px 20px; border-radius: 25px; cursor: pointer;
-            transition: all 0.2s; font-weight: 700; font-size: 13px; white-space: nowrap; flex-shrink: 0;
+            transition: all 0.2s; font-weight: 800; font-size: 13px; white-space: nowrap; flex-shrink: 0;
         }
         .nav-links button.active { background: var(--primary); border-color: var(--primary); color: white; }
 
-        /* CONTAINERS E GRIDS */
-        .container { max-width: 900px; margin: 20px auto; padding: 0 15px; }
+        /* CONTAINERS E GRIDS RESPONSIVOS */
+        .container { max-width: 1000px; margin: 20px auto; padding: 0 15px; }
         .view-section { display: none; animation: fadeIn 0.3s ease-in-out; }
         .view-section.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
 
         .card {
             background-color: var(--bg-card); border-radius: var(--radius); padding: 20px;
-            margin-bottom: 20px; border: 1px solid var(--border); box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+            margin-bottom: 20px; border: 1px solid var(--border); box-shadow: 0 8px 20px rgba(0,0,0,0.3);
         }
         .section-title {
-            color: var(--primary); font-size: 16px; font-weight: 800; margin-bottom: 20px;
-            padding-bottom: 12px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; text-transform: uppercase; letter-spacing: 0.5px;
+            color: var(--primary); font-size: 18px; font-weight: 900; margin-bottom: 20px;
+            padding-bottom: 12px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; letter-spacing: -0.5px;
         }
 
+        /* O Segredo do Mobile First: Grid padrão é 1 coluna */
         .grid { display: grid; grid-template-columns: 1fr; gap: 15px; margin-bottom: 15px; }
+        
+        /* Acima de 768px (Tablets e Desktop), os grids se dividem */
         @media (min-width: 768px) {
             .grid-2 { grid-template-columns: repeat(2, 1fr); }
             .grid-3 { grid-template-columns: repeat(3, 1fr); }
             .grid-4 { grid-template-columns: repeat(4, 1fr); }
             .navbar { padding: 15px 30px; flex-direction: row; display: flex; justify-content: space-between; align-items: center; }
             .nav-header { margin-bottom: 0; width: auto; }
-            .nav-links { padding-bottom: 0; margin-left: 20px; flex: 1; }
+            .nav-links { padding-bottom: 0; margin-left: 20px; flex: 1; justify-content: center;}
+            .card { padding: 30px; }
         }
 
-        /* INPUTS MODERNOS */
-        .input-group { display: flex; flex-direction: column; gap: 6px; text-align: left; }
-        .input-group label { font-size: 11px; color: var(--text-muted); font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px;}
+        /* INPUTS MODERNOS (Tamanho ideal para dedo no celular) */
+        .input-group { display: flex; flex-direction: column; gap: 8px; text-align: left; }
+        .input-group label { font-size: 12px; color: var(--text-muted); font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px;}
         input, select, textarea {
             background-color: var(--bg-body); border: 2px solid var(--border); color: var(--text-main);
-            padding: 15px; border-radius: 10px; font-size: 16px; transition: all 0.2s; outline: none; width: 100%;
-            -webkit-appearance: none;
+            padding: 16px; border-radius: 10px; font-size: 16px; transition: all 0.2s; outline: none; width: 100%;
+            -webkit-appearance: none; /* Corrige visual zoado no iPhone/Safari */
         }
         input:focus, select:focus { border-color: var(--primary); background-color: var(--bg-input); }
         select { background-image: url('data:image/svg+xml;utf8,<svg fill="%233b82f6" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/><path d="M0 0h24v24H0z" fill="none"/></svg>'); background-repeat: no-repeat; background-position-x: 96%; background-position-y: center; }
         .highlight-input { border-color: var(--accent); background-color: rgba(14, 165, 233, 0.05); }
 
-        /* FOTOS */
+        /* UPLOAD DE FOTOS */
         .photo-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 12px; }
         .photo-upload {
             border: 2px dashed var(--border); border-radius: var(--radius); padding: 20px 10px; text-align: center;
-            cursor: pointer; position: relative; overflow: hidden; min-height: 140px;
+            cursor: pointer; position: relative; overflow: hidden; min-height: 150px;
             display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--text-muted); background: var(--bg-body);
         }
         .photo-upload img { width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0; }
         .photo-upload input { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; z-index: 10; }
-        .photo-upload .icon { font-size: 28px; margin-bottom: 8px; color: var(--primary); }
+        .photo-upload .icon { font-size: 32px; margin-bottom: 8px; color: var(--primary); }
 
-        /* BOTÕES DE AÇÃO */
-        .btn { padding: 18px 20px; border: none; border-radius: 10px; font-size: 15px; font-weight: 800; cursor: pointer; transition: all 0.2s; text-transform: uppercase; width: 100%; letter-spacing: 1px; display: flex; align-items: center; justify-content: center; gap: 8px;}
+        /* BOTÕES */
+        .btn { padding: 18px 20px; border: none; border-radius: 10px; font-size: 15px; font-weight: 800; cursor: pointer; transition: all 0.2s; text-transform: uppercase; width: 100%; letter-spacing: 0.5px; display: flex; align-items: center; justify-content: center; gap: 8px;}
         .btn:active { transform: scale(0.97); }
         .btn-primary { background-color: var(--primary); color: white; box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4); }
         .btn-success { background-color: var(--success); color: white; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);}
         .btn-outline { background-color: transparent; border: 2px solid var(--border); color: var(--text-main); }
         .btn-sm { padding: 10px 16px; font-size: 12px; border-radius: 8px; width: auto; border-color: var(--border);}
 
-        /* DASHBOARD RESULTADOS E RECOMENDAÇÕES */
+        /* RESULTADOS, DASHBOARD E RECOMENDAÇÕES */
         .dashboard-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 12px; margin-bottom: 20px; }
-        .dash-card { background-color: var(--bg-body); padding: 18px 15px; border-radius: var(--radius); text-align: center; border: 2px solid var(--border); }
-        .dash-card h4 { color: var(--text-muted); font-size: 11px; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 800;}
-        .dash-card .value { font-size: 28px; font-weight: 900; color: var(--text-main); margin-bottom: 10px; }
-        .badge { display: inline-block; padding: 6px 12px; border-radius: 20px; font-size: 11px; font-weight: 800; text-transform: uppercase; }
+        .dash-card { background-color: var(--bg-body); padding: 20px 15px; border-radius: var(--radius); text-align: center; border: 2px solid var(--border); }
+        .dash-card h4 { color: var(--text-muted); font-size: 12px; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 800;}
+        .dash-card .value { font-size: 30px; font-weight: 900; color: var(--text-main); margin-bottom: 12px; letter-spacing: -1px;}
+        .badge { display: inline-block; padding: 6px 14px; border-radius: 20px; font-size: 11px; font-weight: 800; text-transform: uppercase; }
         
         .badge.success { background: rgba(16, 185, 129, 0.15); color: var(--success); }
         .badge.warning { background: rgba(245, 158, 11, 0.15); color: var(--warning); }
         .badge.danger { background: rgba(239, 68, 68, 0.15); color: var(--danger); }
         .badge.info { background: rgba(59, 130, 246, 0.15); color: var(--primary); }
 
-        .ai-suggestions { background: var(--bg-body); border-left: 4px solid var(--accent); padding: 20px; border-radius: var(--radius); margin-top: 20px; border: 1px solid var(--border); }
-        .ai-suggestions h4 { color: var(--accent); margin-bottom: 15px; font-size: 16px; font-weight: 800;}
+        .ai-suggestions { background: var(--bg-body); border-left: 5px solid var(--accent); padding: 20px; border-radius: var(--radius); margin-top: 20px; border: 1px solid var(--border); }
+        .ai-suggestions h4 { color: var(--accent); margin-bottom: 20px; font-size: 18px; font-weight: 900;}
         .rec-item { margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px dashed var(--border); text-align: left;}
         .rec-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
-        .rec-item strong { color: var(--primary); display: block; margin-bottom: 6px; font-size: 14px;}
-        .rec-item p { color: var(--text-muted); font-size: 13px; line-height: 1.6; margin: 0; }
+        .rec-item strong { color: var(--primary); display: block; margin-bottom: 6px; font-size: 15px;}
+        .rec-item p { color: var(--text-muted); font-size: 14px; line-height: 1.6; margin: 0; }
 
-        .legal-text { font-size: 11px; color: var(--text-muted); margin-top: 15px; padding-top: 15px; border-top: 1px dashed var(--border); line-height: 1.5; text-align: justify;}
-        .rt-footer { background: var(--bg-body); border: 1px solid var(--border); padding: 15px; text-align: center; font-size: 11px; color: var(--text-muted); border-radius: 8px; margin-top: 20px; line-height: 1.5;}
-        .rt-footer strong { color: var(--accent); font-size: 13px; display: block; margin-bottom: 5px;}
+        .legal-text { font-size: 12px; color: var(--text-muted); margin-top: 15px; padding-top: 15px; border-top: 1px dashed var(--border); line-height: 1.5; text-align: justify;}
+        .rt-footer { background: var(--bg-body); border: 1px solid var(--border); padding: 20px; text-align: center; font-size: 12px; color: var(--text-muted); border-radius: 10px; margin-top: 25px; line-height: 1.6;}
+        .rt-footer strong { color: var(--accent); font-size: 14px; display: block; margin-bottom: 8px;}
 
         /* HISTÓRICO E FILTROS */
         .report-filters { display: flex; gap: 8px; margin-bottom: 20px; overflow-x: auto; padding-bottom: 5px; scrollbar-width: none; }
@@ -189,19 +203,19 @@
 
         .history-list { display: flex; flex-direction: column; gap: 15px; }
         .history-item { background: var(--bg-body); padding: 20px; border-radius: var(--radius); border: 2px solid var(--border); display: flex; flex-direction: column; gap: 15px; }
-        .hist-info strong { color: var(--text-main); font-size: 18px; margin-bottom: 8px; display: block; font-weight: 800;}
+        .hist-info strong { color: white; font-size: 18px; margin-bottom: 8px; display: block; font-weight: 900;}
         .hist-info small { color: var(--text-muted); font-size: 12px; display: flex; flex-wrap: wrap; gap: 8px;}
-        .hist-info small span { background: var(--bg-input); padding: 6px 10px; border-radius: 6px; font-weight: 600;}
-        .hist-actions { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+        .hist-info small span { background: var(--bg-card); padding: 6px 12px; border-radius: 6px; font-weight: 700; border: 1px solid var(--border);}
         
-        .btn-action-sm { padding: 12px 5px; font-size: 11px; border-radius: 8px; font-weight: 800; border: none; text-align: center; text-transform: uppercase;}
+        .hist-actions { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+        .btn-action-sm { padding: 12px 5px; font-size: 11px; border-radius: 8px; font-weight: 900; border: none; text-align: center; text-transform: uppercase; cursor: pointer;}
         .btn-edit { background: rgba(59,130,246,0.15); color: var(--primary); }
         .btn-print { background: rgba(16,185,129,0.15); color: var(--success); }
         .btn-delete { background: rgba(239,68,68,0.15); color: var(--danger); }
 
         .edit-mode-banner { background-color: rgba(245, 158, 11, 0.15); color: var(--warning); padding: 15px; text-align: center; font-size: 14px; font-weight: 800; border-radius: var(--radius); margin-bottom: 20px; border: 2px solid var(--warning); }
 
-        /* IMPRESSÃO (PDF) OTIMIZADA PARA A4 */
+        /* IMPRESSÃO (PDF) OTIMIZADA PARA A4 E CLEAN */
         @media print {
             body { background: #fff !important; color: #000 !important; font-size: 11px; padding: 0;}
             .navbar, #login-screen, #modal-profissionais, .btn, .hist-actions, #view-history, .photo-upload input, .edit-mode-banner, #toast-container { display: none !important; }
@@ -209,8 +223,11 @@
             .card { box-shadow: none; border: none; padding: 0; margin-bottom: 15px; border-bottom: 1px solid #ccc; border-radius: 0; background: transparent;}
             .section-title { color: #000 !important; border-bottom: 2px solid #000; padding-bottom: 5px; margin-bottom: 10px; flex-direction: row;}
             .section-title button, .section-title select { display: none !important; }
+            
+            /* Força os grids a ficarem lado a lado no papel */
             .grid, .grid-2, .grid-3, .grid-4 { display: flex !important; flex-wrap: wrap !important; flex-direction: row !important; gap: 10px; margin-bottom: 10px;}
             .input-group { flex: 1 1 22%; min-width: 120px; }
+            
             input, select, textarea { background: transparent !important; border: none !important; border-bottom: 1px solid #000 !important; color: #000 !important; padding: 2px 0 !important; border-radius: 0 !important;}
             .dash-card { border: 1px solid #000 !important; background: transparent !important; padding: 10px;}
             .dash-card h4, .dash-card .value { color: #000 !important; }
@@ -218,37 +235,58 @@
             .ai-suggestions { background: #fff !important; border: 1px solid #000 !important; padding: 10px;}
             .ai-suggestions h4, .rec-item strong, .rec-item p { color: #000 !important; }
             .rt-footer, .legal-text { border: 1px dashed #000 !important; color: #000 !important; }
+            .photo-grid { gap: 10px; }
+            .photo-upload { border: 1px solid #ccc !important; min-height: 120px; background: transparent !important;}
         }
     </style>
 </head>
 <body>
 
-    <!-- Container para Notificações Elegantes (Toasts) -->
+    <!-- Notificações Toast -->
     <div id="toast-container"></div>
 
     <!-- ================= 1. TELA DE LOGIN ================= -->
     <div id="login-screen" class="overlay-screen">
         <div class="modal-box">
             <h1>PowFit <span>Med's</span></h1>
-            <p>Plataforma Profissional de Avaliação</p>
+            <p>Plataforma Profissional de Avaliação e Evolução</p>
             <button class="btn-google" onclick="window.Auth.login()">
-                <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google Logo">
+                <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google">
                 Entrar com Conta Google
             </button>
+            <div id="login-error-msg" style="color: var(--danger); font-size: 13px; font-weight: bold; margin-top: 15px; display: none;"></div>
         </div>
     </div>
 
-    <!-- ================= 2. MODAL DE PROFISSIONAIS E ERRO FIREBASE ================= -->
+    <!-- ================= 2. MODAL DE PROFISSIONAIS (Cadastrar/Selecionar) ================= -->
     <div id="modal-profissionais" class="overlay-screen" style="display: none;">
         <div class="modal-box">
             <h1 id="prof-modal-title">Selecione o <span>Perfil</span></h1>
-            <p id="prof-modal-desc">Escolha qual profissional vai assinar as avaliações.</p>
+            <p id="prof-modal-desc">Qual profissional vai assinar as avaliações hoje?</p>
             
             <div id="prof-list-container" style="max-height: 250px; overflow-y: auto; margin-bottom: 20px;"></div>
 
+            <!-- Caixa de Erro Didática (Firebase Rules) -->
+            <div id="firebase-error-box" class="firebase-error-box">
+                <h3>⚠️ Configuração do Banco Necessária</h3>
+                <p>O Google Firebase bloqueou a leitura por segurança. Para liberar e começar a usar o aplicativo:</p>
+                <p>1. Abra o <a href="https://console.firebase.google.com" target="_blank" style="color:#60a5fa; font-weight:bold;">Console do Firebase</a> e entre em <b>powfit-med-s</b>.</p>
+                <p>2. No menu esquerdo, vá em <b>Firestore Database</b> > aba <b>Regras (Rules)</b>.</p>
+                <p>3. Apague tudo e cole o código abaixo, depois clique em <b>Publicar</b>:</p>
+                <code>rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /{document=**} {
+      allow read, write: if request.auth != null;
+    }
+  }
+}</code>
+                <button class="btn btn-outline" style="margin-top:15px;" onclick="window.location.reload()">Já publiquei, recarregar app</button>
+            </div>
+
             <button class="btn btn-outline" onclick="window.ProfUI.showForm()" id="btn-show-add-prof">+ Novo Profissional</button>
 
-            <!-- Formulário de Novo Profissional -->
+            <!-- Formulário Novo Profissional -->
             <form id="form-add-prof" style="display: none; margin-top: 20px;" onsubmit="event.preventDefault(); window.ProfUI.saveProfissional();">
                 <div class="grid">
                     <div class="input-group">
@@ -281,7 +319,7 @@
         </div>
     </div>
 
-    <!-- ================= 3. CONTEÚDO PRINCIPAL DO APP ================= -->
+    <!-- ================= 3. CONTEÚDO PRINCIPAL (APP) ================= -->
     <div id="app-content">
         <!-- Navbar Mobile Otimizada -->
         <nav class="navbar">
@@ -290,7 +328,7 @@
                 <div class="user-info">
                     <div class="user-details">
                         <span id="active-prof-name">--</span>
-                        <button class="btn-logout" onclick="window.Auth.logout()">Sair (Logout)</button>
+                        <button class="btn-logout" onclick="window.Auth.logout()">Sair da Conta</button>
                     </div>
                     <img id="user-photo" src="" alt="Foto" style="display:none;">
                 </div>
@@ -298,41 +336,41 @@
             <div class="nav-links">
                 <button id="tab-form" class="active" onclick="window.UI.switchTab('form')">📄 Ficha de Avaliação</button>
                 <button id="tab-hist" onclick="window.UI.switchTab('history')">📂 Meus Pacientes</button>
-                <button onclick="window.UI.toggleTotem()">⛶ Tela Cheia</button>
+                <button onclick="window.UI.toggleTotem()">⛶ Modo Totem</button>
             </div>
         </nav>
 
         <div class="container">
             
-            <!-- ====== TELA: FORMULÁRIO DE AVALIAÇÃO ====== -->
+            <!-- ====== TELA: FORMULÁRIO ====== -->
             <div id="view-form" class="view-section active">
                 
                 <div id="edit-banner" class="edit-mode-banner">
-                    ⚠️ MODO DE EDIÇÃO: Você está alterando uma Ficha Salva.
+                    ⚠️ MODO DE EDIÇÃO: Alterando uma ficha do histórico.
                 </div>
 
                 <form id="formAvaliacao" onsubmit="event.preventDefault(); window.App.processAvaliacao();">
                     
-                    <!-- Avaliador -->
+                    <!-- Profissional Card -->
                     <div class="card">
                         <div class="section-title">
                             👨‍⚕️ Responsável Técnico
                             <button type="button" class="btn-outline btn-sm" onclick="window.ProfUI.showSelectionModal()">Trocar</button>
                         </div>
                         <div class="grid grid-3">
-                            <div class="input-group"><label>Nome</label><input type="text" id="av_nome" readonly style="color:var(--primary); font-weight: bold;"></div>
+                            <div class="input-group"><label>Nome</label><input type="text" id="av_nome" readonly style="color:var(--primary); font-weight: bold; border-color: var(--primary);"></div>
                             <div class="input-group"><label>Atuação</label><input type="text" id="av_tipo" readonly></div>
                             <div class="input-group"><label>Reg./UF</label><input type="text" id="av_reg" readonly></div>
                         </div>
                         <div id="av_legal_text" class="legal-text"></div>
                     </div>
 
-                    <!-- Cliente -->
+                    <!-- Cliente Card -->
                     <div class="card">
-                        <div class="section-title">👤 Paciente e Anamnese</div>
+                        <div class="section-title">👤 Cliente e Anamnese</div>
                         <div class="grid grid-2">
                             <div class="input-group"><label>Nome do Paciente *</label><input type="text" id="in_nome" required></div>
-                            <div class="input-group"><label>Data da Avaliação *</label><input type="date" id="in_data" required></div>
+                            <div class="input-group"><label>Data *</label><input type="date" id="in_data" required></div>
                         </div>
                         <div class="grid grid-4">
                             <div class="input-group"><label>Idade *</label><input type="number" id="in_idade" required></div>
@@ -341,17 +379,17 @@
                             <div class="input-group"><label>Sexo *</label><select id="in_sexo"><option value="Masculino">Homem</option><option value="Feminino">Mulher</option></select></div>
                         </div>
                         <div class="grid grid-3">
-                            <div class="input-group"><label>Objetivo</label><select id="in_objetivo"><option value="Emagrecimento">Emagrecimento</option><option value="Hipertrofia">Hipertrofia</option><option value="Saúde">Saúde/Condicionamento</option><option value="Performance">Performance Esportiva</option></select></div>
+                            <div class="input-group"><label>Objetivo Principal</label><select id="in_objetivo"><option value="Emagrecimento">Emagrecimento</option><option value="Hipertrofia">Hipertrofia</option><option value="Saúde">Saúde/Condicionamento</option><option value="Performance">Performance</option></select></div>
                             <div class="input-group"><label>Atividade Física</label><select id="in_atividade"><option value="Sedentário">Sedentário</option><option value="Leve">Leve</option><option value="Moderado">Moderado</option><option value="Intenso">Intenso</option></select></div>
                             <div class="input-group"><label>Qualidade do Sono</label><select id="in_sono"><option value="Boa">Boa (7-8h)</option><option value="Regular">Regular</option><option value="Ruim">Ruim (Insônia)</option></select></div>
                         </div>
                         <div class="grid grid-2">
-                            <div class="input-group"><label>Lesões/Dores Físicas</label><input type="text" id="in_lesoes" placeholder="Opcional. Ex: Dor lombar"></div>
-                            <div class="input-group"><label>Medicamentos/Suplementos</label><input type="text" id="in_medicamentos" placeholder="Opcional."></div>
+                            <div class="input-group"><label>Lesões/Dores</label><input type="text" id="in_lesoes" placeholder="Opcional. Ex: Dor lombar"></div>
+                            <div class="input-group"><label>Medicamentos/Suplementos</label><input type="text" id="in_medicamentos" placeholder="Opcional"></div>
                         </div>
                     </div>
 
-                    <!-- Perímetros -->
+                    <!-- Perímetros Card -->
                     <div class="card">
                         <div class="section-title">📏 Perímetros (cm)</div>
                         <div class="grid grid-4">
@@ -372,11 +410,11 @@
                         </div>
                     </div>
 
-                    <!-- Dobras -->
+                    <!-- Dobras Card -->
                     <div class="card">
                         <div class="section-title">
                             🤏 Dobras (mm)
-                            <select id="in_protocolo" style="width:auto; padding: 6px; font-size: 13px; font-weight: bold; border-color: var(--primary);">
+                            <select id="in_protocolo" style="width:auto; padding: 8px; font-size: 13px; font-weight: 800; border-color: var(--primary);">
                                 <option value="pollock3">Pollock 3</option>
                                 <option value="pollock7">Pollock 7</option>
                                 <option value="imc">Só IMC/RCQ</option>
@@ -394,9 +432,9 @@
                         </div>
                     </div>
 
-                    <!-- Fotos -->
+                    <!-- Fotos Card -->
                     <div class="card">
-                        <div class="section-title">📷 Fotos (Opcional)</div>
+                        <div class="section-title">📷 Fotos Corporais</div>
                         <div class="photo-grid">
                             <div class="photo-upload">
                                 <div class="icon">🧍‍♂️</div><span id="txt-foto-frente">Frente</span>
@@ -415,13 +453,13 @@
 
                     <div class="grid grid-2">
                         <button type="button" class="btn btn-outline" onclick="window.App.cancelarEdicaoOuLimpar()">Limpar Tudo</button>
-                        <button type="submit" class="btn btn-primary" id="btn-gerar">Processar Avaliação</button>
+                        <button type="submit" class="btn btn-primary" id="btn-gerar">Calcular Resultados</button>
                     </div>
                 </form>
 
                 <!-- ================= RESULTADOS ================= -->
-                <div id="painel-resultados" class="card" style="display: none; margin-top: 20px;">
-                    <div class="section-title">📊 Diagnóstico Clínico</div>
+                <div id="painel-resultados" class="card" style="display: none; margin-top: 30px;">
+                    <div class="section-title" style="font-size: 22px;">📊 Diagnóstico Final</div>
                     
                     <div class="grid grid-3 dashboard-grid">
                         <div class="dash-card"><h4>IMC</h4><div class="value" id="res-imc">--</div><div class="badge" id="badge-imc">--</div></div>
@@ -435,47 +473,47 @@
                     </div>
 
                     <div class="ai-suggestions" id="container-recomendacoes">
-                        <h4>🩺 Recomendações</h4>
+                        <h4>🩺 Prescrição e Recomendações</h4>
                         <div id="rec-imc" class="rec-item"></div>
                         <div id="rec-rcq" class="rec-item"></div>
                         <div id="rec-bf" class="rec-item"></div>
                     </div>
 
                     <div class="rt-footer">
-                        <strong>Responsabilidade Técnica Clínica (Motor de Decisão)</strong>
+                        <strong>Responsabilidade Técnica (Decisão Clínica Algorítmica)</strong>
                         Luiz André — CREF: 008094-G/RN<br>
-                        <em>Guia de suporte clínico. A prescrição final é do profissional titular.</em>
+                        <em>Guia de suporte clínico. A prescrição final de treinamento é exclusiva do profissional titular.</em>
                     </div>
 
-                    <div style="margin-top: 20px;">
-                        <button class="btn btn-success" id="btn-salvar-imprimir" style="padding: 20px;" onclick="window.App.salvarEImprimir()">
-                            💾 Salvar Paciente & 🖨️ PDF
+                    <div style="margin-top: 30px;">
+                        <button class="btn btn-success" id="btn-salvar-imprimir" style="padding: 22px; font-size: 18px;" onclick="window.App.salvarEImprimir()">
+                            💾 Salvar no Servidor & 🖨️ Imprimir PDF
                         </button>
                     </div>
                 </div>
             </div>
 
-            <!-- ====== TELA: HISTÓRICO ====== -->
+            <!-- ====== TELA: HISTÓRICO E RELATÓRIOS ====== -->
             <div id="view-history" class="view-section">
                 
                 <div class="report-filters">
-                    <button class="active" id="btn-filtro-todos" onclick="window.UI.setReportFilter('todos')">Todos os Meses</button>
+                    <button class="active" id="btn-filtro-todos" onclick="window.UI.setReportFilter('todos')">Base Completa</button>
                     <button id="btn-filtro-mes" onclick="window.UI.setReportFilter('mes')">Este Mês</button>
                     <button id="btn-filtro-ano" onclick="window.UI.setReportFilter('ano')">Este Ano</button>
                 </div>
 
                 <div class="card">
-                    <div class="section-title"><div id="chart-title">📈 Evolução de Peso x Gordura</div></div>
-                    <div style="height: 250px; width: 100%; position: relative;">
+                    <div class="section-title"><div id="chart-title">📈 Gráfico de Evolução</div></div>
+                    <div style="height: 300px; width: 100%; position: relative;">
                         <canvas id="evolutionChart"></canvas>
                     </div>
                 </div>
 
                 <div class="card">
-                    <div class="section-title">📂 Pacientes Salvos</div>
-                    <input type="text" id="search-history" placeholder="Buscar paciente por nome..." style="margin-bottom: 15px; width: 100%; padding: 16px; border-radius:10px; border: 2px solid var(--border); background: var(--bg-body); color: white; outline: none; font-size: 15px;" onkeyup="window.UI.renderHistoryList()">
+                    <div class="section-title">📂 Fichas de Pacientes</div>
+                    <input type="text" id="search-history" placeholder="🔍 Buscar paciente por nome..." style="margin-bottom: 20px; border: 2px solid var(--primary);" onkeyup="window.UI.renderHistoryList()">
                     <div class="history-list" id="lista-historico">
-                        <p style="color: var(--text-muted); text-align: center; padding: 20px;">Carregando histórico do servidor...</p>
+                        <p style="color: var(--text-muted); text-align: center; padding: 30px;">Buscando histórico na nuvem...</p>
                     </div>
                 </div>
             </div>
@@ -483,12 +521,13 @@
         </div>
     </div>
 
-<!-- FIREBASE SDK E LÓGICA -->
+<!-- ================= LÓGICA E FIREBASE ================= -->
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
     import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
     import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
+    // Credenciais (Usuário)
     const firebaseConfig = {
       apiKey: "AIzaSyA9icSOYHPq-5p-GJaFmKZ02DMMFpohk7g",
       authDomain: "powfit-med-s.firebaseapp.com",
@@ -512,7 +551,7 @@
     let currentCalculatedData = null;
     let currentPhotos = { foto_frente: null, foto_lado: null, foto_costas: null };
 
-    // SISTEMA DE NOTIFICAÇÕES (Substitui Alertas)
+    // SISTEMA DE NOTIFICAÇÕES TOAST (Nativo e bonito)
     window.showToast = (message, type = 'info') => {
         const container = document.getElementById('toast-container');
         const toast = document.createElement('div');
@@ -520,18 +559,21 @@
         let icon = 'ℹ️';
         if (type === 'error') { icon = '❌'; toast.style.borderLeftColor = 'var(--danger)'; }
         if (type === 'success') { icon = '✅'; toast.style.borderLeftColor = 'var(--success)'; }
-        toast.innerHTML = `<span>${icon}</span> <div>${message}</div>`;
+        if (type === 'warning') { icon = '⚠️'; toast.style.borderLeftColor = 'var(--warning)'; }
+        toast.innerHTML = `<span style="font-size: 18px;">${icon}</span> <div style="flex:1;">${message}</div>`;
         container.appendChild(toast);
-        setTimeout(() => { toast.style.opacity = '0'; setTimeout(() => toast.remove(), 300); }, 4000);
+        setTimeout(() => { toast.style.opacity = '0'; setTimeout(() => toast.remove(), 400); }, 3500);
     };
 
+    // 1. AUTENTICAÇÃO E LOGIN
     window.Auth = {
         login: async () => {
             const btn = document.querySelector('.btn-google');
             btn.innerHTML = 'Conectando ao Google...';
             try { await signInWithPopup(auth, provider); } 
             catch (e) {
-                window.showToast("Falha ao logar. Tente novamente.", 'error');
+                document.getElementById('login-error-msg').innerText = "Falha ao conectar: " + e.message;
+                document.getElementById('login-error-msg').style.display = 'block';
                 btn.innerHTML = `<img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google">Entrar com Conta Google`;
             }
         },
@@ -546,7 +588,7 @@
                 document.getElementById('user-photo').src = user.photoURL;
                 document.getElementById('user-photo').style.display = 'block';
             }
-            window.showToast("Login realizado com sucesso!", 'success');
+            window.showToast("Login autorizado pelo Google.", 'success');
             await window.ProfUI.loadProfissionais();
         } else {
             currentUser = null;
@@ -556,11 +598,9 @@
         }
     });
 
+    // 2. PROFISSIONAIS (CADASTRAR E LER)
     window.ProfUI = {
-        getProfCollection() { 
-            // Usando estrutura padrão e segura para qualquer Firebase
-            return collection(db, "powfit_users", currentUser.uid, "profissionais"); 
-        },
+        getProfCollection() { return collection(db, "users", currentUser.uid, "profissionais"); },
         
         async loadProfissionais() {
             try {
@@ -574,17 +614,13 @@
                     this.showSelectionModal(); this.renderList();
                 }
             } catch(e) { 
-                console.error(e);
-                // Tratamento elegante do erro do Firebase sem alert()
-                const container = document.getElementById('prof-list-container');
-                document.getElementById('prof-modal-title').innerHTML = "Banco <span>Bloqueado</span>";
-                document.getElementById('prof-modal-desc').innerHTML = "Acesse o Console do Firebase e libere as <b>Regras (Rules)</b> do Firestore Database para continuar.";
-                container.innerHTML = `
-                    <div style="background: rgba(239, 68, 68, 0.1); border: 1px solid var(--danger); padding: 15px; border-radius: 8px; text-align: left; font-size: 13px; color: #fca5a5;">
-                        <b>Cole isto nas Regras do seu Firebase:</b><br><br>
-                        <code style="background: rgba(0,0,0,0.3); padding: 8px; display: block; border-radius: 4px;">rules_version = '2';<br>service cloud.firestore {<br> match /databases/{database}/documents {<br>  match /{document=**} {<br>   allow read, write: if request.auth != null;<br>  }<br> }<br>}</code>
-                    </div>`;
+                console.error("Firebase Error:", e);
+                // Exibe de forma clara que o problema são as Regras do Firebase.
                 document.getElementById('btn-show-add-prof').style.display = 'none';
+                document.getElementById('prof-list-container').style.display = 'none';
+                document.getElementById('prof-modal-title').innerHTML = "Banco <span>Bloqueado</span>";
+                document.getElementById('prof-modal-desc').innerHTML = "O Google Firebase bloqueou a leitura por segurança.";
+                document.getElementById('firebase-error-box').style.display = 'block';
                 document.getElementById('modal-profissionais').style.display = 'flex';
             }
         },
@@ -630,7 +666,7 @@
         },
         async saveProfissional() {
             const btn = document.getElementById('btn-save-prof');
-            btn.innerText = 'Aguarde...'; btn.disabled = true;
+            btn.innerText = 'Salvando...'; btn.disabled = true;
             try {
                 const payload = {
                     nome: document.getElementById('p_nome').value, tipo: document.getElementById('p_tipo').value,
@@ -640,10 +676,7 @@
                 profissionais.push({id: docRef.id, ...payload});
                 window.showToast("Profissional cadastrado!", 'success');
                 this.selectProfissional(docRef.id);
-            } catch(e) { 
-                window.showToast("Erro ao salvar. Verifique as Regras do Firebase.", 'error');
-                btn.innerText = 'Salvar Perfil'; btn.disabled = false; 
-            }
+            } catch(e) { window.showToast("Erro: Libere as Regras no Firebase", 'error'); btn.innerText = 'Salvar Perfil'; btn.disabled = false; }
         },
         async selectProfissional(id) {
             activeProfId = id;
@@ -667,8 +700,9 @@
         }
     };
 
+    // 3. AVALIAÇÕES E HISTÓRICO (DB)
     window.DB = {
-        getAvaliacaoCollection() { return collection(db, "powfit_users", currentUser.uid, "avaliacoes"); },
+        getAvaliacaoCollection() { return collection(db, "users", currentUser.uid, "avaliacoes"); },
 
         async loadAvaliacoes() {
             if (!currentUser || !activeProfId) return;
@@ -681,15 +715,14 @@
                 avaliacoes.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
                 window.UI.processReports(); 
             } catch (e) { 
-                console.error(e);
-                list.innerHTML = `<div style="padding:20px; text-align:center; color:var(--danger); border:1px solid var(--danger); border-radius:8px; background:rgba(239, 68, 68, 0.1);">Erro de permissão.<br>Libere as Regras no Firebase.</div>`; 
+                list.innerHTML = `<div style="padding:20px; text-align:center; color:var(--danger); border:1px dashed var(--danger); border-radius:10px;">Falha de Permissão. Verifique o Firebase.</div>`; 
             }
         },
         async saveOrUpdate(dataObj) {
             if (!currentUser || !activeProfId) return;
             const payload = { ...dataObj, profId: activeProfId, timestamp: new Date().toISOString() };
             if (currentEditingId) {
-                const docRef = doc(db, "powfit_users", currentUser.uid, "avaliacoes", currentEditingId);
+                const docRef = doc(db, "users", currentUser.uid, "avaliacoes", currentEditingId);
                 await updateDoc(docRef, payload);
             } else {
                 await addDoc(this.getAvaliacaoCollection(), payload);
@@ -699,13 +732,14 @@
         async deleteAvaliacao(id) {
             if(!confirm("⚠️ Remover esta ficha permanentemente?")) return;
             try {
-                await deleteDoc(doc(db, "powfit_users", currentUser.uid, "avaliacoes", id));
-                window.showToast("Ficha removida.", 'success');
+                await deleteDoc(doc(db, "users", currentUser.uid, "avaliacoes", id));
+                window.showToast("Ficha removida com sucesso.", 'success');
                 await this.loadAvaliacoes();
             } catch (e) { window.showToast("Erro ao excluir.", 'error'); }
         }
     };
 
+    // 4. MOTOR CLÍNICO
     window.Calc = {
         imc: (p, a) => {
             const val = p / Math.pow(a/100, 2);
@@ -756,24 +790,25 @@
         },
         getRecomendacoes(imcObj, rcqObj, bfObj) {
             let r_imc = "", r_rcq = "", r_bf = "";
-            if(imcObj.type === 'danger') r_imc = "Quadro indica sobrecarga articular sistêmica. Priorize baixo impacto e déficit calórico.";
-            else if(imcObj.type === 'warning') r_imc = "Proporção Estatura/Peso aponta leve descompasso. Avaliar se o excesso provém de massa muscular.";
-            else if(imcObj.type === 'success') r_imc = "Peso estável nos parâmetros de segurança clínica. Foco em manutenção de força.";
-            else r_imc = "Baixo peso estrutural. Prescrição focada em hipertrofia e superávit nutricional.";
+            if(imcObj.type === 'danger') r_imc = "Quadro aponta sobrecarga articular. Priorize baixo impacto e déficit calórico focado.";
+            else if(imcObj.type === 'warning') r_imc = "Descompasso Estatura/Peso. Avaliar se o excesso provém de massa muscular ou adiposa.";
+            else if(imcObj.type === 'success') r_imc = "Peso clínico dentro dos parâmetros seguros. Priorizar manutenção de flexibilidade e ganho de força.";
+            else r_imc = "Baixo peso estrutural. Prescrição focada em hipertrofia tensional e superávit nutricional.";
 
-            if(rcqObj.type === 'danger') r_rcq = "ALERTA: Acúmulo de gordura visceral identificado. Alta propensão à síndrome metabólica. Treino aeróbio mandatório.";
-            else if(rcqObj.type === 'warning') r_rcq = "Distribuição adiposa central requer atenção. Elevar frequência do estímulo cardiovascular.";
-            else r_rcq = "Índices seguros de distribuição de gordura. Baixa tendência a doenças metabólicas primárias.";
+            if(rcqObj.type === 'danger') r_rcq = "ALERTA CLÍNICO: Acúmulo de gordura visceral. Probabilidade alta para síndrome metabólica. Treino aeróbio mandatório e urgente.";
+            else if(rcqObj.type === 'warning') r_rcq = "Atenção: A distribuição da gordura central requer cuidados. Elevar volume do estímulo cardiovascular contínuo.";
+            else r_rcq = "Distribuição adiposa segura. Baixa tendência anatômica a doenças metabólicas primárias.";
 
-            if(!bfObj.c || bfObj.t === 'info') r_bf = "Tecido adiposo muito baixo. Monitorar integridade hormonal, articular e imunológica.";
-            else if(bfObj.t === 'success') r_bf = "Reservas lipídicas saudáveis. Quadro perfeito para extrair o máximo de performance e evolução.";
-            else if(bfObj.t === 'warning') r_bf = "Gordura corporal discretamente acima da meta de saúde plena. Protocolo leve de oxidação recomendado.";
-            else r_bf = "Excesso de tecido adiposo constatado. A prescrição deve focar prioritariamente na regulação metabólica (Aeróbico + Resistido).";
+            if(!bfObj.c || bfObj.t === 'info') r_bf = "Tecido adiposo muito baixo. Monitorar integridade imunológica e regulação hormonal.";
+            else if(bfObj.t === 'success') r_bf = "Reservas lipídicas saudáveis. Perfil perfeito para extrair o máximo de performance desportiva.";
+            else if(bfObj.t === 'warning') r_bf = "Gordura discretamente acima da meta de saúde. Protocolo leve de oxidação associado à força recomendado.";
+            else r_bf = "Excesso de tecido adiposo constatado. A prescrição deve focar prioritariamente na regulação metabólica e oxidação (Cardio + Força).";
 
             return { r_imc: `<p>${r_imc}</p>`, r_rcq: `<p>${r_rcq}</p>`, r_bf: `<p>${r_bf}</p>` };
         }
     };
 
+    // 5. INTERFACE (UI)
     window.UI = {
         switchTab: (id) => {
             document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
@@ -808,7 +843,7 @@
             currentReportFilter = type;
             document.querySelectorAll('.report-filters button').forEach(b => b.classList.remove('active'));
             document.getElementById(`btn-filtro-${type}`).classList.add('active');
-            const titles = { 'todos': '📈 Evolução Geral', 'mes': '📅 Pacientes deste Mês', 'ano': '📊 Pacientes do Ano' };
+            const titles = { 'todos': '📈 Evolução de Toda Base', 'mes': '📅 Retenção do Mês Atual', 'ano': '📊 Balanço Anual' };
             document.getElementById('chart-title').innerText = titles[type];
             this.processReports();
         },
@@ -831,7 +866,7 @@
             list.innerHTML = '';
             
             const finalArr = dataToRender.filter(h => h.inputs.nome.toLowerCase().includes(termo));
-            if(finalArr.length === 0) { list.innerHTML = '<p style="color:var(--text-muted); text-align:center; padding: 20px;">Nenhum paciente cadastrado neste filtro.</p>'; return; }
+            if(finalArr.length === 0) { list.innerHTML = '<p style="color:var(--text-muted); text-align:center; padding: 20px;">Sem pacientes para exibir.</p>'; return; }
 
             finalArr.forEach(item => {
                 const d = new Date(item.timestamp).toLocaleDateString();
@@ -861,7 +896,7 @@
                 data: {
                     labels: recent.map(h => h.inputs.nome.split(' ')[0] + ' ('+ new Date(h.timestamp).getDate() +'/'+ (new Date(h.timestamp).getMonth()+1) +')'),
                     datasets: [
-                        { label: 'Peso (kg)', data: recent.map(h => h.inputs.peso), borderColor: '#3b82f6', backgroundColor: 'rgba(59,130,246,0.1)', fill:true, tension: 0.3},
+                        { label: 'Peso Corporal (kg)', data: recent.map(h => h.inputs.peso), borderColor: '#3b82f6', backgroundColor: 'rgba(59,130,246,0.1)', fill:true, tension: 0.3},
                         { label: 'Gordura (%)', data: recent.map(h => h.resultados.bf || 0), borderColor: '#0ea5e9', borderDash:[5,5], tension: 0.3}
                     ]
                 },
@@ -870,6 +905,7 @@
         }
     };
 
+    // 6. MOTOR DO APLICATIVO
     window.App = {
         getForm: () => {
             return {
@@ -926,7 +962,6 @@
 
         processAvaliacao: () => {
             const i = window.App.getForm();
-            
             const resImc = window.Calc.imc(i.peso, i.altura);
             const resRcq = window.Calc.rcq(i.p_cintura, i.p_quadril, i.sexo);
             
@@ -957,15 +992,16 @@
 
             currentCalculatedData = { inputs: i, resultados: { imc: resImc.value, rcq: resRcq.value, bf: resBf, mg: mg, mm: mm } };
             document.getElementById('painel-resultados').scrollIntoView();
-            window.showToast("Cálculos gerados com sucesso!", 'success');
+            window.showToast("Cálculos efetuados com sucesso!", 'success');
         },
 
         async salvarEImprimir() {
             const btn = document.getElementById('btn-salvar-imprimir');
-            btn.innerText = 'Sincronizando Nuvem...'; btn.disabled = true;
+            btn.innerHTML = 'Salvando na Nuvem...'; btn.disabled = true;
             try {
                 await window.DB.saveOrUpdate(currentCalculatedData);
-                btn.innerText = 'Gerando PDF...';
+                window.showToast("Salvo! Gerando Relatório...", 'success');
+                btn.innerHTML = 'Preparando PDF...';
                 const n = document.getElementById('in_nome').value; const t = document.title;
                 document.title = `PowFit_Meds_${n ? n.replace(/\s+/g,'_') : 'Relatorio'}`;
                 
@@ -974,9 +1010,9 @@
                     document.title = t;
                     window.App.cancelarEdicaoOuLimpar();
                     window.UI.switchTab('history');
-                }, 500);
-            } catch(e) { window.showToast("Erro ao salvar: " + e.message, 'error'); } 
-            finally { btn.innerText = '💾 Salvar Paciente & 🖨️ PDF'; btn.disabled = false; }
+                }, 800);
+            } catch(e) { window.showToast("Erro de permissão no Firebase.", 'error'); } 
+            finally { btn.innerHTML = '💾 Salvar no Servidor & 🖨️ Imprimir PDF'; btn.disabled = false; }
         },
 
         editar: (id) => {
@@ -988,18 +1024,19 @@
             
             document.getElementById('edit-banner').style.display = 'block';
             window.UI.switchTab('form');
+            window.showToast("Ficha recuperada para edição.", 'info');
             window.App.processAvaliacao();
         },
 
         imprimirAntigo: (id) => {
             window.App.editar(id);
-            window.showToast("Preparando PDF...", 'info');
+            window.showToast("Formatando layout de impressão...", 'info');
             setTimeout(() => {
                 const n = document.getElementById('in_nome').value; const t = document.title;
                 document.title = `PowFit_Meds_${n ? n.replace(/\s+/g,'_') : 'Relatorio'}`;
                 window.print();
                 document.title = t;
-            }, 800);
+            }, 1000);
         },
 
         cancelarEdicaoOuLimpar: () => {
@@ -1023,7 +1060,6 @@
             document.getElementById('edit-banner').style.display = 'none';
             document.getElementById('painel-resultados').style.display = 'none';
             window.scrollTo(0,0);
-            window.showToast("Ficha limpa e pronta para nova avaliação.", 'info');
         }
     };
 </script>
