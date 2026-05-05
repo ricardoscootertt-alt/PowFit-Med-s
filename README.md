@@ -8,7 +8,7 @@
     <style>
         :root {
             /* Tema Dark & Azul */
-            --bg-body: #060b14;
+            --bg-body: #020617;
             --bg-card: #0f172a;
             --bg-input: #1e293b;
             --primary: #3b82f6;
@@ -23,39 +23,42 @@
             --radius: 12px;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; scroll-behavior: smooth; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; scroll-behavior: smooth; -webkit-tap-highlight-color: transparent;}
         body { background-color: var(--bg-body); color: var(--text-main); -webkit-font-smoothing: antialiased; }
 
-        /* SCROLLBAR OCULTA NO MOBILE MAS VISIVEL NO DESKTOP */
+        /* SCROLLBAR OCULTA NO MOBILE, VISÍVEL NO PC */
         ::-webkit-scrollbar { width: 6px; height: 6px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+        @media (max-width: 768px) { ::-webkit-scrollbar { display: none; } }
 
         /* MODAIS DE LOGIN E PERFIL */
         .overlay-screen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(135deg, rgba(6,11,20,0.98), rgba(15,23,42,0.98));
-            backdrop-filter: blur(8px);
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            background: linear-gradient(135deg, rgba(2,6,23,0.95), rgba(15,23,42,0.98));
+            backdrop-filter: blur(8px); display: flex; flex-direction: column; align-items: center; justify-content: center;
             z-index: 1000; padding: 20px;
         }
         .modal-box {
-            background-color: var(--bg-card); padding: 35px 25px; border-radius: var(--radius);
-            border: 1px solid var(--border); box-shadow: 0 15px 50px rgba(0,0,0,0.9);
+            background-color: var(--bg-card); padding: 30px 20px; border-radius: var(--radius);
+            border: 1px solid var(--border); box-shadow: 0 15px 40px rgba(0,0,0,0.8);
             text-align: center; max-width: 450px; width: 100%; max-height: 90vh; overflow-y: auto;
         }
-        .modal-box h1 { color: white; margin-bottom: 10px; font-size: 28px; letter-spacing: 1px; }
+        .modal-box h1 { color: white; margin-bottom: 10px; font-size: 26px; letter-spacing: 1px; }
         .modal-box h1 span { color: var(--accent); }
         .modal-box p { color: var(--text-muted); margin-bottom: 25px; font-size: 14px; line-height: 1.5; }
         
         .btn-google {
-            background-color: white; color: #333; border: none; padding: 14px 20px;
+            background-color: white; color: #1e293b; border: none; padding: 14px 20px;
             border-radius: 8px; font-weight: 800; font-size: 16px; cursor: pointer;
             display: flex; align-items: center; justify-content: center; gap: 12px; width: 100%;
             transition: all 0.2s; box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
         .btn-google:active { transform: scale(0.98); }
         .btn-google img { width: 22px; }
+
+        .error-banner { background: rgba(239, 68, 68, 0.1); border: 1px solid var(--danger); color: #fca5a5; padding: 15px; margin-top: 20px; font-size: 13px; border-radius: 8px; display: none; text-align: left; line-height: 1.5; }
+        .error-banner code { background: rgba(0,0,0,0.3); padding: 5px; display: block; margin-top: 10px; border-radius: 4px; font-family: monospace; white-space: pre-wrap; }
 
         /* LISTA DE PROFISSIONAIS */
         .prof-list-item {
@@ -70,7 +73,7 @@
         /* NAVBAR SUPERIOR - OTIMIZADA PARA MOBILE */
         #app-content { display: none; }
         .navbar {
-            background: linear-gradient(to bottom, #0f172a, #060b14); padding: 15px;
+            background: linear-gradient(to bottom, #0f172a, #020617); padding: 15px;
             box-shadow: 0 4px 20px rgba(0,0,0,0.6); position: sticky; top: 0; z-index: 100;
             display: flex; flex-direction: column; gap: 15px; border-bottom: 1px solid var(--border);
         }
@@ -82,7 +85,7 @@
         .user-info img { width: 36px; height: 36px; border-radius: 50%; border: 2px solid var(--primary); object-fit: cover; }
         .user-details { display: flex; flex-direction: column; align-items: flex-end;}
         .user-details span { font-size: 12px; font-weight: bold; color: var(--accent); }
-        .btn-logout { background: transparent; border: none; color: var(--danger); font-size: 11px; text-decoration: underline; cursor: pointer;}
+        .btn-logout { background: transparent; border: none; color: var(--danger); font-size: 11px; text-decoration: underline; cursor: pointer; padding: 2px 0;}
         
         /* Menu Rolável Horizontal para Celular */
         .nav-links {
@@ -90,8 +93,6 @@
             -webkit-overflow-scrolling: touch; /* Rolar suave no iPhone */
             scrollbar-width: none; /* Firefox */
         }
-        .nav-links::-webkit-scrollbar { display: none; } /* Esconde scrollbar visual */
-        
         .nav-links button {
             background: rgba(255,255,255,0.05); border: 1px solid var(--border);
             color: var(--text-muted); padding: 10px 18px; border-radius: 20px; cursor: pointer;
@@ -110,19 +111,22 @@
             margin-bottom: 20px; border: 1px solid var(--border); box-shadow: 0 4px 15px rgba(0,0,0,0.2);
         }
         .section-title {
-            color: var(--accent); font-size: 17px; font-weight: 800; margin-bottom: 18px;
-            padding-bottom: 12px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 10px; justify-content: space-between; flex-wrap: wrap;
+            color: var(--accent); font-size: 16px; font-weight: 800; margin-bottom: 18px;
+            padding-bottom: 12px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 10px; justify-content: space-between; flex-wrap: wrap; text-transform: uppercase; letter-spacing: 0.5px;
         }
 
-        /* GRIDS (Mobile First) */
+        /* GRIDS (Mobile First - Empilhados por Padrão) */
         .grid { display: grid; grid-template-columns: 1fr; gap: 15px; margin-bottom: 15px; }
         
-        @media (min-width: 600px) {
+        /* ADAPTAÇÃO PARA DESKTOP E TABLETS HORIZONTAIS */
+        @media (min-width: 768px) {
             .grid-2 { grid-template-columns: repeat(2, 1fr); }
             .grid-3 { grid-template-columns: repeat(3, 1fr); }
             .grid-4 { grid-template-columns: repeat(4, 1fr); }
             .navbar { flex-direction: row; padding: 15px 30px; }
             .nav-links { width: auto; overflow: visible; padding-bottom: 0; }
+            .container { margin: 30px auto; }
+            .card { padding: 30px; }
         }
 
         .input-group { display: flex; flex-direction: column; gap: 6px; text-align: left; }
@@ -130,9 +134,10 @@
         input, select, textarea {
             background-color: var(--bg-body); border: 1px solid var(--border); color: var(--text-main);
             padding: 14px; border-radius: 8px; font-size: 16px; transition: all 0.3s; outline: none; width: 100%;
-            -webkit-appearance: none; /* Estilo padrão iOS/Android corrigido */
+            -webkit-appearance: none; /* Corrige estilo padrão iOS/Android */
         }
         input:focus, select:focus { border-color: var(--primary); box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3); }
+        select { background-image: url('data:image/svg+xml;utf8,<svg fill="%2394a3b8" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/><path d="M0 0h24v24H0z" fill="none"/></svg>'); background-repeat: no-repeat; background-position-x: 98%; background-position-y: center; }
         .highlight-input { border-left: 3px solid var(--accent); }
 
         /* FOTOS UPLOAD */
@@ -169,14 +174,14 @@
 
         .ai-suggestions { background: rgba(15, 23, 42, 0.5); border-left: 4px solid var(--accent); padding: 15px; border-radius: var(--radius); margin-top: 15px; border: 1px solid var(--border); }
         .ai-suggestions h4 { color: var(--accent); margin-bottom: 12px; font-size: 16px;}
-        .rec-item { margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .rec-item { margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.05); text-align: left;}
         .rec-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
         .rec-item strong { color: var(--primary); display: block; margin-bottom: 4px; font-size: 14px;}
         .rec-item p { color: var(--text-main); font-size: 13px; line-height: 1.5; margin: 0; }
 
         /* LEGAL & RT TEXT */
         .legal-text { font-size: 11px; color: var(--text-muted); margin-top: 15px; padding-top: 15px; border-top: 1px dashed var(--border); line-height: 1.5; text-align: justify;}
-        .rt-footer { background: var(--bg-body); border: 1px solid var(--border); padding: 15px; text-align: center; font-size: 11px; color: var(--text-muted); border-radius: 8px; margin-top: 20px; }
+        .rt-footer { background: var(--bg-body); border: 1px solid var(--border); padding: 15px; text-align: center; font-size: 11px; color: var(--text-muted); border-radius: 8px; margin-top: 20px; line-height: 1.5;}
         .rt-footer strong { color: var(--accent); font-size: 13px; display: block; margin-bottom: 5px;}
 
         /* HISTÓRICO E RELATÓRIOS */
@@ -184,7 +189,7 @@
         .report-filters::-webkit-scrollbar { display: none; }
         .report-filters button {
             background: var(--bg-card); border: 1px solid var(--border); color: var(--text-muted);
-            padding: 10px 16px; border-radius: 20px; cursor: pointer; font-size: 13px; font-weight: bold; white-space: nowrap;
+            padding: 10px 16px; border-radius: 20px; cursor: pointer; font-size: 13px; font-weight: bold; white-space: nowrap; flex: 1; text-align: center;
         }
         .report-filters button.active { background: var(--primary); border-color: var(--primary); color: white; }
 
@@ -195,7 +200,7 @@
         .hist-info small span { background: var(--bg-card); padding: 4px 8px; border-radius: 4px; border: 1px solid var(--border); }
         .hist-actions { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
         
-        .btn-action-sm { padding: 10px 5px; font-size: 11px; border-radius: 6px; font-weight: bold; border: 1px solid; text-align: center;}
+        .btn-action-sm { padding: 10px 5px; font-size: 11px; border-radius: 6px; font-weight: bold; border: 1px solid; text-align: center; text-transform: uppercase;}
         .btn-edit { background: rgba(59,130,246,0.1); border-color: var(--primary); color: var(--primary); }
         .btn-print { background: rgba(16,185,129,0.1); border-color: var(--success); color: var(--success); }
         .btn-delete { background: rgba(239,68,68,0.1); border-color: var(--danger); color: var(--danger); }
@@ -208,10 +213,12 @@
             .navbar, #login-screen, #modal-profissionais, .btn, .hist-actions, #view-history, .photo-upload input, .edit-mode-banner { display: none !important; }
             .container { margin: 0; padding: 0; width: 100%; max-width: 100%; }
             .card { box-shadow: none; border: none; padding: 0; margin-bottom: 15px; border-bottom: 1px solid #ccc; border-radius: 0; background: transparent;}
-            .section-title { color: #000 !important; border-bottom: 2px solid #000; padding-bottom: 5px; margin-bottom: 10px;}
+            .section-title { color: #000 !important; border-bottom: 2px solid #000; padding-bottom: 5px; margin-bottom: 10px; flex-direction: row;}
             .section-title button, .section-title select { display: none !important; }
-            .grid, .grid-2, .grid-3, .grid-4 { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 10px;}
+            
+            .grid, .grid-2, .grid-3, .grid-4 { display: flex !important; flex-wrap: wrap !important; flex-direction: row !important; gap: 10px; margin-bottom: 10px;}
             .input-group { flex: 1 1 22%; min-width: 120px; }
+            
             input, select, textarea { background: transparent !important; border: none !important; border-bottom: 1px solid #000 !important; color: #000 !important; padding: 2px 0 !important; border-radius: 0 !important;}
             .dash-card { border: 1px solid #000 !important; background: transparent !important; padding: 10px;}
             .dash-card h4, .dash-card .value { color: #000 !important; }
@@ -233,7 +240,7 @@
                 <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google Logo">
                 Entrar com Conta Google
             </button>
-            <div id="login-error" style="background: rgba(239, 68, 68, 0.1); border: 1px solid var(--danger); color: var(--danger); padding: 15px; margin-top: 20px; font-size: 13px; border-radius: 8px; display: none; text-align: left;"></div>
+            <div id="login-error" class="error-banner"></div>
         </div>
     </div>
 
@@ -271,7 +278,7 @@
                         </select>
                     </div>
                 </div>
-                <div class="grid-2">
+                <div class="grid grid-2">
                     <button type="button" class="btn btn-outline" onclick="window.ProfUI.hideForm()">Voltar</button>
                     <button type="submit" class="btn btn-primary" id="btn-save-prof">Salvar Perfil</button>
                 </div>
@@ -314,7 +321,7 @@
                     <!-- Avaliador -->
                     <div class="card">
                         <div class="section-title">
-                            👨‍⚕️ Profissional Responsável
+                            👨‍⚕️ Profissional
                             <button type="button" class="btn-outline btn-sm" onclick="window.ProfUI.showSelectionModal()">Trocar</button>
                         </div>
                         <div class="grid grid-3">
@@ -374,7 +381,7 @@
                     <div class="card">
                         <div class="section-title">
                             🤏 Dobras (mm)
-                            <select id="in_protocolo" style="width:auto; padding: 5px; font-size: 13px; max-width: 150px;">
+                            <select id="in_protocolo" style="width:auto; padding: 6px; font-size: 13px; max-width: 150px;">
                                 <option value="pollock3">Pollock 3</option>
                                 <option value="pollock7">Pollock 7</option>
                                 <option value="imc">Só IMC/RCQ</option>
@@ -440,9 +447,9 @@
                     </div>
 
                     <div class="rt-footer">
-                        <strong>Responsabilidade Técnica (Decisão Algorítmica)</strong>
+                        <strong>Responsabilidade Técnica Clínica (Motor de Decisão)</strong>
                         Luiz André — CREF: 008094-G/RN<br>
-                        <em>Guia de suporte. A prescrição final é do profissional titular.</em>
+                        <em>Guia de suporte clínico. A prescrição final é do profissional titular.</em>
                     </div>
 
                     <div style="margin-top: 20px;">
@@ -455,6 +462,9 @@
 
             <!-- ====== TELA: HISTÓRICO ====== -->
             <div id="view-history" class="view-section">
+                
+                <div id="history-error-banner" class="error-banner"></div>
+
                 <div class="report-filters">
                     <button class="active" id="btn-filtro-todos" onclick="window.UI.setReportFilter('todos')">Todos</button>
                     <button id="btn-filtro-mes" onclick="window.UI.setReportFilter('mes')">Este Mês</button>
@@ -462,7 +472,7 @@
                 </div>
 
                 <div class="card">
-                    <div class="section-title"><div id="chart-title">📈 Evolução</div></div>
+                    <div class="section-title"><div id="chart-title">📈 Evolução da Base</div></div>
                     <div style="height: 250px; width: 100%; position: relative;">
                         <canvas id="evolutionChart"></canvas>
                     </div>
@@ -499,9 +509,6 @@
     const auth = getAuth(app);
     const db = getFirestore(app);
     const provider = new GoogleAuthProvider();
-
-    // Caminho Mestre Seguro (Para evitar erros de permissão sem regras ajustadas)
-    const APP_ID = typeof __app_id !== 'undefined' ? __app_id : 'powfit-meds';
 
     let currentUser = null;
     let profissionais = [];
@@ -544,7 +551,7 @@
     });
 
     window.ProfUI = {
-        getProfCollection() { return collection(db, "artifacts", APP_ID, "users", currentUser.uid, "profissionais"); },
+        getProfCollection() { return collection(db, "users", currentUser.uid, "profissionais"); },
         
         async loadProfissionais() {
             try {
@@ -560,7 +567,7 @@
             } catch(e) { 
                 console.error(e);
                 const errDiv = document.getElementById('login-error');
-                errDiv.innerHTML = `<strong>Acesso Negado (Firebase Rules)</strong><br><br>Parece que seu banco Firebase está bloqueado.<br>Vá no Console do Firebase > Firestore > Regras e cole:<br><br><code>rules_version = '2';<br>service cloud.firestore {<br> match /databases/{database}/documents {<br>  match /{document=**} {<br>   allow read, write: if request.auth != null;<br>  }<br> }<br>}</code>`;
+                errDiv.innerHTML = `<strong>Acesso Negado no Banco de Dados (Firebase Rules)</strong><br><br>Parece que seu banco Firebase está bloqueado para leitura. Siga este passo a passo para corrigir:<br><br>1. Vá no <a href="https://console.firebase.google.com" target="_blank" style="color:#60a5fa;">Console do Firebase</a><br>2. Vá em Firestore Database > Regras (Rules)<br>3. Cole exatamente isso:<br><code>rules_version = '2';<br>service cloud.firestore {<br> match /databases/{database}/documents {<br>  match /{document=**} {<br>   allow read, write: if request.auth != null;<br>  }<br> }<br>}</code><br>4. Clique em Publicar.`;
                 errDiv.style.display = 'block';
                 document.getElementById('modal-profissionais').style.display = 'none';
                 document.getElementById('login-screen').style.display = 'flex';
@@ -643,10 +650,13 @@
     };
 
     window.DB = {
-        getAvaliacaoCollection() { return collection(db, "artifacts", APP_ID, "users", currentUser.uid, "avaliacoes"); },
+        getAvaliacaoCollection() { return collection(db, "users", currentUser.uid, "avaliacoes"); },
 
         async loadAvaliacoes() {
             if (!currentUser || !activeProfId) return;
+            const historyError = document.getElementById('history-error-banner');
+            historyError.style.display = 'none';
+            
             try {
                 const snapshot = await getDocs(this.getAvaliacaoCollection());
                 let todas = [];
@@ -656,14 +666,16 @@
                 window.UI.processReports(); 
             } catch (e) { 
                 console.error(e);
-                document.getElementById('lista-historico').innerHTML = `<p style="color:var(--danger)">Erro ao baixar fichas: ${e.message}</p>`; 
+                historyError.innerHTML = `<strong>Erro ao baixar fichas!</strong> Seu banco de dados Firebase está bloqueado para leitura.<br>Vá no Console do Firebase > Firestore Database > Regras, apague tudo e cole:<br><code>rules_version = '2';<br>service cloud.firestore {<br> match /databases/{database}/documents {<br>  match /{document=**} {<br>   allow read, write: if request.auth != null;<br>  }<br> }<br>}</code>`;
+                historyError.style.display = 'block';
+                document.getElementById('lista-historico').innerHTML = `<p style="color:var(--danger)">Erro de permissão no servidor.</p>`; 
             }
         },
         async saveOrUpdate(dataObj) {
             if (!currentUser || !activeProfId) return;
             const payload = { ...dataObj, profId: activeProfId, timestamp: new Date().toISOString() };
             if (currentEditingId) {
-                const docRef = doc(db, "artifacts", APP_ID, "users", currentUser.uid, "avaliacoes", currentEditingId);
+                const docRef = doc(db, "users", currentUser.uid, "avaliacoes", currentEditingId);
                 await updateDoc(docRef, payload);
             } else {
                 await addDoc(this.getAvaliacaoCollection(), payload);
@@ -673,7 +685,7 @@
         async deleteAvaliacao(id) {
             if(!confirm("⚠️ Excluir ficha definitivamente?")) return;
             try {
-                await deleteDoc(doc(db, "artifacts", APP_ID, "users", currentUser.uid, "avaliacoes", id));
+                await deleteDoc(doc(db, "users", currentUser.uid, "avaliacoes", id));
                 await this.loadAvaliacoes();
             } catch (e) { alert("Erro ao excluir: " + e.message); }
         }
@@ -750,7 +762,7 @@
     window.UI = {
         switchTab: (id) => {
             document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
-            document.querySelectorAll('.nav-links button:not(:last-child)').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.nav-links button').forEach(el => el.classList.remove('active'));
             document.getElementById(`view-${id}`).classList.add('active');
             document.getElementById(`tab-${id.substring(0,4)}`).classList.add('active');
         },
@@ -948,7 +960,7 @@
                     window.UI.switchTab('history');
                 }, 500);
             } catch(e) { alert("Falha: " + e.message); } 
-            finally { btn.innerText = '💾 Salvar na Nuvem & 🖨️ PDF'; btn.disabled = false; }
+            finally { btn.innerText = '💾 Salvar na Nuvem & 🖨️ Imprimir'; btn.disabled = false; }
         },
 
         editar: (id) => {
