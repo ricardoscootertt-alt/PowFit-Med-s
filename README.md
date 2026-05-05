@@ -32,21 +32,23 @@
         ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
         ::-webkit-scrollbar-thumb:hover { background: var(--primary); }
 
-        /* TELA DE LOGIN */
-        #login-screen {
+        /* MODAIS DE LOGIN E PERFIL */
+        .overlay-screen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(135deg, #060b14, #0f172a);
+            background: linear-gradient(135deg, rgba(6,11,20,0.95), rgba(15,23,42,0.95));
+            backdrop-filter: blur(5px);
             display: flex; flex-direction: column; align-items: center; justify-content: center;
             z-index: 1000;
         }
-        .login-box {
+        .modal-box {
             background-color: var(--bg-card); padding: 40px; border-radius: var(--radius);
             border: 1px solid var(--border); box-shadow: 0 10px 40px rgba(0,0,0,0.8);
-            text-align: center; max-width: 400px; width: 90%;
+            text-align: center; max-width: 500px; width: 90%; max-height: 90vh; overflow-y: auto;
         }
-        .login-box h1 { color: white; margin-bottom: 10px; font-size: 32px; letter-spacing: 1px; }
-        .login-box h1 span { color: var(--accent); }
-        .login-box p { color: var(--text-muted); margin-bottom: 30px; font-size: 15px; }
+        .modal-box h1 { color: white; margin-bottom: 10px; font-size: 30px; letter-spacing: 1px; }
+        .modal-box h1 span { color: var(--accent); }
+        .modal-box p { color: var(--text-muted); margin-bottom: 25px; font-size: 15px; }
+        
         .btn-google {
             background-color: white; color: #333; border: none; padding: 14px 20px;
             border-radius: 8px; font-weight: bold; font-size: 16px; cursor: pointer;
@@ -56,10 +58,18 @@
         .btn-google:hover { background-color: #f1f5f9; transform: translateY(-2px); box-shadow: 0 6px 12px rgba(0,0,0,0.2); }
         .btn-google img { width: 22px; }
 
-        /* APP CONTENT */
-        #app-content { display: none; }
+        /* LISTA DE PROFISSIONAIS */
+        .prof-list-item {
+            background: var(--bg-input); border: 1px solid var(--border); border-radius: 8px;
+            padding: 15px; margin-bottom: 10px; cursor: pointer; transition: all 0.2s;
+            display: flex; flex-direction: column; align-items: flex-start; text-align: left;
+        }
+        .prof-list-item:hover { border-color: var(--primary); background: rgba(59,130,246,0.1); }
+        .prof-list-item strong { color: var(--accent); font-size: 18px; margin-bottom: 4px;}
+        .prof-list-item span { color: var(--text-muted); font-size: 13px; }
 
         /* NAVBAR */
+        #app-content { display: none; }
         .navbar {
             background: linear-gradient(135deg, #0f172a, var(--primary)); padding: 15px 20px;
             display: flex; justify-content: space-between; align-items: center;
@@ -91,7 +101,7 @@
         }
         .section-title {
             color: var(--accent); font-size: 20px; font-weight: 700; margin-bottom: 20px;
-            padding-bottom: 10px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 10px;
+            padding-bottom: 10px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 10px; justify-content: space-between;
         }
 
         /* GRIDS E FORMS */
@@ -99,14 +109,13 @@
         .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; }
         .grid-4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 15px; }
         
-        .input-group { display: flex; flex-direction: column; gap: 6px; }
+        .input-group { display: flex; flex-direction: column; gap: 6px; text-align: left; margin-bottom: 15px;}
         .input-group label { font-size: 12px; color: var(--text-muted); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;}
         input, select, textarea {
             background-color: var(--bg-input); border: 1px solid var(--border); color: var(--text-main);
             padding: 12px; border-radius: 8px; font-size: 15px; transition: all 0.3s; outline: none; width: 100%;
         }
         input:focus, select:focus, textarea:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2); }
-        textarea { resize: vertical; min-height: 80px; }
         .highlight-input { border-bottom: 2px solid var(--accent); }
 
         /* FOTOS UPLOAD */
@@ -130,8 +139,9 @@
         .btn-success:hover { background-color: #059669; transform: translateY(-2px); }
         .btn-outline { background-color: transparent; border: 2px solid var(--border); color: var(--text-main); }
         .btn-outline:hover { background-color: var(--bg-input); }
+        .btn-sm { padding: 8px 16px; font-size: 13px; border-radius: 6px; width: auto;}
 
-        /* DASHBOARD RESULTADOS */
+        /* DASHBOARD RESULTADOS E RECOMENDAÇÕES */
         .dashboard-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; margin-bottom: 20px; }
         .dash-card { background-color: var(--bg-input); padding: 20px; border-radius: var(--radius); text-align: center; border-left: 4px solid var(--primary); position: relative; overflow: hidden;}
         .dash-card h4 { color: var(--text-muted); font-size: 13px; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.5px;}
@@ -143,13 +153,27 @@
         .badge.danger { background: rgba(239, 68, 68, 0.15); color: var(--danger); border: 1px solid rgba(239, 68, 68, 0.3);}
         .badge.info { background: rgba(59, 130, 246, 0.15); color: var(--primary); border: 1px solid rgba(59, 130, 246, 0.3);}
 
-        .ai-suggestions { background: linear-gradient(to right, rgba(14, 165, 233, 0.1), rgba(59, 130, 246, 0.05)); border-left: 4px solid var(--accent); padding: 20px; border-radius: var(--radius); margin-top: 20px; }
-        .ai-suggestions h4 { color: var(--accent); margin-bottom: 10px; display: flex; align-items: center; gap: 8px;}
-        .ai-suggestions ul { margin-left: 20px; color: var(--text-main); line-height: 1.8; font-size: 15px;}
-        .ai-suggestions li strong { color: var(--primary); }
+        .ai-suggestions { background: linear-gradient(to bottom, rgba(30, 41, 59, 0.8), rgba(15, 23, 42, 0.8)); border-left: 4px solid var(--accent); padding: 20px; border-radius: var(--radius); margin-top: 20px; border: 1px solid var(--border); }
+        .ai-suggestions h4 { color: var(--accent); margin-bottom: 15px; display: flex; align-items: center; gap: 8px; font-size: 18px;}
+        .rec-item { margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .rec-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+        .rec-item strong { color: var(--primary); display: block; margin-bottom: 5px; font-size: 15px;}
+        .rec-item p { color: var(--text-main); font-size: 14px; line-height: 1.6; }
 
-        /* HISTÓRICO */
-        .history-list { margin-top: 20px; display: grid; gap: 15px; }
+        /* LEGAL & RT TEXT */
+        .legal-text { font-size: 11px; color: var(--text-muted); margin-top: 15px; padding-top: 15px; border-top: 1px solid var(--border); line-height: 1.5; text-align: justify;}
+        .rt-footer { background: #020617; border: 1px solid var(--border); padding: 15px; text-align: center; font-size: 12px; color: var(--text-muted); border-radius: 8px; margin-top: 25px; }
+        .rt-footer strong { color: var(--accent); font-size: 14px; display: block; margin-bottom: 5px;}
+
+        /* HISTÓRICO E RELATÓRIOS */
+        .report-filters { display: flex; gap: 10px; margin-bottom: 15px; flex-wrap: wrap; }
+        .report-filters button {
+            background: transparent; border: 1px solid var(--border); color: var(--text-muted);
+            padding: 6px 12px; border-radius: 20px; cursor: pointer; transition: all 0.2s; font-size: 13px; font-weight: bold;
+        }
+        .report-filters button.active, .report-filters button:hover { background: var(--primary); border-color: var(--primary); color: white; }
+
+        .history-list { margin-top: 10px; display: grid; gap: 15px; }
         .history-item {
             display: flex; justify-content: space-between; align-items: center; background: var(--bg-input);
             padding: 20px; border-radius: var(--radius); border: 1px solid var(--border); flex-wrap: wrap; gap: 15px;
@@ -159,8 +183,8 @@
         .hist-info strong { color: var(--accent); font-size: 18px; display: block; margin-bottom: 5px;}
         .hist-info small { color: var(--text-muted); font-size: 14px; display: flex; gap: 15px; flex-wrap: wrap;}
         .hist-actions { display: flex; gap: 10px; flex-wrap: wrap; }
-        .hist-actions button { padding: 8px 16px; font-size: 13px; border-radius: 6px; cursor: pointer; font-weight: bold; border: 1px solid; transition: all 0.2s;}
         
+        .btn-action-sm { padding: 8px 16px; font-size: 13px; border-radius: 6px; cursor: pointer; font-weight: bold; border: 1px solid; transition: all 0.2s;}
         .btn-edit { background: rgba(59,130,246,0.1); border-color: var(--primary); color: var(--primary); }
         .btn-edit:hover { background: var(--primary); color: white; }
         .btn-print { background: rgba(16,185,129,0.1); border-color: var(--success); color: var(--success); }
@@ -168,7 +192,6 @@
         .btn-delete { background: rgba(239,68,68,0.1); border-color: var(--danger); color: var(--danger); }
         .btn-delete:hover { background: var(--danger); color: white; }
 
-        /* BANNER EDIÇÃO */
         .edit-mode-banner {
             background-color: rgba(245, 158, 11, 0.1); color: var(--warning); padding: 15px; text-align: center;
             font-weight: bold; border-radius: var(--radius); margin-bottom: 20px; display: none; border: 1px solid var(--warning);
@@ -177,16 +200,24 @@
         /* IMPRESSÃO (PDF) */
         @media print {
             body { background: #fff !important; color: #000 !important; font-size: 12px; }
-            .navbar, #login-screen, .btn, .hist-actions, #view-history, .photo-upload input, .edit-mode-banner { display: none !important; }
+            .navbar, #login-screen, #modal-profissionais, .btn, .hist-actions, #view-history, .photo-upload input, .edit-mode-banner { display: none !important; }
             .container { margin: 0; padding: 0; width: 100%; max-width: 100%; }
-            .card { box-shadow: none; border: none; padding: 10px 0; margin-bottom: 10px; background: transparent; page-break-inside: avoid; border-bottom: 1px solid #eee;}
+            .card { box-shadow: none; border: none; padding: 10px 0; margin-bottom: 10px; background: transparent; page-break-inside: avoid; border-bottom: 1px solid #ccc;}
             .section-title { color: #000 !important; border-bottom: 2px solid #000; padding-bottom: 5px; margin-bottom: 10px;}
+            .section-title button, .section-title span.badge { display: none !important; }
             input, select, textarea { background: transparent !important; border: none !important; border-bottom: 1px solid #ccc !important; color: #000 !important; padding: 4px 0 !important; border-radius: 0 !important;}
             .dash-card { background: #f8fafc !important; border: 1px solid #cbd5e1 !important; border-left: 4px solid #000 !important;}
             .dash-card h4 { color: #64748b !important; }
             .dash-card .value { color: #000 !important; }
-            .ai-suggestions { background: #fff !important; border: 1px solid #e2e8f0 !important; border-left: 4px solid #000 !important;}
-            .ai-suggestions h4, .ai-suggestions li strong { color: #000 !important; }
+            
+            .ai-suggestions { background: #fff !important; border: 1px solid #000 !important; border-left: 4px solid #000 !important;}
+            .ai-suggestions h4, .rec-item strong, .rec-item p { color: #000 !important; }
+            .rec-item { border-bottom: 1px solid #eee !important; }
+            
+            .legal-text { color: #555 !important; border-top: 1px dashed #000 !important; margin-top: 10px; padding-top: 5px;}
+            .rt-footer { background: #fff !important; border: 1px solid #000 !important; color: #000 !important; padding: 10px !important;}
+            .rt-footer strong { color: #000 !important; }
+            
             .badge { border: 1px solid #000 !important; background: transparent !important; color: #000 !important; }
             .photo-grid { gap: 10px; }
             .photo-upload { border: 1px solid #ccc !important; min-height: 120px; background: transparent !important;}
@@ -195,11 +226,11 @@
 </head>
 <body>
 
-    <!-- ================= TELA DE LOGIN ================= -->
-    <div id="login-screen">
-        <div class="login-box">
+    <!-- ================= 1. TELA DE LOGIN ================= -->
+    <div id="login-screen" class="overlay-screen">
+        <div class="modal-box">
             <h1>PowFit <span>Med's</span></h1>
-            <p>Plataforma Inteligente de Avaliação Física</p>
+            <p>Plataforma Profissional de Avaliação</p>
             <button class="btn-google" onclick="window.Auth.login()">
                 <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google Logo">
                 Entrar com Conta Google
@@ -208,19 +239,62 @@
         </div>
     </div>
 
-    <!-- ================= CONTEÚDO PRINCIPAL ================= -->
+    <!-- ================= 2. MODAL DE PROFISSIONAIS (Seleção/Cadastro) ================= -->
+    <div id="modal-profissionais" class="overlay-screen" style="display: none;">
+        <div class="modal-box">
+            <h1>Selecione o <span>Perfil</span></h1>
+            <p>Escolha com qual perfil profissional deseja atuar agora.</p>
+            
+            <div id="prof-list-container" style="max-height: 250px; overflow-y: auto; margin-bottom: 20px;">
+                <!-- Preenchido via JS -->
+            </div>
+
+            <button class="btn btn-outline btn-sm" onclick="window.ProfUI.showForm()" id="btn-show-add-prof">+ Adicionar Novo Profissional</button>
+
+            <!-- Formulário de Cadastro de Profissional -->
+            <form id="form-add-prof" style="display: none; margin-top: 20px;" onsubmit="event.preventDefault(); window.ProfUI.saveProfissional();">
+                <div class="input-group">
+                    <label>Nome do Profissional *</label>
+                    <input type="text" id="p_nome" required placeholder="Ex: João Silva">
+                </div>
+                <div class="input-group">
+                    <label>Tipo de Atuação *</label>
+                    <select id="p_tipo" required onchange="window.ProfUI.toggleCref()">
+                        <option value="Profissional de Educação Física">Profissional de Educação Física</option>
+                        <option value="Treinador Esportivo">Treinador Esportivo</option>
+                    </select>
+                </div>
+                <div class="input-group" id="group_cref">
+                    <label>Registro (CREF) *</label>
+                    <input type="text" id="p_cref" placeholder="Ex: 000000-G">
+                </div>
+                <div class="input-group">
+                    <label>Estado (UF) *</label>
+                    <select id="p_estado" required>
+                        <option value="AC">Acre</option><option value="AL">Alagoas</option><option value="AP">Amapá</option><option value="AM">Amazonas</option><option value="BA">Bahia</option><option value="CE">Ceará</option><option value="DF">Distrito Federal</option><option value="ES">Espírito Santo</option><option value="GO">Goiás</option><option value="MA">Maranhão</option><option value="MT">Mato Grosso</option><option value="MS">Mato Grosso do Sul</option><option value="MG">Minas Gerais</option><option value="PA">Pará</option><option value="PB">Paraíba</option><option value="PR">Paraná</option><option value="PE">Pernambuco</option><option value="PI">Piauí</option><option value="RJ">Rio de Janeiro</option><option value="RN">Rio Grande do Norte</option><option value="RS">Rio Grande do Sul</option><option value="RO">Rondônia</option><option value="RR">Roraima</option><option value="SC">Santa Catarina</option><option value="SP">São Paulo</option><option value="SE">Sergipe</option><option value="TO">Tocantins</option>
+                    </select>
+                </div>
+                <div style="display: flex; gap: 10px; margin-top: 20px;">
+                    <button type="button" class="btn btn-outline btn-sm" onclick="window.ProfUI.hideForm()">Cancelar</button>
+                    <button type="submit" class="btn btn-primary btn-sm" id="btn-save-prof">Salvar Perfil</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ================= 3. CONTEÚDO PRINCIPAL DO APP ================= -->
     <div id="app-content">
         <!-- Navbar -->
         <nav class="navbar">
             <div class="logo">PowFit <span>Med's</span></div>
             <div class="nav-links">
                 <button id="tab-form" class="active" onclick="window.UI.switchTab('form')">Nova Avaliação</button>
-                <button id="tab-hist" onclick="window.UI.switchTab('history')">Meus Pacientes</button>
+                <button id="tab-hist" onclick="window.UI.switchTab('history')">Histórico & Relatórios</button>
                 <button onclick="window.UI.toggleTotem()">⛶ Modo Totem</button>
             </div>
             <div class="user-info">
+                <span id="active-prof-name" style="color: var(--accent);">--</span>
                 <img id="user-photo" src="" alt="Avatar" style="display:none;">
-                <span id="user-name">Carregando...</span>
                 <button class="btn-logout" onclick="window.Auth.logout()">Sair</button>
             </div>
         </nav>
@@ -236,25 +310,28 @@
 
                 <form id="formAvaliacao" onsubmit="event.preventDefault(); window.App.processAvaliacao();">
                     
-                    <!-- Dados do Avaliador -->
+                    <!-- Dados do Avaliador (Automático via Perfil) -->
                     <div class="card">
-                        <div class="section-title">👨‍⚕️ Dados do Avaliador</div>
+                        <div class="section-title">
+                            <div>👨‍⚕️ Profissional e Embasamento Legal</div>
+                            <button type="button" class="btn-outline btn-sm" style="width: auto; border-radius: 20px;" onclick="window.ProfUI.showSelectionModal()">Trocar Perfil</button>
+                        </div>
                         <div class="grid-3">
                             <div class="input-group">
-                                <label>Nome do Avaliador *</label>
-                                <input type="text" id="av_nome" placeholder="Seu nome" required onchange="window.App.salvarDadosAvaliador()">
+                                <label>Nome</label>
+                                <input type="text" id="av_nome" readonly style="font-weight: bold; color: var(--accent); border-bottom-style: dashed;">
                             </div>
                             <div class="input-group">
-                                <label>Registro (CREF/CRM) *</label>
-                                <input type="text" id="av_cref" placeholder="Ex: 000000-G" required onchange="window.App.salvarDadosAvaliador()">
+                                <label>Atuação</label>
+                                <input type="text" id="av_tipo" readonly style="border-bottom-style: dashed;">
                             </div>
                             <div class="input-group">
-                                <label>Estado (UF) *</label>
-                                <select id="av_estado" required onchange="window.App.salvarDadosAvaliador()">
-                                    <option value="">Selecione...</option>
-                                    <option value="AC">Acre</option><option value="AL">Alagoas</option><option value="AP">Amapá</option><option value="AM">Amazonas</option><option value="BA">Bahia</option><option value="CE">Ceará</option><option value="DF">Distrito Federal</option><option value="ES">Espírito Santo</option><option value="GO">Goiás</option><option value="MA">Maranhão</option><option value="MT">Mato Grosso</option><option value="MS">Mato Grosso do Sul</option><option value="MG">Minas Gerais</option><option value="PA">Pará</option><option value="PB">Paraíba</option><option value="PR">Paraná</option><option value="PE">Pernambuco</option><option value="PI">Piauí</option><option value="RJ">Rio de Janeiro</option><option value="RN">Rio Grande do Norte</option><option value="RS">Rio Grande do Sul</option><option value="RO">Rondônia</option><option value="RR">Roraima</option><option value="SC">Santa Catarina</option><option value="SP">São Paulo</option><option value="SE">Sergipe</option><option value="TO">Tocantins</option>
-                                </select>
+                                <label>Registro / Estado</label>
+                                <input type="text" id="av_reg" readonly style="border-bottom-style: dashed;">
                             </div>
+                        </div>
+                        <div id="av_legal_text" class="legal-text">
+                            <!-- Preenchido via JavaScript dependendo do perfil -->
                         </div>
                     </div>
 
@@ -265,7 +342,7 @@
                             <div class="input-group"><label>Nome do Cliente *</label><input type="text" id="in_nome" required></div>
                             <div class="input-group"><label>Data da Avaliação *</label><input type="date" id="in_data" required></div>
                         </div>
-                        <div class="grid-4" style="margin-top: 15px;">
+                        <div class="grid-4">
                             <div class="input-group"><label>Idade *</label><input type="number" id="in_idade" required></div>
                             <div class="input-group"><label>Peso (kg) *</label><input type="number" step="0.1" id="in_peso" required></div>
                             <div class="input-group"><label>Estatura (cm) *</label><input type="number" id="in_altura" required></div>
@@ -273,7 +350,7 @@
                                 <select id="in_sexo"><option value="Masculino">Masculino</option><option value="Feminino">Feminino</option></select>
                             </div>
                         </div>
-                        <div class="grid-3" style="margin-top: 15px;">
+                        <div class="grid-3">
                             <div class="input-group"><label>Objetivo Principal</label>
                                 <select id="in_objetivo"><option value="Emagrecimento">Emagrecimento</option><option value="Hipertrofia">Hipertrofia</option><option value="Saúde">Saúde/Condicionamento</option><option value="Performance">Performance Esportiva</option></select>
                             </div>
@@ -284,7 +361,7 @@
                                 <select id="in_sono"><option value="Boa">Boa (7-8h reparadoras)</option><option value="Regular">Regular (Acorda às vezes)</option><option value="Ruim">Ruim (Insônia/Poucas horas)</option></select>
                             </div>
                         </div>
-                        <div class="grid-2" style="margin-top: 15px;">
+                        <div class="grid-2">
                             <div class="input-group"><label>Lesões ou Dores Relatadas</label><input type="text" id="in_lesoes" placeholder="Ex: Condromalácia patelar dir."></div>
                             <div class="input-group"><label>Uso de Medicamentos</label><input type="text" id="in_medicamentos" placeholder="Ex: Losartana 50mg"></div>
                         </div>
@@ -313,12 +390,11 @@
 
                     <!-- Dobras Cutâneas -->
                     <div class="card">
-                        <div class="section-title" style="justify-content: space-between;">
-                            <span>🤏 Dobras Cutâneas (mm)</span>
-                            <select id="in_protocolo" style="width: auto; padding: 8px;">
+                        <div class="section-title">
+                            <div>🤏 Dobras Cutâneas (mm)</div>
+                            <select id="in_protocolo" style="width: auto; padding: 6px; font-size: 13px; border-radius: 6px;">
                                 <option value="pollock3">Pollock 3 Dobras</option>
                                 <option value="pollock7">Pollock 7 Dobras</option>
-                                <option value="guedes">Protocolo Guedes</option>
                                 <option value="imc">Apenas IMC/RCQ</option>
                             </select>
                         </div>
@@ -336,94 +412,89 @@
 
                     <!-- Upload de Fotos -->
                     <div class="card">
-                        <div class="section-title">📷 Evolução Fotográfica (Opcional)</div>
-                        <p style="color:var(--text-muted); margin-bottom: 15px; font-size:13px;">As fotos são comprimidas automaticamente para economizar espaço no banco de dados.</p>
+                        <div class="section-title">📷 Evolução Fotográfica</div>
                         <div class="photo-grid">
                             <div class="photo-upload">
-                                <div class="icon">🧍‍♂️</div>
-                                <span id="txt-foto-frente">Frente</span>
+                                <div class="icon">🧍‍♂️</div><span id="txt-foto-frente">Frente</span>
                                 <img id="preview-frente" style="display:none;">
                                 <input type="file" accept="image/*" onchange="window.UI.handlePhoto(this, 'preview-frente', 'txt-foto-frente', 'foto_frente')">
                             </div>
                             <div class="photo-upload">
-                                <div class="icon">🚶‍♂️</div>
-                                <span id="txt-foto-lado">Perfil</span>
+                                <div class="icon">🚶‍♂️</div><span id="txt-foto-lado">Perfil</span>
                                 <img id="preview-lado" style="display:none;">
                                 <input type="file" accept="image/*" onchange="window.UI.handlePhoto(this, 'preview-lado', 'txt-foto-lado', 'foto_lado')">
                             </div>
                             <div class="photo-upload">
-                                <div class="icon">🧍‍♂️</div>
-                                <span id="txt-foto-costas">Costas</span>
+                                <div class="icon">🧍‍♂️</div><span id="txt-foto-costas">Costas</span>
                                 <img id="preview-costas" style="display:none;">
                                 <input type="file" accept="image/*" onchange="window.UI.handlePhoto(this, 'preview-costas', 'txt-foto-costas', 'foto_costas')">
                             </div>
                         </div>
                     </div>
 
-                    <!-- Botões de Ação Formulário -->
                     <div class="grid-2" style="margin-bottom: 30px;">
-                        <button type="button" class="btn btn-outline" onclick="window.App.cancelarEdicaoOuLimpar()">Limpar Formulário</button>
-                        <button type="submit" class="btn btn-primary" id="btn-gerar">Processar Resultados</button>
+                        <button type="button" class="btn btn-outline" onclick="window.App.cancelarEdicaoOuLimpar()">Limpar</button>
+                        <button type="submit" class="btn btn-primary" id="btn-gerar">Calcular Resultados</button>
                     </div>
                 </form>
 
                 <!-- ================= RESULTADOS ================= -->
                 <div id="painel-resultados" class="card" style="display: none;">
-                    <div class="section-title">📊 Diagnóstico Inteligente e Composição</div>
+                    <div class="section-title">📊 Diagnóstico e Prescrição</div>
                     
                     <div class="dashboard-grid">
-                        <div class="dash-card">
-                            <h4>Índice de Massa (IMC)</h4>
-                            <div class="value" id="res-imc">--</div>
-                            <div class="badge" id="badge-imc">--</div>
-                        </div>
-                        <div class="dash-card">
-                            <h4>Relação Cint/Quadril</h4>
-                            <div class="value" id="res-rcq">--</div>
-                            <div class="badge" id="badge-rcq">--</div>
-                        </div>
-                        <div class="dash-card">
-                            <h4>Gordura Corporal</h4>
-                            <div class="value" id="res-gordura">--%</div>
-                            <div class="badge" id="badge-gordura">--</div>
-                        </div>
+                        <div class="dash-card"><h4>Índice de Massa (IMC)</h4><div class="value" id="res-imc">--</div><div class="badge" id="badge-imc">--</div></div>
+                        <div class="dash-card"><h4>Relação Cint/Quadril</h4><div class="value" id="res-rcq">--</div><div class="badge" id="badge-rcq">--</div></div>
+                        <div class="dash-card"><h4>Gordura Corporal</h4><div class="value" id="res-gordura">--%</div><div class="badge" id="badge-gordura">--</div></div>
                     </div>
 
                     <div class="dashboard-grid" style="grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));">
-                        <div class="dash-card">
-                            <h4>Massa Gorda (Lípidos)</h4>
-                            <div class="value" style="color: var(--danger)" id="res-mg">-- kg</div>
-                        </div>
-                        <div class="dash-card">
-                            <h4>Massa Magra (Livre de Gordura)</h4>
-                            <div class="value" style="color: var(--success)" id="res-mm">-- kg</div>
-                        </div>
+                        <div class="dash-card"><h4>Massa Gorda (Lípidos)</h4><div class="value" style="color: var(--danger)" id="res-mg">-- kg</div></div>
+                        <div class="dash-card"><h4>Massa Magra (Livre de Gordura)</h4><div class="value" style="color: var(--success)" id="res-mm">-- kg</div></div>
                     </div>
 
-                    <div class="ai-suggestions">
-                        <h4>💡 Interpretação Clínica</h4>
-                        <ul id="res-dicas"></ul>
+                    <div class="ai-suggestions" id="container-recomendacoes">
+                        <h4>🩺 Recomendações Clínicas (Automáticas)</h4>
+                        <div id="rec-imc" class="rec-item"></div>
+                        <div id="rec-rcq" class="rec-item"></div>
+                        <div id="rec-bf" class="rec-item"></div>
                     </div>
 
-                    <div class="grid-2" style="margin-top: 25px;">
-                        <button class="btn btn-success" id="btn-salvar" onclick="window.App.salvarNoBanco()">Salvar no Banco de Dados</button>
-                        <button class="btn btn-outline" onclick="window.App.imprimirPDF()">Imprimir Relatório (PDF)</button>
+                    <div class="rt-footer">
+                        <strong>Responsabilidade Técnica Clínica (Motor de Decisão)</strong>
+                        Luiz André — CREF: 008094-G/RN<br>
+                        <em>As recomendações geradas constituem um guia de suporte ao profissional, fundamentadas em algoritmos de saúde. A prescrição final do treinamento é de responsabilidade do profissional titular da avaliação física.</em>
+                    </div>
+
+                    <!-- BOTÃO CONSOLIDADO: SALVAR E IMPRIMIR -->
+                    <div class="grid-1" style="margin-top: 25px;">
+                        <button class="btn btn-success" id="btn-salvar-imprimir" style="font-size: 18px; padding: 18px;" onclick="window.App.salvarEImprimir()">
+                            💾 Salvar na Nuvem & 🖨️ Imprimir Relatório
+                        </button>
                     </div>
                 </div>
             </div>
 
-            <!-- ====== TELA: HISTÓRICO ====== -->
+            <!-- ====== TELA: HISTÓRICO E RELATÓRIOS ====== -->
             <div id="view-history" class="view-section">
+                
+                <div class="report-filters">
+                    <span style="display:flex; align-items:center; font-weight:bold; color:var(--text-muted); margin-right: 10px;">Relatórios:</span>
+                    <button class="active" id="btn-filtro-todos" onclick="window.UI.setReportFilter('todos')">Todos</button>
+                    <button id="btn-filtro-mes" onclick="window.UI.setReportFilter('mes')">Este Mês</button>
+                    <button id="btn-filtro-ano" onclick="window.UI.setReportFilter('ano')">Este Ano</button>
+                </div>
+
                 <div class="card">
-                    <div class="section-title">📈 Visão Geral da Base de Clientes</div>
+                    <div class="section-title"><div id="chart-title">📈 Evolução da Base (Todos)</div></div>
                     <div style="height: 350px; width: 100%; position: relative;">
                         <canvas id="evolutionChart"></canvas>
                     </div>
                 </div>
 
                 <div class="card">
-                    <div class="section-title">📂 Avaliações Salvas na Nuvem</div>
-                    <input type="text" id="search-history" placeholder="Buscar paciente por nome..." style="margin-bottom: 15px;" onkeyup="window.UI.filterHistory()">
+                    <div class="section-title">📂 Fichas Salvas (Perfil Atual)</div>
+                    <input type="text" id="search-history" placeholder="Buscar paciente por nome..." style="margin-bottom: 15px; width: 100%; padding: 10px; border-radius:8px; border: 1px solid var(--border); background: var(--bg-input); color: white;" onkeyup="window.UI.renderHistoryList()">
                     <div class="history-list" id="lista-historico">
                         <p style="color: var(--text-muted)">Carregando dados seguros da nuvem...</p>
                     </div>
@@ -433,14 +504,12 @@
         </div>
     </div>
 
-<!-- FIREBASE SDK & LÓGICA DO APP (Módulos JS) -->
+<!-- FIREBASE SDK E LÓGICA -->
 <script type="module">
-    // 1. IMPORTAÇÕES FIREBASE (Versão 11.6.1)
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
     import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
     import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-    // 2. CONFIGURAÇÃO (Usando as chaves fornecidas pelo usuário)
     const firebaseConfig = {
       apiKey: "AIzaSyA9icSOYHPq-5p-GJaFmKZ02DMMFpohk7g",
       authDomain: "powfit-med-s.firebaseapp.com",
@@ -454,118 +523,187 @@
     const auth = getAuth(app);
     const db = getFirestore(app);
     const provider = new GoogleAuthProvider();
+    const APP_ID = typeof __app_id !== 'undefined' ? __app_id : 'powfit';
 
-    // 3. ESTADO GLOBAL
     let currentUser = null;
-    let historyArray = [];
+    let profissionais = [];
+    let activeProfId = null;
+    let avaliacoes = []; 
+    let currentReportFilter = 'todos'; 
     let currentEditingId = null;
     let currentCalculatedData = null;
     let currentPhotos = { foto_frente: null, foto_lado: null, foto_costas: null };
 
-    // 4. AUTENTICAÇÃO E LOGIN
+    // 1. LOGIN
     window.Auth = {
         login: async () => {
-            const btn = document.querySelector('.btn-google');
-            btn.innerHTML = 'Aguarde... conectando ao Google';
-            try {
-                await signInWithPopup(auth, provider);
-            } catch (error) {
-                console.error("Erro Login:", error);
-                document.getElementById('login-error').innerText = "Erro: " + error.message;
+            document.querySelector('.btn-google').innerHTML = 'Conectando...';
+            try { await signInWithPopup(auth, provider); } 
+            catch (e) {
+                document.getElementById('login-error').innerText = "Erro: " + e.message;
                 document.getElementById('login-error').style.display = 'block';
-                btn.innerHTML = `<img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"> Tentar Novamente`;
+                document.querySelector('.btn-google').innerHTML = `Tentar Novamente`;
             }
         },
         logout: () => signOut(auth).then(() => window.location.reload())
     };
 
-    onAuthStateChanged(auth, (user) => {
+    onAuthStateChanged(auth, async (user) => {
         if (user) {
             currentUser = user;
             document.getElementById('login-screen').style.display = 'none';
-            document.getElementById('app-content').style.display = 'block';
-            document.getElementById('user-name').innerText = user.displayName;
             if(user.photoURL) {
                 document.getElementById('user-photo').src = user.photoURL;
                 document.getElementById('user-photo').style.display = 'block';
             }
-            window.App.carregarDadosAvaliador();
-            window.DB.loadHistory();
+            await window.ProfUI.loadProfissionais();
         } else {
             currentUser = null;
             document.getElementById('login-screen').style.display = 'flex';
             document.getElementById('app-content').style.display = 'none';
+            document.getElementById('modal-profissionais').style.display = 'none';
         }
     });
 
-    // 5. BANCO DE DADOS (FIRESTORE)
-    window.DB = {
-        async loadHistory() {
-            if (!currentUser) return;
+    // 2. PROFISSIONAIS (CADASTRAR E ALTERNAR)
+    window.ProfUI = {
+        async loadProfissionais() {
             try {
-                // Fetch simple collection (conforme regra de otimização)
-                const colRef = collection(db, "powfit_users", currentUser.uid, "avaliacoes");
+                const colRef = collection(db, "artifacts", APP_ID, "users", currentUser.uid, "profissionais");
                 const snapshot = await getDocs(colRef);
-                historyArray = [];
-                snapshot.forEach(doc => historyArray.push({ id: doc.id, ...doc.data() }));
+                profissionais = [];
+                snapshot.forEach(doc => profissionais.push({ id: doc.id, ...doc.data() }));
                 
-                // Sort no Javascript em memória (mais rápido e não exige Index no Firestore)
-                historyArray.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
-                
-                window.UI.renderHistory();
-            } catch (error) {
-                console.error("Firestore DB Error:", error);
-                document.getElementById('lista-historico').innerHTML = `<p style="color:var(--danger)">Erro de permissão no Firebase. Configure as regras do Firestore.</p>`;
-            }
-        },
-
-        async saveOrUpdate(dataObj) {
-            if (!currentUser) return;
-            const btn = document.getElementById('btn-salvar');
-            btn.innerText = "Sincronizando com a nuvem...";
-            btn.disabled = true;
-
-            try {
-                const payload = { ...dataObj, timestamp: new Date().toISOString() };
-                
-                if (currentEditingId) {
-                    const docRef = doc(db, "powfit_users", currentUser.uid, "avaliacoes", currentEditingId);
-                    await updateDoc(docRef, payload);
-                    alert("✅ Avaliação atualizada com sucesso!");
+                if (profissionais.length === 0) {
+                    this.showSelectionModal();
+                    this.showForm(true); 
                 } else {
-                    const colRef = collection(db, "powfit_users", currentUser.uid, "avaliacoes");
-                    await addDoc(colRef, payload);
-                    alert("✅ Nova avaliação salva com segurança!");
+                    this.showSelectionModal();
+                    this.renderList();
                 }
-                
-                window.App.cancelarEdicaoOuLimpar();
-                await this.loadHistory();
-                window.UI.switchTab('history');
-                
-            } catch (error) {
-                alert("Erro ao salvar: " + error.message);
-            } finally {
-                btn.innerText = "Salvar no Banco de Dados";
-                btn.disabled = false;
+            } catch(e) { console.error(e); alert("Erro ao carregar banco de profissionais."); }
+        },
+        showSelectionModal() {
+            document.getElementById('modal-profissionais').style.display = 'flex';
+            document.getElementById('app-content').style.display = 'none';
+            this.hideForm(); this.renderList();
+        },
+        renderList() {
+            const container = document.getElementById('prof-list-container');
+            container.innerHTML = '';
+            if(profissionais.length > 0) {
+                profissionais.forEach(p => {
+                    const info = p.tipo === 'Treinador Esportivo' ? 'Treinador Esportivo' : `CREF: ${p.cref} - ${p.estado}`;
+                    container.innerHTML += `
+                        <div class="prof-list-item" onclick="window.ProfUI.selectProfissional('${p.id}')">
+                            <strong>${p.nome}</strong><span>${info}</span>
+                        </div>`;
+                });
+                document.getElementById('btn-show-add-prof').style.display = 'inline-block';
             }
         },
-
-        async deleteAvaliacao(id) {
-            if(!confirm("⚠️ Tem certeza? Esta exclusão não pode ser desfeita.")) return;
+        showForm(force = false) {
+            document.getElementById('form-add-prof').style.display = 'block';
+            document.getElementById('btn-show-add-prof').style.display = 'none';
+            document.getElementById('prof-list-container').style.display = 'none';
+            if(force) document.querySelector('#form-add-prof .btn-outline').style.display = 'none';
+            else document.querySelector('#form-add-prof .btn-outline').style.display = 'inline-block';
+        },
+        hideForm() {
+            document.getElementById('form-add-prof').style.display = 'none';
+            document.getElementById('form-add-prof').reset();
+            document.getElementById('btn-show-add-prof').style.display = 'inline-block';
+            document.getElementById('prof-list-container').style.display = 'block';
+            this.toggleCref();
+        },
+        toggleCref() {
+            const tipo = document.getElementById('p_tipo').value;
+            const group = document.getElementById('group_cref');
+            const input = document.getElementById('p_cref');
+            if(tipo === 'Treinador Esportivo') { group.style.display = 'none'; input.required = false; } 
+            else { group.style.display = 'flex'; input.required = true; }
+        },
+        async saveProfissional() {
+            const btn = document.getElementById('btn-save-prof');
+            btn.innerText = 'Salvando...'; btn.disabled = true;
             try {
-                await deleteDoc(doc(db, "powfit_users", currentUser.uid, "avaliacoes", id));
-                await this.loadHistory();
-            } catch (e) { alert("Erro ao excluir: " + e.message); }
+                const payload = {
+                    nome: document.getElementById('p_nome').value, tipo: document.getElementById('p_tipo').value,
+                    estado: document.getElementById('p_estado').value, cref: document.getElementById('p_tipo').value === 'Treinador Esportivo' ? '' : document.getElementById('p_cref').value
+                };
+                const colRef = collection(db, "artifacts", APP_ID, "users", currentUser.uid, "profissionais");
+                const docRef = await addDoc(colRef, payload);
+                profissionais.push({id: docRef.id, ...payload});
+                this.selectProfissional(docRef.id);
+            } catch(e) { alert("Erro: " + e.message); btn.innerText = 'Salvar Perfil'; btn.disabled = false; }
+        },
+        async selectProfissional(id) {
+            activeProfId = id;
+            const prof = profissionais.find(p => p.id === id);
+            
+            document.getElementById('modal-profissionais').style.display = 'none';
+            document.getElementById('app-content').style.display = 'block';
+            
+            document.getElementById('active-prof-name').innerText = prof.nome;
+            document.getElementById('av_nome').value = prof.nome;
+            document.getElementById('av_tipo').value = prof.tipo;
+            document.getElementById('av_reg').value = prof.tipo === 'Treinador Esportivo' ? prof.estado : `CREF: ${prof.cref} / ${prof.estado}`;
+            
+            // Texto Legal Dinâmico
+            const legalDiv = document.getElementById('av_legal_text');
+            if(prof.tipo === 'Treinador Esportivo') {
+                legalDiv.innerHTML = "⚖️ <strong>Base Legal de Atuação Esportiva:</strong> Perfil amparado pela Lei Federal nº 9.615/1998 (Lei Pelé) e Art. 5º, XIII da CF/88, focado exclusivamente no treinamento técnico, tático e físico voltado ao esporte e rendimento.";
+            } else {
+                legalDiv.innerHTML = "⚖️ <strong>Base Legal Clínica e Saúde:</strong> Atuação regulamentada pela Lei Federal nº 9.696/1998. Prerrogativa legal plena para a prestação de serviços de avaliação física, prescrição de exercícios e intervenção voltada à promoção da saúde.";
+            }
+
+            document.getElementById('in_data').valueAsDate = new Date();
+            await window.DB.loadAvaliacoes();
         }
     };
 
-    // 6. MOTOR DE CÁLCULOS CLÍNICOS
+    // 3. AVALIAÇÕES (DB CRUD)
+    window.DB = {
+        async loadAvaliacoes() {
+            if (!currentUser || !activeProfId) return;
+            try {
+                const colRef = collection(db, "artifacts", APP_ID, "users", currentUser.uid, "avaliacoes");
+                const snapshot = await getDocs(colRef);
+                let todas = [];
+                snapshot.forEach(doc => todas.push({ id: doc.id, ...doc.data() }));
+                avaliacoes = todas.filter(a => a.profId === activeProfId);
+                avaliacoes.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+                window.UI.processReports(); 
+            } catch (e) { document.getElementById('lista-historico').innerHTML = `<p style="color:var(--danger)">Erro DB.</p>`; }
+        },
+        async saveOrUpdate(dataObj) {
+            if (!currentUser || !activeProfId) return;
+            const payload = { ...dataObj, profId: activeProfId, timestamp: new Date().toISOString() };
+            if (currentEditingId) {
+                const docRef = doc(db, "artifacts", APP_ID, "users", currentUser.uid, "avaliacoes", currentEditingId);
+                await updateDoc(docRef, payload);
+            } else {
+                const colRef = collection(db, "artifacts", APP_ID, "users", currentUser.uid, "avaliacoes");
+                await addDoc(colRef, payload);
+            }
+            await this.loadAvaliacoes();
+        },
+        async deleteAvaliacao(id) {
+            if(!confirm("⚠️ Excluir ficha definitivamente?")) return;
+            try {
+                await deleteDoc(doc(db, "artifacts", APP_ID, "users", currentUser.uid, "avaliacoes", id));
+                await this.loadAvaliacoes();
+            } catch (e) { alert("Erro: " + e.message); }
+        }
+    };
+
+    // 4. MOTOR CLÍNICO (CÁLCULOS E RECOMENDAÇÕES)
     window.Calc = {
         imc: (p, a) => {
             const val = p / Math.pow(a/100, 2);
             let classif = "Obesidade", type = "danger";
             if(val < 18.5) { classif = "Baixo Peso"; type = "warning"; }
-            else if(val < 24.9) { classif = "Eutrofia (Normal)"; type = "success"; }
+            else if(val < 24.9) { classif = "Peso Normal"; type = "success"; }
             else if(val < 29.9) { classif = "Sobrepeso"; type = "warning"; }
             return { value: val.toFixed(1), classif, type };
         },
@@ -584,17 +722,13 @@
         gorduraPollock3: (sx, id, d) => {
             const soma = (sx === 'Masculino') ? (d.peito + d.abd + d.coxa) : (d.triceps + d.supra + d.coxa);
             if(!soma || soma <= 0) return null;
-            let den = sx === 'Masculino' 
-                ? 1.10938 - (0.0008267*soma) + (0.0000016*soma*soma) - (0.0002574*id)
-                : 1.0994921 - (0.0009929*soma) + (0.0000023*soma*soma) - (0.0001392*id);
+            let den = sx === 'Masculino' ? 1.10938 - (0.0008267*soma) + (0.0000016*soma*soma) - (0.0002574*id) : 1.0994921 - (0.0009929*soma) + (0.0000023*soma*soma) - (0.0001392*id);
             return Math.max(3, ((4.95/den) - 4.5)*100).toFixed(1);
         },
         gorduraPollock7: (sx, id, d) => {
             const soma = d.peito + d.triceps + d.sub + d.axilar + d.supra + d.abd + d.coxa;
             if(!soma || soma <= 0) return null;
-            let den = sx === 'Masculino'
-                ? 1.112 - (0.00043499*soma) + (0.00000055*soma*soma) - (0.00028826*id)
-                : 1.097 - (0.00046971*soma) + (0.00000056*soma*soma) - (0.00012828*id);
+            let den = sx === 'Masculino' ? 1.112 - (0.00043499*soma) + (0.00000055*soma*soma) - (0.00028826*id) : 1.097 - (0.00046971*soma) + (0.00000056*soma*soma) - (0.00012828*id);
             return Math.max(3, ((4.95/den) - 4.5)*100).toFixed(1);
         },
         classificarGordura: (bf, sx) => {
@@ -602,19 +736,39 @@
             const b = parseFloat(bf);
             if(sx === 'Masculino') {
                 if(b<10) return {c:"Atleta", t:"info"};
-                if(b<=18) return {c:"Bom", t:"success"};
-                if(b<=24) return {c:"Acima", t:"warning"};
-                return {c:"Risco", t:"danger"};
+                if(b<=18) return {c:"Aceitável/Bom", t:"success"};
+                if(b<=24) return {c:"Acima do Ideal", t:"warning"};
+                return {c:"Risco Elevado", t:"danger"};
             } else {
                 if(b<17) return {c:"Atleta", t:"info"};
-                if(b<=25) return {c:"Bom", t:"success"};
-                if(b<=31) return {c:"Acima", t:"warning"};
-                return {c:"Risco", t:"danger"};
+                if(b<=25) return {c:"Aceitável/Bom", t:"success"};
+                if(b<=31) return {c:"Acima do Ideal", t:"warning"};
+                return {c:"Risco Elevado", t:"danger"};
             }
+        },
+        getRecomendacoes(imcObj, rcqObj, bfObj) {
+            // Gera textos médicos/clínicos padronizados
+            let r_imc = "", r_rcq = "", r_bf = "";
+
+            if(imcObj.type === 'danger') r_imc = "<p>O quadro indica sobrecarga articular e sistêmica. Recomendada estruturação de rotina com baixo impacto inicial e foco imediato em reeducação e déficit calórico monitorado.</p>";
+            else if(imcObj.type === 'warning') r_imc = "<p>Estatura/Peso indica leve descompasso. Sugere-se avaliar a densidade muscular (avaliar se o peso extra é músculo ou gordura) e ajustar a periodização aeróbica/anaeróbica.</p>";
+            else if(imcObj.type === 'success') r_imc = "<p>Peso absoluto dentro dos parâmetros seguros para a estatura. A prioridade técnica deve ser a manutenção da flexibilidade, força e estabilização de métricas.</p>";
+            else r_imc = "<p>Perfil de baixo peso corporal. Requer prescrição voltada para ganho de massa magra (superávit calórico nutricional e treino resistido tensional).</p>";
+
+            if(rcqObj.type === 'danger') r_rcq = "<p>ALERTA CLÍNICO: A relação aferida demonstra acúmulo patogênico de gordura na região visceral. Indivíduo com probabilidade muito aumentada para desenvolvimento de síndrome metabólica. Exercícios aeróbios e dieta são urgentes.</p>";
+            else if(rcqObj.type === 'warning') r_rcq = "<p>Atenção à distribuição da gordura central. É indicado aumentar o volume semanal do treinamento cardiovascular preventivo.</p>";
+            else r_rcq = "<p>Distribuição adiposa segura. Baixa incidência de centralização de gordura visceral, o que denota boa saúde cardiovascular primária.</p>";
+
+            if(!bfObj.c || bfObj.t === 'info') r_bf = "<p>Percentual de gordura extremamente baixo, comum em padrões competitivos. Foco na manutenção da integridade hormonal e óssea do paciente.</p>";
+            else if(bfObj.t === 'success') r_bf = "<p>Níveis lipídicos corporais correspondentes ao padrão de saúde ideal. Estrutura favorável à otimização de performance e longevidade.</p>";
+            else if(bfObj.t === 'warning') r_bf = "<p>Depósitos de gordura ligeiramente acima do recomendado para saúde ideal. Sugere-se protocolo de emagrecimento leve associado à hipertrofia para melhora da taxa metabólica basal.</p>";
+            else r_bf = "<p>Excesso evidente de tecido adiposo corporal. O plano de ação deve priorizar a oxidação de lipídios através de treinamento concorrente (Aeróbico + Força) e acompanhamento multidisciplinar obrigatório.</p>";
+
+            return { r_imc, r_rcq, r_bf };
         }
     };
 
-    // 7. CONTROLE DE INTERFACE (UI)
+    // 5. UI CONTROLS
     window.UI = {
         switchTab: (id) => {
             document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
@@ -632,29 +786,68 @@
                 reader.onload = (e) => {
                     const img = new Image();
                     img.onload = () => {
-                        const canvas = document.createElement('canvas');
-                        const ctx = canvas.getContext('2d');
-                        const maxW = 300; // Forte compressão para não estourar Firebase (Documento tem limite 1MB)
-                        const scale = maxW / img.width;
+                        const canvas = document.createElement('canvas'); const ctx = canvas.getContext('2d');
+                        const maxW = 300; const scale = maxW / img.width;
                         canvas.width = maxW; canvas.height = img.height * scale;
                         ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
                         const b64 = canvas.toDataURL('image/jpeg', 0.6);
-                        
-                        document.getElementById(imgId).src = b64;
-                        document.getElementById(imgId).style.display = 'block';
-                        document.getElementById(txtId).style.display = 'none';
-                        currentPhotos[key] = b64;
+                        document.getElementById(imgId).src = b64; document.getElementById(imgId).style.display = 'block';
+                        document.getElementById(txtId).style.display = 'none'; currentPhotos[key] = b64;
                     };
                     img.src = e.target.result;
                 };
                 reader.readAsDataURL(input.files[0]);
             }
         },
-        renderHistory: () => {
-            window.UI.filterHistory();
+        setReportFilter: (type) => {
+            currentReportFilter = type;
+            document.querySelectorAll('.report-filters button').forEach(b => b.classList.remove('active'));
+            document.getElementById(`btn-filtro-${type}`).classList.add('active');
+            const titles = { 'todos': '📈 Evolução (Base Completa)', 'mes': '📅 Relatório deste Mês', 'ano': '📊 Relatório Anual' };
+            document.getElementById('chart-title').innerText = titles[type];
+            this.processReports();
+        },
+        processReports: () => {
+            const now = new Date();
+            let arr = avaliacoes.filter(h => {
+                if(!h.timestamp) return false;
+                const d = new Date(h.timestamp);
+                if(currentReportFilter === 'mes') return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
+                if(currentReportFilter === 'ano') return d.getFullYear() === now.getFullYear();
+                return true;
+            });
+            this.renderHistoryList(arr);
+            this.renderChart(arr);
+        },
+        renderHistoryList: (filteredData = null) => {
+            const dataToRender = filteredData || avaliacoes; 
+            const termo = (document.getElementById('search-history')?.value || '').toLowerCase();
+            const list = document.getElementById('lista-historico');
+            list.innerHTML = '';
             
-            // Gerar Gráfico Geral (Médias de peso dos últimos 15)
-            const recent = historyArray.slice(0, 15).reverse();
+            const finalArr = dataToRender.filter(h => h.inputs.nome.toLowerCase().includes(termo));
+            if(finalArr.length === 0) { list.innerHTML = '<p>Nenhum registro encontrado para este filtro.</p>'; return; }
+
+            finalArr.forEach(item => {
+                const d = new Date(item.timestamp).toLocaleDateString();
+                list.innerHTML += `
+                    <div class="history-item">
+                        <div class="hist-info">
+                            <strong>${item.inputs.nome}</strong>
+                            <small>
+                                <span>📅 ${d}</span> <span>⚖️ ${item.inputs.peso}kg</span> <span>🔥 BF: ${item.resultados.bf ? item.resultados.bf+'%' : '--'}</span> <span>🎯 Obj: ${item.inputs.objetivo}</span>
+                            </small>
+                        </div>
+                        <div class="hist-actions">
+                            <button class="btn-action-sm btn-edit" onclick="window.App.editar('${item.id}')">✏️ Editar</button>
+                            <button class="btn-action-sm btn-print" onclick="window.App.imprimirAntigo('${item.id}')">🖨️ Relatório</button>
+                            <button class="btn-action-sm btn-delete" onclick="window.DB.deleteAvaliacao('${item.id}')">🗑️ Excluir</button>
+                        </div>
+                    </div>`;
+            });
+        },
+        renderChart: (dataArray) => {
+            const recent = dataArray.slice(0, 20).reverse(); 
             if(window.myChart) window.myChart.destroy();
             const ctx = document.getElementById('evolutionChart').getContext('2d');
             Chart.defaults.color = '#94a3b8';
@@ -669,59 +862,13 @@
                 },
                 options: { responsive: true, maintainAspectRatio: false, interaction: { mode: 'index', intersect: false } }
             });
-        },
-        filterHistory: () => {
-            const termo = (document.getElementById('search-history')?.value || '').toLowerCase();
-            const list = document.getElementById('lista-historico');
-            list.innerHTML = '';
-            
-            const filtered = historyArray.filter(h => h.inputs.nome.toLowerCase().includes(termo));
-            
-            if(filtered.length === 0) { list.innerHTML = '<p>Nenhum paciente encontrado.</p>'; return; }
-
-            filtered.forEach(item => {
-                const d = new Date(item.timestamp).toLocaleDateString();
-                list.innerHTML += `
-                    <div class="history-item">
-                        <div class="hist-info">
-                            <strong>${item.inputs.nome}</strong>
-                            <small>
-                                <span>📅 ${d}</span> <span>⚖️ ${item.inputs.peso}kg</span> <span>🔥 BF: ${item.resultados.bf ? item.resultados.bf+'%' : '--'}</span> <span>🎯 Obj: ${item.inputs.objetivo}</span>
-                            </small>
-                        </div>
-                        <div class="hist-actions">
-                            <button class="btn-edit" onclick="window.App.editar('${item.id}')">✏️ Editar</button>
-                            <button class="btn-print" onclick="window.App.imprimirAntigo('${item.id}')">🖨️ Relatório</button>
-                            <button class="btn-delete" onclick="window.DB.deleteAvaliacao('${item.id}')">🗑️ Excluir</button>
-                        </div>
-                    </div>`;
-            });
         }
     };
 
-    // 8. CONTROLADOR PRINCIPAL (Aplicação)
+    // 6. CONTROLADOR DA AVALIAÇÃO (Core)
     window.App = {
-        salvarDadosAvaliador: () => {
-            const prof = {
-                n: document.getElementById('av_nome').value,
-                c: document.getElementById('av_cref').value,
-                e: document.getElementById('av_estado').value
-            };
-            localStorage.setItem('powfit_prof', JSON.stringify(prof));
-        },
-        carregarDadosAvaliador: () => {
-            const prof = JSON.parse(localStorage.getItem('powfit_prof'));
-            if(prof) {
-                document.getElementById('av_nome').value = prof.n || '';
-                document.getElementById('av_cref').value = prof.c || '';
-                document.getElementById('av_estado').value = prof.e || '';
-            }
-            document.getElementById('in_data').valueAsDate = new Date();
-        },
-        
         getForm: () => {
             return {
-                avaliador: { n: document.getElementById('av_nome').value, c: document.getElementById('av_cref').value, e: document.getElementById('av_estado').value },
                 nome: document.getElementById('in_nome').value, data: document.getElementById('in_data').value,
                 idade: parseFloat(document.getElementById('in_idade').value), peso: parseFloat(document.getElementById('in_peso').value),
                 altura: parseFloat(document.getElementById('in_altura').value), sexo: document.getElementById('in_sexo').value,
@@ -738,8 +885,7 @@
                     sub: parseFloat(document.getElementById('in_d_sub').value||0), axilar: parseFloat(document.getElementById('in_d_axilar').value||0),
                     supra: parseFloat(document.getElementById('in_d_supra').value||0), abd: parseFloat(document.getElementById('in_d_abd').value||0),
                     coxa: parseFloat(document.getElementById('in_d_coxa').value||0), pant: parseFloat(document.getElementById('in_d_pant').value||0)
-                },
-                fotos: currentPhotos
+                }, fotos: currentPhotos
             };
         },
 
@@ -764,7 +910,6 @@
                 document.getElementById('in_d_coxa').value = data.d.coxa||''; document.getElementById('in_d_pant').value = data.d.pant||'';
             }
 
-            // Fotos
             currentPhotos = data.fotos || { foto_frente: null, foto_lado: null, foto_costas: null };
             ['frente', 'lado', 'costas'].forEach(pos => {
                 if(currentPhotos['foto_'+pos]) {
@@ -784,7 +929,6 @@
             let resBf = null;
             if(i.protocolo === 'pollock3') resBf = window.Calc.gorduraPollock3(i.sexo, i.idade, i.d);
             else if(i.protocolo === 'pollock7') resBf = window.Calc.gorduraPollock7(i.sexo, i.idade, i.d);
-            
             const classBf = window.Calc.classificarGordura(resBf, i.sexo);
 
             document.getElementById('painel-resultados').style.display = 'block';
@@ -801,54 +945,72 @@
                 document.getElementById('res-mg').innerText = '--'; document.getElementById('res-mm').innerText = '--';
             }
 
-            // IA Suggestions
-            const ul = document.getElementById('res-dicas'); ul.innerHTML = '';
-            if(resImc.type === 'danger') ul.innerHTML += `<li>⚠️ O IMC aponta excesso de peso considerável. É fundamental avaliar a composição estrutural (Massa Magra x Gorda) antes de dietas restritivas.</li>`;
-            if(resRcq.type === 'danger') ul.innerHTML += `<li>🚨 <strong>Risco Cardiovascular:</strong> Relação Cintura/Quadril está elevada, indicando gordura visceral. Foco imediato em exercícios cardiovasculares!</li>`;
-            if(i.objetivo === 'Hipertrofia' && resBf && parseFloat(resBf) > 20) ul.innerHTML += `<li>💡 Para hipertrofia efetiva, sugere-se reduzir levemente o % de gordura primeiro (melhorando sensibilidade à insulina).</li>`;
-            if(i.sono === 'Ruim') ul.innerHTML += `<li>💤 <strong>Atenção:</strong> Sono ruim prejudica regeneração muscular e metabolismo de gordura. Trabalhar higiene do sono.</li>`;
-            if(ul.innerHTML === '') ul.innerHTML = `<li>✅ Composição corporal equilibrada. Manter consistência no treinamento de força e ajustes dietéticos segundo o objetivo.</li>`;
+            // Injeta Recomendações
+            const recs = window.Calc.getRecomendacoes(resImc, resRcq, classBf);
+            document.getElementById('rec-imc').innerHTML = `<strong>• Referente ao Peso Corporal (IMC):</strong> ${recs.r_imc}`;
+            document.getElementById('rec-rcq').innerHTML = `<strong>• Referente à Prevenção Cardiovascular (RCQ):</strong> ${recs.r_rcq}`;
+            if(resBf) document.getElementById('rec-bf').innerHTML = `<strong>• Referente ao Tecido Adiposo (Gordura):</strong> ${recs.r_bf}`;
+            else document.getElementById('rec-bf').innerHTML = "";
 
             currentCalculatedData = { inputs: i, resultados: { imc: resImc.value, rcq: resRcq.value, bf: resBf, mg: mg, mm: mm } };
             document.getElementById('painel-resultados').scrollIntoView();
         },
 
-        salvarNoBanco: () => window.DB.saveOrUpdate(currentCalculatedData),
+        async salvarEImprimir() {
+            const btn = document.getElementById('btn-salvar-imprimir');
+            btn.innerText = 'Salvando Dados...'; btn.disabled = true;
+            try {
+                await window.DB.saveOrUpdate(currentCalculatedData);
+                btn.innerText = 'Preparando Relatório...';
+                const n = document.getElementById('in_nome').value; const t = document.title;
+                document.title = `PowFit_Meds_${n ? n.replace(/\s+/g,'_') : 'Relatorio'}`;
+                
+                setTimeout(() => {
+                    window.print();
+                    document.title = t;
+                    window.App.cancelarEdicaoOuLimpar();
+                    window.UI.switchTab('history');
+                }, 500);
+            } catch(e) { alert("Falha: " + e.message); } 
+            finally { btn.innerText = '💾 Salvar na Nuvem & 🖨️ Imprimir Relatório'; btn.disabled = false; }
+        },
 
         editar: (id) => {
-            const item = historyArray.find(x => x.id === id);
+            const item = avaliacoes.find(x => x.id === id);
             if(!item) return;
-            currentEditingId = id;
-            window.App.cancelarEdicaoOuLimpar(); // limpa antes
-            currentEditingId = id; // restaura
+            window.App.cancelarEdicaoOuLimpar(); 
+            currentEditingId = id; 
             window.App.setForm(item.inputs);
             
             document.getElementById('edit-banner').style.display = 'block';
             document.getElementById('btn-gerar').innerText = "Atualizar Cálculos";
-            document.getElementById('btn-salvar').innerText = "Salvar Alterações no Banco";
             window.UI.switchTab('form');
             window.App.processAvaliacao();
         },
 
         imprimirAntigo: (id) => {
             window.App.editar(id);
-            setTimeout(() => window.App.imprimirPDF(), 500);
-        },
-
-        imprimirPDF: () => {
-            const n = document.getElementById('in_nome').value;
-            const t = document.title;
-            document.title = `PowFit_Meds_Avaliacao_${n ? n.replace(/\s+/g,'_') : ''}`;
-            window.print();
-            document.title = t;
+            setTimeout(() => {
+                const n = document.getElementById('in_nome').value; const t = document.title;
+                document.title = `PowFit_Meds_${n ? n.replace(/\s+/g,'_') : 'Relatorio'}`;
+                window.print();
+                document.title = t;
+            }, 600);
         },
 
         cancelarEdicaoOuLimpar: () => {
             currentEditingId = null; currentCalculatedData = null;
             document.getElementById('formAvaliacao').reset();
-            window.App.carregarDadosAvaliador(); // Restaura dados do prof
+            document.getElementById('in_data').valueAsDate = new Date();
             
-            // Reseta imagens
+            // Restaura Profissional
+            const prof = profissionais.find(p => p.id === activeProfId);
+            if(prof) {
+                document.getElementById('av_nome').value = prof.nome;
+                document.getElementById('av_tipo').value = prof.tipo;
+                document.getElementById('av_reg').value = prof.tipo === 'Treinador Esportivo' ? prof.estado : `CREF: ${prof.cref} / ${prof.estado}`;
+            }
+
             currentPhotos = { foto_frente: null, foto_lado: null, foto_costas: null };
             ['frente', 'lado', 'costas'].forEach(pos => {
                 document.getElementById('preview-'+pos).style.display = 'none';
@@ -857,8 +1019,7 @@
 
             document.getElementById('edit-banner').style.display = 'none';
             document.getElementById('painel-resultados').style.display = 'none';
-            document.getElementById('btn-gerar').innerText = "Processar Resultados";
-            document.getElementById('btn-salvar').innerText = "Salvar no Banco de Dados";
+            document.getElementById('btn-gerar').innerText = "Calcular Resultados";
             window.scrollTo(0,0);
         }
     };
