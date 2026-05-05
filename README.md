@@ -158,7 +158,7 @@
         .rec-item { margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px solid rgba(255,255,255,0.05); }
         .rec-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
         .rec-item strong { color: var(--primary); display: block; margin-bottom: 5px; font-size: 15px;}
-        .rec-item p { color: var(--text-main); font-size: 14px; line-height: 1.6; }
+        .rec-item p { color: var(--text-main); font-size: 14px; line-height: 1.6; margin-top: 5px; }
 
         /* LEGAL & RT TEXT */
         .legal-text { font-size: 11px; color: var(--text-muted); margin-top: 15px; padding-top: 15px; border-top: 1px solid var(--border); line-height: 1.5; text-align: justify;}
@@ -523,7 +523,6 @@
     const auth = getAuth(app);
     const db = getFirestore(app);
     const provider = new GoogleAuthProvider();
-    const APP_ID = typeof __app_id !== 'undefined' ? __app_id : 'powfit';
 
     let currentUser = null;
     let profissionais = [];
@@ -569,7 +568,8 @@
     window.ProfUI = {
         async loadProfissionais() {
             try {
-                const colRef = collection(db, "artifacts", APP_ID, "users", currentUser.uid, "profissionais");
+                // Modificado path para evitar erros na configuração fora do ambiente de teste
+                const colRef = collection(db, "users", currentUser.uid, "profissionais");
                 const snapshot = await getDocs(colRef);
                 profissionais = [];
                 snapshot.forEach(doc => profissionais.push({ id: doc.id, ...doc.data() }));
@@ -581,7 +581,14 @@
                     this.showSelectionModal();
                     this.renderList();
                 }
-            } catch(e) { console.error(e); alert("Erro ao carregar banco de profissionais."); }
+            } catch(e) { 
+                console.error(e); 
+                if(e.message.includes("permission") || e.code === "permission-denied") {
+                    alert("Acesso negado! Por favor, vá no painel do Firebase -> Firestore Database -> Regras, e permita leitura/escrita para usuários logados.");
+                } else {
+                    alert("Erro de conexão com o banco de dados: " + e.message);
+                }
+            }
         },
         showSelectionModal() {
             document.getElementById('modal-profissionais').style.display = 'flex';
@@ -631,7 +638,7 @@
                     nome: document.getElementById('p_nome').value, tipo: document.getElementById('p_tipo').value,
                     estado: document.getElementById('p_estado').value, cref: document.getElementById('p_tipo').value === 'Treinador Esportivo' ? '' : document.getElementById('p_cref').value
                 };
-                const colRef = collection(db, "artifacts", APP_ID, "users", currentUser.uid, "profissionais");
+                const colRef = collection(db, "users", currentUser.uid, "profissionais");
                 const docRef = await addDoc(colRef, payload);
                 profissionais.push({id: docRef.id, ...payload});
                 this.selectProfissional(docRef.id);
@@ -667,7 +674,7 @@
         async loadAvaliacoes() {
             if (!currentUser || !activeProfId) return;
             try {
-                const colRef = collection(db, "artifacts", APP_ID, "users", currentUser.uid, "avaliacoes");
+                const colRef = collection(db, "users", currentUser.uid, "avaliacoes");
                 const snapshot = await getDocs(colRef);
                 let todas = [];
                 snapshot.forEach(doc => todas.push({ id: doc.id, ...doc.data() }));
@@ -680,10 +687,10 @@
             if (!currentUser || !activeProfId) return;
             const payload = { ...dataObj, profId: activeProfId, timestamp: new Date().toISOString() };
             if (currentEditingId) {
-                const docRef = doc(db, "artifacts", APP_ID, "users", currentUser.uid, "avaliacoes", currentEditingId);
+                const docRef = doc(db, "users", currentUser.uid, "avaliacoes", currentEditingId);
                 await updateDoc(docRef, payload);
             } else {
-                const colRef = collection(db, "artifacts", APP_ID, "users", currentUser.uid, "avaliacoes");
+                const colRef = collection(db, "users", currentUser.uid, "avaliacoes");
                 await addDoc(colRef, payload);
             }
             await this.loadAvaliacoes();
@@ -691,9 +698,9 @@
         async deleteAvaliacao(id) {
             if(!confirm("⚠️ Excluir ficha definitivamente?")) return;
             try {
-                await deleteDoc(doc(db, "artifacts", APP_ID, "users", currentUser.uid, "avaliacoes", id));
+                await deleteDoc(doc(db, "users", currentUser.uid, "avaliacoes", id));
                 await this.loadAvaliacoes();
-            } catch (e) { alert("Erro: " + e.message); }
+            } catch (e) { alert("Erro ao excluir: " + e.message); }
         }
     };
 
@@ -747,7 +754,6 @@
             }
         },
         getRecomendacoes(imcObj, rcqObj, bfObj) {
-            // Gera textos médicos/clínicos padronizados
             let r_imc = "", r_rcq = "", r_bf = "";
 
             if(imcObj.type === 'danger') r_imc = "<p>O quadro indica sobrecarga articular e sistêmica. Recomendada estruturação de rotina com baixo impacto inicial e foco imediato em reeducação e déficit calórico monitorado.</p>";
