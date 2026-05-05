@@ -289,7 +289,9 @@
                     <label class="label-base text-gray-300">Protocolo de Composição Corporal</label>
                     <select id="eval-protocolo" class="input-base bg-dark-800">
                         <option value="pollock3">Pollock 3 Dobras</option>
+                        <option value="pollock4">Pollock 4 Dobras</option>
                         <option value="pollock7">Pollock 7 Dobras</option>
+                        <option value="faulkner">Faulkner 4 Dobras</option>
                         <option value="guedes">Guedes</option>
                         <option value="imc">Apenas IMC (Sem dobras)</option>
                     </select>
@@ -336,7 +338,7 @@
                 </div>
             </div>
 
-            <!-- ABA 3: DOBRAS CUTÂNEAS (Modelo Ficha 3 Medidas) -->
+            <!-- ABA 3: DOBRAS CUTÂNEAS -->
             <div id="tab-dobras" class="tab-content">
                 <div class="bg-blue-900/10 border border-blue-900/50 text-blue-300 text-sm p-4 rounded-xl mb-6 flex items-start gap-3">
                     <i data-lucide="info" class="w-5 h-5 flex-shrink-0 mt-0.5"></i>
@@ -348,7 +350,7 @@
                 </div>
             </div>
 
-            <!-- ABA 4: PERÍMETROS (Adaptado para Ficha Antropométrica) -->
+            <!-- ABA 4: PERÍMETROS -->
             <div id="tab-perimetros" class="tab-content">
                 <h3 class="text-sm font-bold text-gray-400 border-b border-gray-700 pb-2 mb-6 uppercase tracking-wider">Tronco & Geral (cm)</h3>
                 <div class="grid grid-cols-2 gap-6 mb-8">
@@ -746,33 +748,33 @@
             AppState.editingId = id;
             document.getElementById('form-title').textContent = "Editar Avaliação";
             
-            document.getElementById('eval-nome').value = data.nomeAvaliado || '';
-            document.getElementById('eval-idade').value = data.idade || '';
-            document.getElementById('eval-sexo').value = data.sexo || 'Masculino';
-            document.getElementById('eval-peso').value = data.peso || '';
-            document.getElementById('eval-estatura').value = data.estatura || '';
-            document.getElementById('eval-protocolo').value = data.protocolo || 'pollock3';
-
-            if(data.anamnese) {
-                document.getElementById('ana-objetivo').value = data.anamnese.objetivo || '';
-                document.getElementById('ana-atividade').value = data.anamnese.atividade || '';
-                document.getElementById('ana-lesoes').value = data.anamnese.lesoes || '';
-                document.getElementById('ana-meds').value = data.anamnese.meds || '';
-                document.getElementById('ana-sono').value = data.anamnese.sono || '';
-            }
-            
-            dobrasList.forEach(d => {
-                const arr = data.dobras && data.dobras[`${d.id}_m`] ? data.dobras[`${d.id}_m`] : [];
-                document.getElementById(`dob-${d.id}-1`).value = arr[0] || '';
-                document.getElementById(`dob-${d.id}-2`).value = arr[1] || '';
-                document.getElementById(`dob-${d.id}-3`).value = arr[2] || '';
-                window.calcDobraMedia(d.id); 
-            });
-
             const setIfExist = (id, val) => {
                 const el = document.getElementById(id);
                 if (el) el.value = val !== undefined && val !== null ? val : '';
             };
+            
+            setIfExist('eval-nome', data.nomeAvaliado);
+            setIfExist('eval-idade', data.idade);
+            setIfExist('eval-sexo', data.sexo || 'Masculino');
+            setIfExist('eval-peso', data.peso);
+            setIfExist('eval-estatura', data.estatura);
+            setIfExist('eval-protocolo', data.protocolo || 'pollock3');
+
+            if(data.anamnese) {
+                setIfExist('ana-objetivo', data.anamnese.objetivo);
+                setIfExist('ana-atividade', data.anamnese.atividade);
+                setIfExist('ana-lesoes', data.anamnese.lesoes);
+                setIfExist('ana-meds', data.anamnese.meds);
+                setIfExist('ana-sono', data.anamnese.sono);
+            }
+            
+            dobrasList.forEach(d => {
+                const arr = data.dobras && data.dobras[`${d.id}_m`] ? data.dobras[`${d.id}_m`] : [];
+                setIfExist(`dob-${d.id}-1`, arr[0]);
+                setIfExist(`dob-${d.id}-2`, arr[1]);
+                setIfExist(`dob-${d.id}-3`, arr[2]);
+                window.calcDobraMedia(d.id); 
+            });
 
             if(data.perimetros) {
                 setIfExist('per-pes', data.perimetros.pes);
@@ -841,6 +843,7 @@
             imc: (p, a) => (a > 0 && p > 0) ? p / ((a/100)**2) : 0,
             rcq: (c, q) => (q > 0 && c > 0) ? c / q : 0,
             siri: (d) => ((4.95 / d) - 4.50) * 100,
+            
             pollock3: (sexo, idade, data) => {
                 if(idade <= 0) return null;
                 let soma, densidade;
@@ -857,6 +860,23 @@
                 }
                 return Calculators.siri(densidade);
             },
+            
+            // NOVO: Pollock 4 Dobras
+            pollock4: (sexo, idade, data) => {
+                if(idade <= 0) return null;
+                const tri = parseFloat(data.tri) || 0;
+                const sup = parseFloat(data.sup) || 0;
+                const abd = parseFloat(data.abd) || 0;
+                const cox = parseFloat(data.cox) || 0;
+                if (tri * sup * abd * cox === 0) return null;
+                const soma = tri + sup + abd + cox;
+                if (sexo === 'Masculino') {
+                    return (0.29288 * soma) - (0.0005 * Math.pow(soma, 2)) + (0.15845 * idade) - 5.8;
+                } else {
+                    return (0.29669 * soma) - (0.00043 * Math.pow(soma, 2)) + (0.02963 * idade) + 1.4072;
+                }
+            },
+            
             pollock7: (sexo, idade, data) => {
                 if(idade <= 0) return null;
                 const sub=parseFloat(data.sub)||0; const tri=parseFloat(data.tri)||0; const pei=parseFloat(data.pei)||0;
@@ -867,6 +887,17 @@
                     ? 1.112 - (0.00043499*soma) + (0.00000055*(soma**2)) - (0.00028826*idade)
                     : 1.097 - (0.00046971*soma) + (0.00000056*(soma**2)) - (0.00012828*idade);
                 return Calculators.siri(densidade);
+            },
+            
+            // NOVO: Faulkner 4 Dobras
+            faulkner: (sexo, idade, data) => {
+                const tri = parseFloat(data.tri) || 0;
+                const sub = parseFloat(data.sub) || 0;
+                const sup = parseFloat(data.sup) || 0;
+                const abd = parseFloat(data.abd) || 0;
+                if (tri * sub * sup * abd === 0) return null;
+                const soma = tri + sub + sup + abd;
+                return (soma * 0.153) + 5.783;
             }
         };
 
@@ -924,7 +955,10 @@
                 const imcVal = Calculators.imc(evalData.peso, evalData.estatura);
                 let bfVal = null;
                 
+                // NOVO: Direcionamento do protocolo correto para o cálculo
                 if (evalData.protocolo === 'pollock3' || evalData.protocolo === 'guedes') bfVal = Calculators.pollock3(evalData.sexo, evalData.idade, evalData.dobras);
+                else if (evalData.protocolo === 'pollock4') bfVal = Calculators.pollock4(evalData.sexo, evalData.idade, evalData.dobras);
+                else if (evalData.protocolo === 'faulkner') bfVal = Calculators.faulkner(evalData.sexo, evalData.idade, evalData.dobras);
                 else if (evalData.protocolo === 'pollock7') bfVal = Calculators.pollock7(evalData.sexo, evalData.idade, evalData.dobras);
                 
                 let rcqVal = null;
