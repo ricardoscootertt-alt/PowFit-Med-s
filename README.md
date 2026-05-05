@@ -2,7 +2,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>PowFit Med's - Avaliação Inteligente na Nuvem</title>
+    <title>PowFit Med's - Avaliação Física</title>
     <!-- Chart.js para gráficos -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
@@ -32,20 +32,20 @@
         ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
         ::-webkit-scrollbar-thumb:hover { background: var(--primary); }
 
-        /* MODAIS DE LOGIN E PERFIL */
+        /* MODAIS */
         .overlay-screen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: linear-gradient(135deg, rgba(6,11,20,0.95), rgba(15,23,42,0.95));
             backdrop-filter: blur(5px);
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            z-index: 1000;
+            z-index: 1000; padding: 15px;
         }
         .modal-box {
             background-color: var(--bg-card); padding: 40px; border-radius: var(--radius);
             border: 1px solid var(--border); box-shadow: 0 10px 40px rgba(0,0,0,0.8);
-            text-align: center; max-width: 500px; width: 90%; max-height: 90vh; overflow-y: auto;
+            text-align: center; max-width: 500px; width: 100%; max-height: 90vh; overflow-y: auto;
         }
-        .modal-box h1 { color: white; margin-bottom: 10px; font-size: 30px; letter-spacing: 1px; }
+        .modal-box h1 { color: white; margin-bottom: 10px; font-size: 28px; letter-spacing: 1px; }
         .modal-box h1 span { color: var(--accent); }
         .modal-box p { color: var(--text-muted); margin-bottom: 25px; font-size: 15px; }
         
@@ -104,12 +104,12 @@
             padding-bottom: 10px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 10px; justify-content: space-between;
         }
 
-        /* GRIDS E FORMS */
+        /* GRIDS PADRÃO (Desktop) */
         .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; }
         .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; }
         .grid-4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 15px; }
         
-        .input-group { display: flex; flex-direction: column; gap: 6px; text-align: left; margin-bottom: 15px;}
+        .input-group { display: flex; flex-direction: column; gap: 6px; text-align: left; margin-bottom: 10px;}
         .input-group label { font-size: 12px; color: var(--text-muted); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;}
         input, select, textarea {
             background-color: var(--bg-input); border: 1px solid var(--border); color: var(--text-main);
@@ -132,7 +132,7 @@
         .photo-upload .icon { font-size: 30px; margin-bottom: 10px; }
 
         /* BOTÕES */
-        .btn { padding: 15px 25px; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; transition: all 0.2s; text-transform: uppercase; width: 100%; letter-spacing: 1px;}
+        .btn { padding: 15px 25px; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; transition: all 0.2s; text-transform: uppercase; width: 100%; letter-spacing: 1px; display: inline-flex; align-items: center; justify-content: center; gap: 10px;}
         .btn-primary { background-color: var(--primary); color: white; box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4); }
         .btn-primary:hover { background-color: var(--primary-hover); transform: translateY(-2px); }
         .btn-success { background-color: var(--success); color: white; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);}
@@ -142,7 +142,7 @@
         .btn-sm { padding: 8px 16px; font-size: 13px; border-radius: 6px; width: auto;}
 
         /* DASHBOARD RESULTADOS E RECOMENDAÇÕES */
-        .dashboard-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; margin-bottom: 20px; }
+        .dashboard-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin-bottom: 20px; }
         .dash-card { background-color: var(--bg-input); padding: 20px; border-radius: var(--radius); text-align: center; border-left: 4px solid var(--primary); position: relative; overflow: hidden;}
         .dash-card h4 { color: var(--text-muted); font-size: 13px; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.5px;}
         .dash-card .value { font-size: 32px; font-weight: 800; color: var(--text-main); margin-bottom: 10px; }
@@ -168,23 +168,25 @@
         /* HISTÓRICO E RELATÓRIOS */
         .report-filters { display: flex; gap: 10px; margin-bottom: 15px; flex-wrap: wrap; }
         .report-filters button {
-            background: transparent; border: 1px solid var(--border); color: var(--text-muted);
-            padding: 6px 12px; border-radius: 20px; cursor: pointer; transition: all 0.2s; font-size: 13px; font-weight: bold;
+            background: transparent; border: 1px solid var(--border); color: var(--text-muted); flex: 1;
+            padding: 8px 12px; border-radius: 20px; cursor: pointer; transition: all 0.2s; font-size: 13px; font-weight: bold;
+            text-align: center; min-width: 90px;
         }
         .report-filters button.active, .report-filters button:hover { background: var(--primary); border-color: var(--primary); color: white; }
 
-        .history-list { margin-top: 10px; display: grid; gap: 15px; }
+        .history-list { margin-top: 10px; display: flex; flex-direction: column; gap: 15px; }
         .history-item {
             display: flex; justify-content: space-between; align-items: center; background: var(--bg-input);
             padding: 20px; border-radius: var(--radius); border: 1px solid var(--border); flex-wrap: wrap; gap: 15px;
             transition: all 0.2s;
         }
         .history-item:hover { border-color: var(--primary); box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
+        .hist-info { flex: 1; min-width: 250px; }
         .hist-info strong { color: var(--accent); font-size: 18px; display: block; margin-bottom: 5px;}
-        .hist-info small { color: var(--text-muted); font-size: 14px; display: flex; gap: 15px; flex-wrap: wrap;}
+        .hist-info small { color: var(--text-muted); font-size: 13px; display: flex; gap: 10px; flex-wrap: wrap;}
         .hist-actions { display: flex; gap: 10px; flex-wrap: wrap; }
         
-        .btn-action-sm { padding: 8px 16px; font-size: 13px; border-radius: 6px; cursor: pointer; font-weight: bold; border: 1px solid; transition: all 0.2s;}
+        .btn-action-sm { padding: 8px 16px; font-size: 13px; border-radius: 6px; cursor: pointer; font-weight: bold; border: 1px solid; transition: all 0.2s; flex: 1; text-align: center; min-width: 80px;}
         .btn-edit { background: rgba(59,130,246,0.1); border-color: var(--primary); color: var(--primary); }
         .btn-edit:hover { background: var(--primary); color: white; }
         .btn-print { background: rgba(16,185,129,0.1); border-color: var(--success); color: var(--success); }
@@ -197,14 +199,49 @@
             font-weight: bold; border-radius: var(--radius); margin-bottom: 20px; display: none; border: 1px solid var(--warning);
         }
 
+        /* =========================================================
+           MEDIA QUERIES PARA CELULARES (RESPONSIVIDADE MÁXIMA)
+           ========================================================= */
+        @media (max-width: 768px) {
+            .navbar { flex-direction: column; padding: 15px; text-align: center; }
+            .logo { margin-bottom: 15px; }
+            .nav-links { justify-content: center; width: 100%; margin-bottom: 15px; }
+            .nav-links button { flex: 1; text-align: center; padding: 10px; font-size: 13px; }
+            .user-info { width: 100%; justify-content: center; flex-wrap: wrap; border-top: 1px solid var(--border); padding-top: 15px;}
+            
+            .container { margin: 15px auto; padding: 0 10px; }
+            .card { padding: 15px; margin-bottom: 15px; }
+            
+            /* Força empilhamento dos grids no celular */
+            .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr !important; gap: 10px; }
+            
+            .section-title { flex-direction: column; align-items: flex-start; font-size: 18px; }
+            .section-title button, .section-title select { margin-top: 10px; width: 100%; }
+            
+            .btn { width: 100%; margin-bottom: 10px; }
+            
+            .history-item { flex-direction: column; align-items: flex-start; }
+            .hist-info { width: 100%; }
+            .hist-actions { width: 100%; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 5px; margin-top: 10px;}
+            .btn-action-sm { padding: 10px 5px; font-size: 11px; }
+
+            .dashboard-grid { grid-template-columns: 1fr; }
+            
+            .modal-box { padding: 25px 15px; }
+            .modal-box h1 { font-size: 24px; }
+        }
+
         /* IMPRESSÃO (PDF) */
         @media print {
             body { background: #fff !important; color: #000 !important; font-size: 12px; }
             .navbar, #login-screen, #modal-profissionais, .btn, .hist-actions, #view-history, .photo-upload input, .edit-mode-banner { display: none !important; }
             .container { margin: 0; padding: 0; width: 100%; max-width: 100%; }
             .card { box-shadow: none; border: none; padding: 10px 0; margin-bottom: 10px; background: transparent; page-break-inside: avoid; border-bottom: 1px solid #ccc;}
-            .section-title { color: #000 !important; border-bottom: 2px solid #000; padding-bottom: 5px; margin-bottom: 10px;}
-            .section-title button, .section-title span.badge { display: none !important; }
+            .section-title { color: #000 !important; border-bottom: 2px solid #000; padding-bottom: 5px; margin-bottom: 10px; flex-direction: row !important; }
+            .section-title button, .section-title span.badge, .section-title select { display: none !important; }
+            
+            .grid-2, .grid-3, .grid-4 { grid-template-columns: repeat(4, 1fr) !important; gap: 10px; } /* Impressão lado a lado */
+            
             input, select, textarea { background: transparent !important; border: none !important; border-bottom: 1px solid #ccc !important; color: #000 !important; padding: 4px 0 !important; border-radius: 0 !important;}
             .dash-card { background: #f8fafc !important; border: 1px solid #cbd5e1 !important; border-left: 4px solid #000 !important;}
             .dash-card h4 { color: #64748b !important; }
@@ -230,12 +267,12 @@
     <div id="login-screen" class="overlay-screen">
         <div class="modal-box">
             <h1>PowFit <span>Med's</span></h1>
-            <p>Plataforma Profissional de Avaliação</p>
+            <p>Plataforma Profissional de Avaliação Integrada</p>
             <button class="btn-google" onclick="window.Auth.login()">
                 <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google Logo">
                 Entrar com Conta Google
             </button>
-            <div id="login-error" style="color: var(--danger); margin-top: 15px; font-size: 14px; display: none;"></div>
+            <div id="login-error" style="background: rgba(239, 68, 68, 0.1); border: 1px solid var(--danger); color: var(--danger); padding: 15px; margin-top: 20px; font-size: 13px; border-radius: 8px; display: none; text-align: left;"></div>
         </div>
     </div>
 
@@ -274,7 +311,7 @@
                         <option value="AC">Acre</option><option value="AL">Alagoas</option><option value="AP">Amapá</option><option value="AM">Amazonas</option><option value="BA">Bahia</option><option value="CE">Ceará</option><option value="DF">Distrito Federal</option><option value="ES">Espírito Santo</option><option value="GO">Goiás</option><option value="MA">Maranhão</option><option value="MT">Mato Grosso</option><option value="MS">Mato Grosso do Sul</option><option value="MG">Minas Gerais</option><option value="PA">Pará</option><option value="PB">Paraíba</option><option value="PR">Paraná</option><option value="PE">Pernambuco</option><option value="PI">Piauí</option><option value="RJ">Rio de Janeiro</option><option value="RN">Rio Grande do Norte</option><option value="RS">Rio Grande do Sul</option><option value="RO">Rondônia</option><option value="RR">Roraima</option><option value="SC">Santa Catarina</option><option value="SP">São Paulo</option><option value="SE">Sergipe</option><option value="TO">Tocantins</option>
                     </select>
                 </div>
-                <div style="display: flex; gap: 10px; margin-top: 20px;">
+                <div style="display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap;">
                     <button type="button" class="btn btn-outline btn-sm" onclick="window.ProfUI.hideForm()">Cancelar</button>
                     <button type="submit" class="btn btn-primary btn-sm" id="btn-save-prof">Salvar Perfil</button>
                 </div>
@@ -290,7 +327,7 @@
             <div class="nav-links">
                 <button id="tab-form" class="active" onclick="window.UI.switchTab('form')">Nova Avaliação</button>
                 <button id="tab-hist" onclick="window.UI.switchTab('history')">Histórico & Relatórios</button>
-                <button onclick="window.UI.toggleTotem()">⛶ Modo Totem</button>
+                <button onclick="window.UI.toggleTotem()">⛶ Tela Cheia</button>
             </div>
             <div class="user-info">
                 <span id="active-prof-name" style="color: var(--accent);">--</span>
@@ -310,11 +347,11 @@
 
                 <form id="formAvaliacao" onsubmit="event.preventDefault(); window.App.processAvaliacao();">
                     
-                    <!-- Dados do Avaliador (Automático via Perfil) -->
+                    <!-- Dados do Avaliador -->
                     <div class="card">
                         <div class="section-title">
-                            <div>👨‍⚕️ Profissional e Embasamento Legal</div>
-                            <button type="button" class="btn-outline btn-sm" style="width: auto; border-radius: 20px;" onclick="window.ProfUI.showSelectionModal()">Trocar Perfil</button>
+                            <div>👨‍⚕️ Profissional Responsável</div>
+                            <button type="button" class="btn-outline btn-sm" style="border-radius: 20px;" onclick="window.ProfUI.showSelectionModal()">Trocar Perfil</button>
                         </div>
                         <div class="grid-3">
                             <div class="input-group">
@@ -330,9 +367,7 @@
                                 <input type="text" id="av_reg" readonly style="border-bottom-style: dashed;">
                             </div>
                         </div>
-                        <div id="av_legal_text" class="legal-text">
-                            <!-- Preenchido via JavaScript dependendo do perfil -->
-                        </div>
+                        <div id="av_legal_text" class="legal-text"></div>
                     </div>
 
                     <!-- Dados Clínicos & Anamnese -->
@@ -391,8 +426,8 @@
                     <!-- Dobras Cutâneas -->
                     <div class="card">
                         <div class="section-title">
-                            <div>🤏 Dobras Cutâneas (mm)</div>
-                            <select id="in_protocolo" style="width: auto; padding: 6px; font-size: 13px; border-radius: 6px;">
+                            <div>🤏 Dobras (mm)</div>
+                            <select id="in_protocolo" style="width: 100%; max-width: 200px; padding: 8px; font-size: 14px; border-radius: 6px;">
                                 <option value="pollock3">Pollock 3 Dobras</option>
                                 <option value="pollock7">Pollock 7 Dobras</option>
                                 <option value="imc">Apenas IMC/RCQ</option>
@@ -443,14 +478,14 @@
                     <div class="section-title">📊 Diagnóstico e Prescrição</div>
                     
                     <div class="dashboard-grid">
-                        <div class="dash-card"><h4>Índice de Massa (IMC)</h4><div class="value" id="res-imc">--</div><div class="badge" id="badge-imc">--</div></div>
-                        <div class="dash-card"><h4>Relação Cint/Quadril</h4><div class="value" id="res-rcq">--</div><div class="badge" id="badge-rcq">--</div></div>
+                        <div class="dash-card"><h4>IMC</h4><div class="value" id="res-imc">--</div><div class="badge" id="badge-imc">--</div></div>
+                        <div class="dash-card"><h4>Cint/Quadril (RCQ)</h4><div class="value" id="res-rcq">--</div><div class="badge" id="badge-rcq">--</div></div>
                         <div class="dash-card"><h4>Gordura Corporal</h4><div class="value" id="res-gordura">--%</div><div class="badge" id="badge-gordura">--</div></div>
                     </div>
 
-                    <div class="dashboard-grid" style="grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));">
-                        <div class="dash-card"><h4>Massa Gorda (Lípidos)</h4><div class="value" style="color: var(--danger)" id="res-mg">-- kg</div></div>
-                        <div class="dash-card"><h4>Massa Magra (Livre de Gordura)</h4><div class="value" style="color: var(--success)" id="res-mm">-- kg</div></div>
+                    <div class="dashboard-grid">
+                        <div class="dash-card"><h4>Massa Gorda</h4><div class="value" style="color: var(--danger)" id="res-mg">-- kg</div></div>
+                        <div class="dash-card"><h4>Massa Magra Livre</h4><div class="value" style="color: var(--success)" id="res-mm">-- kg</div></div>
                     </div>
 
                     <div class="ai-suggestions" id="container-recomendacoes">
@@ -463,13 +498,13 @@
                     <div class="rt-footer">
                         <strong>Responsabilidade Técnica Clínica (Motor de Decisão)</strong>
                         Luiz André — CREF: 008094-G/RN<br>
-                        <em>As recomendações geradas constituem um guia de suporte ao profissional, fundamentadas em algoritmos de saúde. A prescrição final do treinamento é de responsabilidade do profissional titular da avaliação física.</em>
+                        <em>As recomendações geradas constituem um guia de suporte ao profissional. A prescrição final do treinamento é de responsabilidade do profissional titular da avaliação.</em>
                     </div>
 
                     <!-- BOTÃO CONSOLIDADO: SALVAR E IMPRIMIR -->
-                    <div class="grid-1" style="margin-top: 25px;">
+                    <div style="margin-top: 25px;">
                         <button class="btn btn-success" id="btn-salvar-imprimir" style="font-size: 18px; padding: 18px;" onclick="window.App.salvarEImprimir()">
-                            💾 Salvar na Nuvem & 🖨️ Imprimir Relatório
+                            💾 Salvar na Nuvem & 🖨️ Imprimir
                         </button>
                     </div>
                 </div>
@@ -479,24 +514,23 @@
             <div id="view-history" class="view-section">
                 
                 <div class="report-filters">
-                    <span style="display:flex; align-items:center; font-weight:bold; color:var(--text-muted); margin-right: 10px;">Relatórios:</span>
                     <button class="active" id="btn-filtro-todos" onclick="window.UI.setReportFilter('todos')">Todos</button>
                     <button id="btn-filtro-mes" onclick="window.UI.setReportFilter('mes')">Este Mês</button>
                     <button id="btn-filtro-ano" onclick="window.UI.setReportFilter('ano')">Este Ano</button>
                 </div>
 
                 <div class="card">
-                    <div class="section-title"><div id="chart-title">📈 Evolução da Base (Todos)</div></div>
-                    <div style="height: 350px; width: 100%; position: relative;">
+                    <div class="section-title"><div id="chart-title">📈 Evolução da Base</div></div>
+                    <div style="height: 300px; width: 100%; position: relative;">
                         <canvas id="evolutionChart"></canvas>
                     </div>
                 </div>
 
                 <div class="card">
                     <div class="section-title">📂 Fichas Salvas (Perfil Atual)</div>
-                    <input type="text" id="search-history" placeholder="Buscar paciente por nome..." style="margin-bottom: 15px; width: 100%; padding: 10px; border-radius:8px; border: 1px solid var(--border); background: var(--bg-input); color: white;" onkeyup="window.UI.renderHistoryList()">
+                    <input type="text" id="search-history" placeholder="Buscar paciente por nome..." style="margin-bottom: 15px; width: 100%; padding: 12px; border-radius:8px; border: 1px solid var(--border); background: var(--bg-input); color: white;" onkeyup="window.UI.renderHistoryList()">
                     <div class="history-list" id="lista-historico">
-                        <p style="color: var(--text-muted)">Carregando dados seguros da nuvem...</p>
+                        <p style="color: var(--text-muted)">Carregando dados da nuvem...</p>
                     </div>
                 </div>
             </div>
@@ -568,7 +602,7 @@
     window.ProfUI = {
         async loadProfissionais() {
             try {
-                // Modificado path para evitar erros na configuração fora do ambiente de teste
+                // Modificado para estrutura segura do Firebase
                 const colRef = collection(db, "users", currentUser.uid, "profissionais");
                 const snapshot = await getDocs(colRef);
                 profissionais = [];
@@ -583,11 +617,18 @@
                 }
             } catch(e) { 
                 console.error(e); 
+                let msg = "Erro desconhecido. Verifique o console.";
                 if(e.message.includes("permission") || e.code === "permission-denied") {
-                    alert("Acesso negado! Por favor, vá no painel do Firebase -> Firestore Database -> Regras, e permita leitura/escrita para usuários logados.");
-                } else {
-                    alert("Erro de conexão com o banco de dados: " + e.message);
+                    msg = "<strong>Acesso Negado (Firebase Rules)</strong><br><br>Você precisa ir no Console do Firebase > Firestore Database > Regras (Rules) e colar exatamente isso:<br><br><code>rules_version = '2';<br>service cloud.firestore {<br> match /databases/{database}/documents {<br>  match /{document=**} {<br>   allow read, write: if request.auth != null;<br>  }<br> }<br>}</code>";
                 }
+                const errDiv = document.getElementById('login-error');
+                errDiv.innerHTML = msg;
+                errDiv.style.display = 'block';
+                
+                // Se der erro de regra, esconde modal de profissional para ele ler o erro
+                document.getElementById('modal-profissionais').style.display = 'none';
+                document.getElementById('login-screen').style.display = 'flex';
+                document.querySelector('.btn-google').style.display = 'none'; // Impede novo login até arrumar
             }
         },
         showSelectionModal() {
@@ -656,12 +697,12 @@
             document.getElementById('av_tipo').value = prof.tipo;
             document.getElementById('av_reg').value = prof.tipo === 'Treinador Esportivo' ? prof.estado : `CREF: ${prof.cref} / ${prof.estado}`;
             
-            // Texto Legal Dinâmico
+            // Texto Legal
             const legalDiv = document.getElementById('av_legal_text');
             if(prof.tipo === 'Treinador Esportivo') {
-                legalDiv.innerHTML = "⚖️ <strong>Base Legal de Atuação Esportiva:</strong> Perfil amparado pela Lei Federal nº 9.615/1998 (Lei Pelé) e Art. 5º, XIII da CF/88, focado exclusivamente no treinamento técnico, tático e físico voltado ao esporte e rendimento.";
+                legalDiv.innerHTML = "⚖️ <strong>Base Legal Esportiva:</strong> Perfil amparado pela Lei Federal nº 9.615/1998 (Lei Pelé) e Art. 5º, XIII da CF/88, focado no treinamento esportivo.";
             } else {
-                legalDiv.innerHTML = "⚖️ <strong>Base Legal Clínica e Saúde:</strong> Atuação regulamentada pela Lei Federal nº 9.696/1998. Prerrogativa legal plena para a prestação de serviços de avaliação física, prescrição de exercícios e intervenção voltada à promoção da saúde.";
+                legalDiv.innerHTML = "⚖️ <strong>Base Legal Clínica e Saúde:</strong> Atuação regulamentada pela Lei Federal nº 9.696/1998 para prescrição de exercícios e promoção da saúde.";
             }
 
             document.getElementById('in_data').valueAsDate = new Date();
@@ -681,7 +722,7 @@
                 avaliacoes = todas.filter(a => a.profId === activeProfId);
                 avaliacoes.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
                 window.UI.processReports(); 
-            } catch (e) { document.getElementById('lista-historico').innerHTML = `<p style="color:var(--danger)">Erro DB.</p>`; }
+            } catch (e) { document.getElementById('lista-historico').innerHTML = `<p style="color:var(--danger)">Erro ao baixar fichas.</p>`; }
         },
         async saveOrUpdate(dataObj) {
             if (!currentUser || !activeProfId) return;
@@ -704,13 +745,13 @@
         }
     };
 
-    // 4. MOTOR CLÍNICO (CÁLCULOS E RECOMENDAÇÕES)
+    // 4. MOTOR CLÍNICO
     window.Calc = {
         imc: (p, a) => {
             const val = p / Math.pow(a/100, 2);
             let classif = "Obesidade", type = "danger";
             if(val < 18.5) { classif = "Baixo Peso"; type = "warning"; }
-            else if(val < 24.9) { classif = "Peso Normal"; type = "success"; }
+            else if(val < 24.9) { classif = "Normal"; type = "success"; }
             else if(val < 29.9) { classif = "Sobrepeso"; type = "warning"; }
             return { value: val.toFixed(1), classif, type };
         },
@@ -743,32 +784,31 @@
             const b = parseFloat(bf);
             if(sx === 'Masculino') {
                 if(b<10) return {c:"Atleta", t:"info"};
-                if(b<=18) return {c:"Aceitável/Bom", t:"success"};
+                if(b<=18) return {c:"Bom", t:"success"};
                 if(b<=24) return {c:"Acima do Ideal", t:"warning"};
                 return {c:"Risco Elevado", t:"danger"};
             } else {
                 if(b<17) return {c:"Atleta", t:"info"};
-                if(b<=25) return {c:"Aceitável/Bom", t:"success"};
+                if(b<=25) return {c:"Bom", t:"success"};
                 if(b<=31) return {c:"Acima do Ideal", t:"warning"};
                 return {c:"Risco Elevado", t:"danger"};
             }
         },
         getRecomendacoes(imcObj, rcqObj, bfObj) {
             let r_imc = "", r_rcq = "", r_bf = "";
+            if(imcObj.type === 'danger') r_imc = "<p>Quadro indica sobrecarga articular e sistêmica. Recomendada rotina com baixo impacto inicial e foco em déficit calórico.</p>";
+            else if(imcObj.type === 'warning') r_imc = "<p>Estatura/Peso indica leve descompasso. Avaliar se o peso extra é músculo (massa magra) ou gordura.</p>";
+            else if(imcObj.type === 'success') r_imc = "<p>Peso absoluto dentro dos parâmetros seguros. Priorizar manutenção de flexibilidade e força.</p>";
+            else r_imc = "<p>Perfil de baixo peso. Requer prescrição para ganho de massa magra e superávit calórico nutricional.</p>";
 
-            if(imcObj.type === 'danger') r_imc = "<p>O quadro indica sobrecarga articular e sistêmica. Recomendada estruturação de rotina com baixo impacto inicial e foco imediato em reeducação e déficit calórico monitorado.</p>";
-            else if(imcObj.type === 'warning') r_imc = "<p>Estatura/Peso indica leve descompasso. Sugere-se avaliar a densidade muscular (avaliar se o peso extra é músculo ou gordura) e ajustar a periodização aeróbica/anaeróbica.</p>";
-            else if(imcObj.type === 'success') r_imc = "<p>Peso absoluto dentro dos parâmetros seguros para a estatura. A prioridade técnica deve ser a manutenção da flexibilidade, força e estabilização de métricas.</p>";
-            else r_imc = "<p>Perfil de baixo peso corporal. Requer prescrição voltada para ganho de massa magra (superávit calórico nutricional e treino resistido tensional).</p>";
+            if(rcqObj.type === 'danger') r_rcq = "<p>ALERTA CLÍNICO: A relação aferida demonstra acúmulo patogênico de gordura visceral. Probabilidade alta para síndrome metabólica. Treino aeróbio urgente.</p>";
+            else if(rcqObj.type === 'warning') r_rcq = "<p>Atenção à distribuição da gordura central. Indicado aumentar volume semanal de treinamento cardiovascular.</p>";
+            else r_rcq = "<p>Distribuição adiposa segura. Baixa incidência de centralização de gordura visceral.</p>";
 
-            if(rcqObj.type === 'danger') r_rcq = "<p>ALERTA CLÍNICO: A relação aferida demonstra acúmulo patogênico de gordura na região visceral. Indivíduo com probabilidade muito aumentada para desenvolvimento de síndrome metabólica. Exercícios aeróbios e dieta são urgentes.</p>";
-            else if(rcqObj.type === 'warning') r_rcq = "<p>Atenção à distribuição da gordura central. É indicado aumentar o volume semanal do treinamento cardiovascular preventivo.</p>";
-            else r_rcq = "<p>Distribuição adiposa segura. Baixa incidência de centralização de gordura visceral, o que denota boa saúde cardiovascular primária.</p>";
-
-            if(!bfObj.c || bfObj.t === 'info') r_bf = "<p>Percentual de gordura extremamente baixo, comum em padrões competitivos. Foco na manutenção da integridade hormonal e óssea do paciente.</p>";
-            else if(bfObj.t === 'success') r_bf = "<p>Níveis lipídicos corporais correspondentes ao padrão de saúde ideal. Estrutura favorável à otimização de performance e longevidade.</p>";
-            else if(bfObj.t === 'warning') r_bf = "<p>Depósitos de gordura ligeiramente acima do recomendado para saúde ideal. Sugere-se protocolo de emagrecimento leve associado à hipertrofia para melhora da taxa metabólica basal.</p>";
-            else r_bf = "<p>Excesso evidente de tecido adiposo corporal. O plano de ação deve priorizar a oxidação de lipídios através de treinamento concorrente (Aeróbico + Força) e acompanhamento multidisciplinar obrigatório.</p>";
+            if(!bfObj.c || bfObj.t === 'info') r_bf = "<p>Percentual de gordura extremamente baixo. Foco na manutenção da integridade hormonal e óssea.</p>";
+            else if(bfObj.t === 'success') r_bf = "<p>Níveis corporais no padrão de saúde ideal. Estrutura favorável à otimização de performance e longevidade.</p>";
+            else if(bfObj.t === 'warning') r_bf = "<p>Depósitos de gordura ligeiramente acima do recomendado. Sugere-se protocolo de emagrecimento leve associado à hipertrofia.</p>";
+            else r_bf = "<p>Excesso de tecido adiposo corporal. O plano deve priorizar a oxidação de lipídios através de treinamento concorrente (Aeróbico + Força).</p>";
 
             return { r_imc, r_rcq, r_bf };
         }
@@ -832,7 +872,7 @@
             list.innerHTML = '';
             
             const finalArr = dataToRender.filter(h => h.inputs.nome.toLowerCase().includes(termo));
-            if(finalArr.length === 0) { list.innerHTML = '<p>Nenhum registro encontrado para este filtro.</p>'; return; }
+            if(finalArr.length === 0) { list.innerHTML = '<p style="color:var(--text-muted)">Nenhum registro encontrado para este filtro.</p>'; return; }
 
             finalArr.forEach(item => {
                 const d = new Date(item.timestamp).toLocaleDateString();
@@ -853,7 +893,7 @@
             });
         },
         renderChart: (dataArray) => {
-            const recent = dataArray.slice(0, 20).reverse(); 
+            const recent = dataArray.slice(0, 15).reverse(); 
             if(window.myChart) window.myChart.destroy();
             const ctx = document.getElementById('evolutionChart').getContext('2d');
             Chart.defaults.color = '#94a3b8';
@@ -953,9 +993,9 @@
 
             // Injeta Recomendações
             const recs = window.Calc.getRecomendacoes(resImc, resRcq, classBf);
-            document.getElementById('rec-imc').innerHTML = `<strong>• Referente ao Peso Corporal (IMC):</strong> ${recs.r_imc}`;
-            document.getElementById('rec-rcq').innerHTML = `<strong>• Referente à Prevenção Cardiovascular (RCQ):</strong> ${recs.r_rcq}`;
-            if(resBf) document.getElementById('rec-bf').innerHTML = `<strong>• Referente ao Tecido Adiposo (Gordura):</strong> ${recs.r_bf}`;
+            document.getElementById('rec-imc').innerHTML = `<strong>• Peso Corporal (IMC):</strong> ${recs.r_imc}`;
+            document.getElementById('rec-rcq').innerHTML = `<strong>• Prevenção Cardiovascular (RCQ):</strong> ${recs.r_rcq}`;
+            if(resBf) document.getElementById('rec-bf').innerHTML = `<strong>• Tecido Adiposo (Gordura):</strong> ${recs.r_bf}`;
             else document.getElementById('rec-bf').innerHTML = "";
 
             currentCalculatedData = { inputs: i, resultados: { imc: resImc.value, rcq: resRcq.value, bf: resBf, mg: mg, mm: mm } };
@@ -978,7 +1018,7 @@
                     window.UI.switchTab('history');
                 }, 500);
             } catch(e) { alert("Falha: " + e.message); } 
-            finally { btn.innerText = '💾 Salvar na Nuvem & 🖨️ Imprimir Relatório'; btn.disabled = false; }
+            finally { btn.innerText = '💾 Salvar na Nuvem & 🖨️ Imprimir'; btn.disabled = false; }
         },
 
         editar: (id) => {
