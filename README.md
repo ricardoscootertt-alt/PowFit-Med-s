@@ -75,36 +75,32 @@
         #dash-table-container tbody,
         #dash-table-container tr,
         #dash-table-container td {
-            background-color: #151A2D !important; /* Cor dark-800 */
-            color: #E5E7EB !important; /* Texto claro */
-            border-bottom: 1px solid #374151 !important; /* border-gray-700 */
+            background-color: #151A2D !important;
+            color: #E5E7EB !important;
+            border-bottom: 1px solid #374151 !important;
         }
         #dash-table-container thead,
         #dash-table-container th {
-            background-color: #0B0F19 !important; /* Cor dark-900 */
-            color: #9CA3AF !important; /* Texto cinza */
+            background-color: #0B0F19 !important;
+            color: #9CA3AF !important;
             border-bottom: 1px solid #374151 !important;
         }
         #dash-table-container tr:hover td {
-            background-color: #1F2937 !important; /* Hover dark-700 */
+            background-color: #1F2937 !important;
         }
-        /* Cores específicas dos botões na tabela blidada */
         #dash-table-container td button.btn-print { background-color: rgba(59, 130, 246, 0.1) !important; color: #3B82F6 !important; }
         #dash-table-container td button.btn-edit { background-color: rgba(234, 179, 8, 0.1) !important; color: #EAB308 !important; }
         #dash-table-container td button.btn-delete { background-color: rgba(239, 68, 68, 0.1) !important; color: #EF4444 !important; }
-        
         #dash-table-container td button.btn-print:hover { background-color: rgba(59, 130, 246, 0.2) !important; }
         #dash-table-container td button.btn-edit:hover { background-color: rgba(234, 179, 8, 0.2) !important; }
         #dash-table-container td button.btn-delete:hover { background-color: rgba(239, 68, 68, 0.2) !important; }
         /* --------------------------------------------------- */
 
-        /* Scrollbar customizada */
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: #0B0F19; }
         ::-webkit-scrollbar-thumb { background: #1F2937; border-radius: 4px; }
         ::-webkit-scrollbar-thumb:hover { background: #3B82F6; }
 
-        /* Loader */
         .loader {
             border: 3px solid rgba(255,255,255,0.1);
             border-left-color: #3B82F6;
@@ -115,7 +111,6 @@
         }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        /* Abas */
         .tab-content { display: none; }
         .tab-content.active { display: block; animation: fadeIn 0.3s ease; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
@@ -221,7 +216,6 @@
                 <input type="text" id="dash-search" placeholder="Procurar cliente..." class="bg-dark-900 border border-gray-700 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-neon-blue w-full sm:w-64">
             </div>
             
-            <!-- CONTÊINER BLINDADO DA TABELA -->
             <div id="dash-table-container" class="overflow-x-auto rounded-xl border border-gray-700/50">
                 <table class="w-full text-left border-collapse min-w-[650px]">
                     <thead>
@@ -243,19 +237,17 @@
     <!-- TELA FORMULÁRIO DE AVALIAÇÃO -->
     <div id="screen-evaluation-form" class="hidden flex-1 max-w-2xl w-full mx-auto p-4 flex flex-col">
         <div class="flex items-center gap-3 mb-8 mt-2">
-            <button onclick="navigate('dashboard')" class="text-gray-400 hover:text-white p-2 rounded-full hover:bg-dark-800"><i data-lucide="arrow-left"></i></button>
+            <button type="button" onclick="navigate('dashboard')" class="text-gray-400 hover:text-white p-2 rounded-full hover:bg-dark-800"><i data-lucide="arrow-left"></i></button>
             <h2 class="text-2xl font-bold" id="form-title">Nova Avaliação</h2>
         </div>
 
-        <!-- Abas Navegação -->
         <div class="flex overflow-x-auto mb-8 bg-dark-800 rounded-xl p-1 border border-gray-700 shadow-sm">
-            <button class="flex-1 py-3 px-2 text-sm font-bold rounded-lg text-neon-blue bg-dark-700 shadow eval-tab-btn transition" data-target="tab-perfil">Perfil</button>
-            <button class="flex-1 py-3 px-2 text-sm font-bold rounded-lg text-gray-400 hover:text-white eval-tab-btn transition" data-target="tab-anamnese">Anamnese</button>
-            <button class="flex-1 py-3 px-2 text-sm font-bold rounded-lg text-gray-400 hover:text-white eval-tab-btn transition" data-target="tab-dobras">Dobras</button>
-            <button class="flex-1 py-3 px-2 text-sm font-bold rounded-lg text-gray-400 hover:text-white eval-tab-btn transition" data-target="tab-perimetros">Medidas</button>
+            <button type="button" class="flex-1 py-3 px-2 text-sm font-bold rounded-lg text-neon-blue bg-dark-700 shadow eval-tab-btn transition" data-target="tab-perfil">Perfil</button>
+            <button type="button" class="flex-1 py-3 px-2 text-sm font-bold rounded-lg text-gray-400 hover:text-white eval-tab-btn transition" data-target="tab-anamnese">Anamnese</button>
+            <button type="button" class="flex-1 py-3 px-2 text-sm font-bold rounded-lg text-gray-400 hover:text-white eval-tab-btn transition" data-target="tab-dobras">Dobras</button>
+            <button type="button" class="flex-1 py-3 px-2 text-sm font-bold rounded-lg text-gray-400 hover:text-white eval-tab-btn transition" data-target="tab-perimetros">Medidas</button>
         </div>
 
-        <!-- Form: Tudo opcional -->
         <form id="form-evaluation" class="bg-dark-800 p-6 pb-36 rounded-2xl border border-gray-700 shadow-xl relative mb-24">
             
             <!-- ABA 1: PERFIL -->
@@ -271,7 +263,8 @@
                     </div>
                     <div>
                         <label class="label-base">Sexo</label>
-                        <select id="eval-sexo" class="input-base">
+                        <!-- Adicionado onchange para recalcular os filtros -->
+                        <select id="eval-sexo" class="input-base" onchange="window.filterDobrasByProtocol()">
                             <option value="Masculino">Masculino</option>
                             <option value="Feminino">Feminino</option>
                         </select>
@@ -287,11 +280,11 @@
                 </div>
                 <div class="pt-2 border-t border-gray-700/50 mt-4">
                     <label class="label-base text-gray-300">Protocolo de Composição Corporal</label>
-                    <select id="eval-protocolo" class="input-base bg-dark-800">
+                    <select id="eval-protocolo" class="input-base bg-dark-800" onchange="window.filterDobrasByProtocol()">
                         <option value="pollock3">Pollock 3 Dobras</option>
                         <option value="pollock4">Pollock 4 Dobras</option>
                         <option value="pollock7">Pollock 7 Dobras</option>
-                        <option value="faulkner">Faulkner 4 Dobras</option>
+                        <option value="faulkner4">Faulkner 4 Dobras</option>
                         <option value="guedes">Guedes</option>
                         <option value="imc">Apenas IMC (Sem dobras)</option>
                     </select>
@@ -342,11 +335,11 @@
             <div id="tab-dobras" class="tab-content">
                 <div class="bg-blue-900/10 border border-blue-900/50 text-blue-300 text-sm p-4 rounded-xl mb-6 flex items-start gap-3">
                     <i data-lucide="info" class="w-5 h-5 flex-shrink-0 mt-0.5"></i>
-                    <p>Preencha até 3 medições em milímetros (mm). O sistema calculará a <strong>Média</strong> automaticamente no campo "Res".</p>
+                    <p>Faça 3 repetições (1ª, 2ª, 3ª medição) na mesma dobra. O sistema calculará a <strong>Média</strong> automaticamente. As dobras mostradas ajustam-se ao protocolo escolhido.</p>
                 </div>
                 
                 <div class="space-y-4" id="dobras-container">
-                    <!-- Gerado via JS para manter o HTML limpo -->
+                    <!-- Gerado via JS -->
                 </div>
             </div>
 
@@ -498,7 +491,7 @@
     <!-- ================= LÓGICA DA APLICAÇÃO ================= -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-        import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut, signInWithCustomToken, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+        import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
         import { getFirestore, enableIndexedDbPersistence, doc, setDoc, getDoc, collection, addDoc, updateDoc, deleteDoc, query, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
         const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {
@@ -698,7 +691,7 @@
         function initDobrasUI() {
             const container = document.getElementById('dobras-container');
             container.innerHTML = dobrasList.map(d => `
-                <div class="bg-dark-900/40 p-4 rounded-xl border border-gray-700/30">
+                <div id="container-dobra-${d.id}" class="bg-dark-900/40 p-4 rounded-xl border border-gray-700/30 transition-all duration-300">
                     <label class="label-base text-gray-300 mb-3">${d.nome}</label>
                     <div class="flex gap-2">
                         <div class="flex-1"><input type="number" step="0.1" id="dob-${d.id}-1" oninput="window.calcDobraMedia('${d.id}')" class="input-base py-3 px-1 text-center text-sm" placeholder="1ª"></div>
@@ -713,6 +706,34 @@
             `).join('');
         }
         initDobrasUI();
+
+        // --- FILTRO DINÂMICO DE DOBRAS POR PROTOCOLO E SEXO ---
+        window.filterDobrasByProtocol = () => {
+            const protocol = document.getElementById('eval-protocolo').value;
+            const sexo = document.getElementById('eval-sexo').value;
+            const allDobras = ['bic', 'tri', 'sub', 'pei', 'axi', 'sup', 'abd', 'cox', 'pan'];
+            let visibleDobras = allDobras;
+
+            if (protocol === 'pollock3' || protocol === 'guedes') {
+                if (sexo === 'Masculino') visibleDobras = ['pei', 'abd', 'cox'];
+                else visibleDobras = ['tri', 'sup', 'cox'];
+            } else if (protocol === 'pollock4') {
+                visibleDobras = ['tri', 'sup', 'abd', 'cox'];
+            } else if (protocol === 'faulkner4') {
+                visibleDobras = ['tri', 'sub', 'sup', 'abd'];
+            } else if (protocol === 'pollock7') {
+                visibleDobras = ['tri', 'sub', 'pei', 'axi', 'sup', 'abd', 'cox'];
+            } else if (protocol === 'imc') {
+                visibleDobras = [];
+            }
+
+            allDobras.forEach(id => {
+                const el = document.getElementById(`container-dobra-${id}`);
+                if (el) {
+                    el.style.display = visibleDobras.includes(id) ? 'block' : 'none';
+                }
+            });
+        };
 
         window.calcDobraMedia = (id) => {
             const v1 = parseFloat(document.getElementById(`dob-${id}-1`).value);
@@ -737,6 +758,7 @@
             AppState.editingId = null;
             document.getElementById('form-title').textContent = "Nova Avaliação";
             ui.formEval.reset();
+            window.filterDobrasByProtocol(); // Aplica o filtro inicial ao criar
             tabs[0].click();
             navigate('evaluation-form');
         };
@@ -748,53 +770,46 @@
             AppState.editingId = id;
             document.getElementById('form-title').textContent = "Editar Avaliação";
             
-            const setIfExist = (id, val) => {
-                const el = document.getElementById(id);
-                if (el) el.value = val !== undefined && val !== null ? val : '';
-            };
+            document.getElementById('eval-nome').value = data.nomeAvaliado || '';
+            document.getElementById('eval-idade').value = data.idade || '';
+            document.getElementById('eval-sexo').value = data.sexo || 'Masculino';
+            document.getElementById('eval-peso').value = data.peso || '';
+            document.getElementById('eval-estatura').value = data.estatura || '';
+            document.getElementById('eval-protocolo').value = data.protocolo || 'pollock3';
             
-            setIfExist('eval-nome', data.nomeAvaliado);
-            setIfExist('eval-idade', data.idade);
-            setIfExist('eval-sexo', data.sexo || 'Masculino');
-            setIfExist('eval-peso', data.peso);
-            setIfExist('eval-estatura', data.estatura);
-            setIfExist('eval-protocolo', data.protocolo || 'pollock3');
+            window.filterDobrasByProtocol(); // Filtra UI na edição baseada nos dados carregados
 
             if(data.anamnese) {
-                setIfExist('ana-objetivo', data.anamnese.objetivo);
-                setIfExist('ana-atividade', data.anamnese.atividade);
-                setIfExist('ana-lesoes', data.anamnese.lesoes);
-                setIfExist('ana-meds', data.anamnese.meds);
-                setIfExist('ana-sono', data.anamnese.sono);
+                document.getElementById('ana-objetivo').value = data.anamnese.objetivo || '';
+                document.getElementById('ana-atividade').value = data.anamnese.atividade || '';
+                document.getElementById('ana-lesoes').value = data.anamnese.lesoes || '';
+                document.getElementById('ana-meds').value = data.anamnese.meds || '';
+                document.getElementById('ana-sono').value = data.anamnese.sono || '';
             }
             
             dobrasList.forEach(d => {
                 const arr = data.dobras && data.dobras[`${d.id}_m`] ? data.dobras[`${d.id}_m`] : [];
-                setIfExist(`dob-${d.id}-1`, arr[0]);
-                setIfExist(`dob-${d.id}-2`, arr[1]);
-                setIfExist(`dob-${d.id}-3`, arr[2]);
+                document.getElementById(`dob-${d.id}-1`).value = arr[0] || '';
+                document.getElementById(`dob-${d.id}-2`).value = arr[1] || '';
+                document.getElementById(`dob-${d.id}-3`).value = arr[2] || '';
                 window.calcDobraMedia(d.id); 
             });
 
+            const setIfExist = (id, val) => {
+                const el = document.getElementById(id);
+                if (el) el.value = val !== undefined && val !== null ? val : '';
+            };
+
             if(data.perimetros) {
-                setIfExist('per-pes', data.perimetros.pes);
-                setIfExist('per-omb', data.perimetros.omb);
-                setIfExist('per-tor', data.perimetros.tor);
-                setIfExist('per-cin', data.perimetros.cin);
-                setIfExist('per-abd', data.perimetros.abd);
-                setIfExist('per-qua', data.perimetros.qua);
-                setIfExist('per-brre-e', data.perimetros['brre-e']);
-                setIfExist('per-brre-d', data.perimetros['brre-d']);
-                setIfExist('per-brco-e', data.perimetros['brco-e']);
-                setIfExist('per-brco-d', data.perimetros['brco-d']);
-                setIfExist('per-ante-e', data.perimetros['ante-e']);
-                setIfExist('per-ante-d', data.perimetros['ante-d']);
-                setIfExist('per-cxpr-e', data.perimetros['cxpr-e']);
-                setIfExist('per-cxpr-d', data.perimetros['cxpr-d']);
-                setIfExist('per-cxme-e', data.perimetros['cxme-e']);
-                setIfExist('per-cxme-d', data.perimetros['cxme-d']);
-                setIfExist('per-pan-e', data.perimetros['pan-e']);
-                setIfExist('per-pan-d', data.perimetros['pan-d']);
+                setIfExist('per-pes', data.perimetros.pes); setIfExist('per-omb', data.perimetros.omb);
+                setIfExist('per-tor', data.perimetros.tor); setIfExist('per-cin', data.perimetros.cin);
+                setIfExist('per-abd', data.perimetros.abd); setIfExist('per-qua', data.perimetros.qua);
+                setIfExist('per-brre-e', data.perimetros['brre-e']); setIfExist('per-brre-d', data.perimetros['brre-d']);
+                setIfExist('per-brco-e', data.perimetros['brco-e']); setIfExist('per-brco-d', data.perimetros['brco-d']);
+                setIfExist('per-ante-e', data.perimetros['ante-e']); setIfExist('per-ante-d', data.perimetros['ante-d']);
+                setIfExist('per-cxpr-e', data.perimetros['cxpr-e']); setIfExist('per-cxpr-d', data.perimetros['cxpr-d']);
+                setIfExist('per-cxme-e', data.perimetros['cxme-e']); setIfExist('per-cxme-d', data.perimetros['cxme-d']);
+                setIfExist('per-pan-e', data.perimetros['pan-e']); setIfExist('per-pan-d', data.perimetros['pan-d']);
                 setIfExist('per-outras', data.perimetros.outras);
             }
             
@@ -839,11 +854,11 @@
             });
         });
 
+        // --- MOTORES DE CÁLCULO GERAL ---
         const Calculators = {
             imc: (p, a) => (a > 0 && p > 0) ? p / ((a/100)**2) : 0,
             rcq: (c, q) => (q > 0 && c > 0) ? c / q : 0,
             siri: (d) => ((4.95 / d) - 4.50) * 100,
-            
             pollock3: (sexo, idade, data) => {
                 if(idade <= 0) return null;
                 let soma, densidade;
@@ -860,23 +875,16 @@
                 }
                 return Calculators.siri(densidade);
             },
-            
-            // NOVO: Pollock 4 Dobras
             pollock4: (sexo, idade, data) => {
                 if(idade <= 0) return null;
-                const tri = parseFloat(data.tri) || 0;
-                const sup = parseFloat(data.sup) || 0;
-                const abd = parseFloat(data.abd) || 0;
-                const cox = parseFloat(data.cox) || 0;
-                if (tri * sup * abd * cox === 0) return null;
-                const soma = tri + sup + abd + cox;
-                if (sexo === 'Masculino') {
-                    return (0.29288 * soma) - (0.0005 * Math.pow(soma, 2)) + (0.15845 * idade) - 5.8;
-                } else {
-                    return (0.29669 * soma) - (0.00043 * Math.pow(soma, 2)) + (0.02963 * idade) + 1.4072;
-                }
+                const tri=parseFloat(data.tri)||0; const sup=parseFloat(data.sup)||0; const abd=parseFloat(data.abd)||0; const cox=parseFloat(data.cox)||0;
+                if(tri*sup*abd*cox === 0) return null;
+                const soma = tri+sup+abd+cox;
+                const densidade = sexo === 'Masculino' 
+                    ? 1.09220 - (0.00040*soma) + (0.0000016*(soma**2)) - (0.000212*idade)
+                    : 1.096095 - (0.00025*soma) + (0.0000006*(soma**2)) - (0.00005*idade);
+                return Calculators.siri(densidade);
             },
-            
             pollock7: (sexo, idade, data) => {
                 if(idade <= 0) return null;
                 const sub=parseFloat(data.sub)||0; const tri=parseFloat(data.tri)||0; const pei=parseFloat(data.pei)||0;
@@ -888,15 +896,10 @@
                     : 1.097 - (0.00046971*soma) + (0.00000056*(soma**2)) - (0.00012828*idade);
                 return Calculators.siri(densidade);
             },
-            
-            // NOVO: Faulkner 4 Dobras
-            faulkner: (sexo, idade, data) => {
-                const tri = parseFloat(data.tri) || 0;
-                const sub = parseFloat(data.sub) || 0;
-                const sup = parseFloat(data.sup) || 0;
-                const abd = parseFloat(data.abd) || 0;
-                if (tri * sub * sup * abd === 0) return null;
-                const soma = tri + sub + sup + abd;
+            faulkner4: (sexo, idade, data) => {
+                const tri=parseFloat(data.tri)||0; const sub=parseFloat(data.sub)||0; const sup=parseFloat(data.sup)||0; const abd=parseFloat(data.abd)||0;
+                if(tri*sub*sup*abd === 0) return null;
+                const soma = tri+sub+sup+abd;
                 return (soma * 0.153) + 5.783;
             }
         };
@@ -955,15 +958,14 @@
                 const imcVal = Calculators.imc(evalData.peso, evalData.estatura);
                 let bfVal = null;
                 
-                // NOVO: Direcionamento do protocolo correto para o cálculo
                 if (evalData.protocolo === 'pollock3' || evalData.protocolo === 'guedes') bfVal = Calculators.pollock3(evalData.sexo, evalData.idade, evalData.dobras);
                 else if (evalData.protocolo === 'pollock4') bfVal = Calculators.pollock4(evalData.sexo, evalData.idade, evalData.dobras);
-                else if (evalData.protocolo === 'faulkner') bfVal = Calculators.faulkner(evalData.sexo, evalData.idade, evalData.dobras);
                 else if (evalData.protocolo === 'pollock7') bfVal = Calculators.pollock7(evalData.sexo, evalData.idade, evalData.dobras);
+                else if (evalData.protocolo === 'faulkner4') bfVal = Calculators.faulkner4(evalData.sexo, evalData.idade, evalData.dobras);
                 
                 let rcqVal = null;
-                if(parseFloat(evalData.perimetros.cin) > 0 && parseFloat(evalData.perimetros.qua) > 0) {
-                    rcqVal = Calculators.rcq(parseFloat(evalData.perimetros.cin), parseFloat(evalData.perimetros.qua));
+                if(getVal('per-cin') > 0 && getVal('per-qua') > 0) {
+                    rcqVal = Calculators.rcq(getVal('per-cin'), getVal('per-qua'));
                 }
 
                 let massaGorda = null, massaMagra = null;
